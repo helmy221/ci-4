@@ -8,36 +8,37 @@ class CreateUsers extends Migration
 {
     public function up()
     {
+        // Master User
         $this->forge->addField([
-            'id'         => ['type' => 'INT', 'unsigned' => true, 'auto_increment' => true],
+            'id_user'    => ['type' => 'INT', 'constraint'  => 11, 'unsigned' => true, 'auto_increment' => true],
             'username'   => ['type' => 'VARCHAR', 'constraint' => 100, 'unique' => true],
-            'email'      => ['type' => 'VARCHAR', 'constraint' => 150, 'unique' => true],
             'password'   => ['type' => 'VARCHAR', 'constraint' => 255],
-            'is_active'  => ['type' => 'boolean', 'default' => true],
+            'is_active'  => ['type' => 'boolean', 'default' => true, 'null' => false,],
             'created_at' => ['type' => 'DATETIME', 'null' => true],
             'updated_at' => ['type' => 'DATETIME', 'null' => true],
             'last_login' => ['type' => 'DATETIME', 'null' => true],
         ]);
-        $this->forge->addKey('id', true);
-        $this->forge->createTable('master_users');
+        $this->forge->addKey('id_user', true);
+        $this->forge->createTable('master_user');
 
+        // Master Personil
         $this->forge->addField([
-            'id'    => ['type' => 'INT', 'unsigned' => true, 'auto_increment' => true],
-            'user_id' => ['type' => 'INT', 'unsigned' => true],
-            'full_name'  => ['type' => 'VARCHAR', 'constraint' => 150, 'null' => true],
-            'phone'      => ['type' => 'VARCHAR', 'constraint' => 20, 'null' => true],
-            'address'    => ['type' => 'TEXT', 'null' => true],
-            'created_at' => ['type' => 'DATETIME', 'null' => true],
-            'updated_at' => ['type' => 'DATETIME', 'null' => true],
+            'id_master_personil'    => ['type' => 'INT', 'constraint'  => 11, 'unsigned' => true, 'auto_increment' => true],
+            'id_user'               => ['type' => 'INT', 'constraint'  => 11, 'unsigned' => true],
+            'nama_lengkap'          => ['type' => 'VARCHAR', 'constraint'  => 255, 'null' => true],
+            'master_jabatan_id'     => ['type' => 'INT', 'constraint'  => 11, 'unsigned' => true],
+            'created_at'            => ['type' => 'DATETIME', 'null' => true],
+            'updated_at'            => ['type' => 'DATETIME', 'null' => true],
         ]);
 
-        $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('user_id', 'master_users', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->createTable('master_user_profiles');
+        $this->forge->addKey('id_master_personil', true);
+        $this->forge->addForeignKey('id_user', 'master_user', 'id_user', 'CASCADE', 'CASCADE');
+        $this->forge->createTable('master_personil');
     }
 
     public function down()
     {
-        $this->forge->dropTable('master_users');
+        $this->forge->dropTable('master_user');
+        $this->forge->dropTable('master_personil');
     }
 }

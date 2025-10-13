@@ -15,8 +15,8 @@ class CreateRolePermissions extends Migration
             'updated_at'    => ['type' => 'DATETIME', 'null' => true],
         ]);
         $this->forge->addKey(['role_id', 'permission_id'], true);
-        $this->forge->addForeignKey('role_id', 'master_roles', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->addForeignKey('permission_id', 'master_permissions', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('role_id', 'master_roles', 'id_role', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('permission_id', 'master_permissions', 'id_permission', 'CASCADE', 'CASCADE');
         $this->forge->createTable('master_role_permissions');
     }
 

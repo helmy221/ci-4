@@ -9,14 +9,14 @@ class CreateUserRoles extends Migration
     public function up()
     {
         $this->forge->addField([
-            'user_id' => ['type' => 'INT', 'unsigned' => true],
-            'role_id' => ['type' => 'INT', 'unsigned' => true],
+            'id_user' => ['type' => 'INT', 'unsigned' => true],
+            'id_role' => ['type' => 'INT', 'unsigned' => true],
             'created_at'    => ['type' => 'DATETIME', 'null' => true],
             'updated_at'    => ['type' => 'DATETIME', 'null' => true],
         ]);
-        $this->forge->addKey(['user_id', 'role_id'], true);
-        $this->forge->addForeignKey('user_id', 'master_users', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->addForeignKey('role_id', 'master_roles', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addKey(['id_user', 'id_role'], true);
+        $this->forge->addForeignKey('id_user', 'master_user', 'id_user', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('id_role', 'master_roles', 'id_role', 'CASCADE', 'CASCADE');
         $this->forge->createTable('master_user_roles');
     }
 
