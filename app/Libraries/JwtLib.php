@@ -24,8 +24,8 @@ class JwtLib
     {
         $payload = [
             'iss' => 'ci4-app',        // issuer
-            'sub' => $user['id'],      // subject (user_id)
-            'email' => $user['email'],
+            'sub' => $user['id_user'],      // subject (user_id)
+            'username' => $user['username'],
             'iat' => time(),           // issued at
             'exp' => time() + $this->expire
         ];

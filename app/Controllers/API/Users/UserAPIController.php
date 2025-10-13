@@ -5,7 +5,6 @@ namespace App\Controllers\API\Users;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\RESTful\ResourceController;
 use App\Models\UserModel;
-use Hermawan\DataTables\DataTable;
 
 class UserAPIController extends ResourceController
 {
@@ -47,6 +46,26 @@ class UserAPIController extends ResourceController
                 'pages' => ceil($total / $limit)
             ]
         ]);
+    }
+
+    public function softDeleteUser($userId)
+    {
+        $user = $this->model->find($userId);
+
+        if (!$user) {
+            return $this->response
+                ->setJSON(['status' => 'error', 'message' => 'User not found'])
+                ->setStatusCode(404);
+        }
+
+        if ($this->model->softDeleteUser($userId)) { // soft delete karena useSoftDeletes = true
+            return $this->response
+                ->setJSON(['status' => 'success', 'message' => 'User soft deleted successfully']);
+        } else {
+            return $this->response
+                ->setJSON(['status' => 'error', 'message' => 'Failed to delete user'])
+                ->setStatusCode(500);
+        }
     }
 
     /**

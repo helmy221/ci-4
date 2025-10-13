@@ -59,22 +59,17 @@ if (!function_exists('auth')) {
 
                     public function id()
                     {
-                        return $this->user['id'] ?? null;
+                        return $this->user['id_user'] ?? null;
                     }
 
                     public function username()
                     {
-                        return $this->user['name'] ?? null;
+                        return $this->user['username'] ?? null;
                     }
 
                     public function fullname()
                     {
-                        return $this->user['fullname'] ?? null;
-                    }
-
-                    public function email()
-                    {
-                        return $this->user['email'] ?? null;
+                        return $this->user['nama_lengkap'] ?? null;
                     }
 
                     public function roles()

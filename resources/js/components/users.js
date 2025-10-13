@@ -12,6 +12,7 @@ window.UserUI = function() {
                 const data = await res.json();
                 if (data.status === 'success') {
                     this.users = data.data;
+                    // console.log(this.users);
                 } else {
                     console.error('Failed to load users');
                     this.users = [];
@@ -22,6 +23,28 @@ window.UserUI = function() {
             } finally {
                 this.loading = false;
             }
+        },
+
+        nonActiveUser(userId) {
+            if (!confirm('Are you sure you want to delete this user?')) return;
+
+            fetch(`/api/users/${userId}/softdelete`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + window.jwtToken,
+                    'Accept': 'application/json'
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Hapus user dari array lokal agar UI langsung update
+                    this.users = this.users.filter(u => u.id !== userId);
+                } else {
+                    alert(data.message || 'Failed to delete user');
+                }
+            })
+            .catch(err => console.error(err));
         },
 
         async submitAddUser() {
@@ -46,10 +69,24 @@ window.UserUI = function() {
             return roles.join(', ');
         },
 
+
         formatDate(dateStr) {
             if (!dateStr) return '-';
             const d = new Date(dateStr);
-            return d.toLocaleString();
+            // Contoh: Oct 13, 2025
+            return d.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+        },
+
+        timeAgo(dateStr) {
+            if (!dateStr) return '';
+            const date = new Date(dateStr);
+            const now = new Date();
+            const diff = Math.floor((now - date) / 1000); // detik
+
+            if (diff < 60) return `${diff} seconds ago`;
+            if (diff < 3600) return `${Math.floor(diff/60)} minutes ago`;
+            if (diff < 86400) return `${Math.floor(diff/3600)} hours ago`;
+            return `${Math.floor(diff/86400)} days ago`;
         }
     }
 };

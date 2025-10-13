@@ -5,7 +5,7 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-// $routes->get('/dashboard', 'Home::index');
+
 $routes->get('/login', 'AuthController::index');
 $routes->post('/doLogin', 'AuthController::doLogin');
 $routes->get('/logout', 'AuthController::logout');
@@ -19,6 +19,7 @@ $routes->group('api', ['namespace' => 'App\Controllers\API'], function ($routes)
     $routes->group('users', ['filter' => 'jwt'], function ($routes) {
         $routes->get('', 'Users\UserAPIController::index'); // list
         $routes->get('(:num)', 'Users\UserAPIController::show/$1'); // detail
+        $routes->post('(:num)/softdelete', 'Users\UserAPIController::softDeleteUser/$1');
         // $routes->post('', 'Api\UserController::store'); // create
         // $routes->put('(:num)', 'Api\UserController::update/$1'); // update
         // $routes->delete('(:num)', 'Api\UserController::delete/$1'); // delete

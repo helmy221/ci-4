@@ -167,7 +167,7 @@
                         </span>
                         <span
                             class="text-theme-xs mt-0.5 block text-gray-500 dark:text-gray-400">
-                            <?= auth()->user()->email() ?>
+                            <!--  -->
                         </span>
                     </div>
 

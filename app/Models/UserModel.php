@@ -6,13 +6,13 @@ use CodeIgniter\Model;
 
 class UserModel extends Model
 {
-    protected $table            = 'master_users';
-    protected $primaryKey       = 'id';
+    protected $table            = 'master_user';
+    protected $primaryKey       = 'id_user';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['username', 'email', 'password', 'is_active', 'created_at', 'updated_at', 'last_login'];
+    protected $allowedFields    = ['username', 'password', 'is_active', 'created_at', 'updated_at', 'last_login'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -65,11 +65,10 @@ class UserModel extends Model
     public function getUserWithRolesAndPermissions(string $identifier): ?array
     {
         // Ambil user berdasarkan username atau email
-        $user = $this->db->table('master_users')
-            ->select('id, username, email, password, is_active, last_login')
+        $user = $this->db->table('master_user')
+            ->select('id_user, username, password, is_active, last_login')
             ->groupStart()
-            ->where('email', $identifier)
-            ->orWhere('username', $identifier)
+            ->Where('username', $identifier)
             ->groupEnd()
             ->get()
             ->getRowArray();
@@ -79,23 +78,23 @@ class UserModel extends Model
         }
 
         // Ambil profile user
-        $profile = $this->db->table('master_user_profiles')
-            ->select('full_name, address, phone')
-            ->where('user_id', $user['id'])
+        $profile = $this->db->table('master_personil')
+            ->select('nama_lengkap, id_master_jabatan')
+            ->where('id_user', $user['id_user'])
             ->get()
             ->getRowArray();
         $user = array_merge($user, $profile ?? []);
 
         // Ambil semua roles user
         $roles = $this->db->table('master_user_roles ur')
-            ->select('r.id, r.name')
-            ->join('master_roles r', 'r.id = ur.role_id', 'left')
-            ->where('ur.user_id', $user['id'])
+            ->select('r.id_role, r.name')
+            ->join('master_roles r', 'r.id_role = ur.id_role', 'left')
+            ->where('ur.id_user', $user['id_user'])
             ->get()
             ->getResultArray();
 
         $user['roles'] = array_column($roles, 'name');
-        $roleIds = array_column($roles, 'id');
+        $roleIds = array_column($roles, 'id_user');
 
         // Ambil semua permissions dari roles
         $permissions = [];
@@ -117,16 +116,16 @@ class UserModel extends Model
 
     public function getAllUserList($limit = 10, $offset = 0, $search = null, $status = null)
     {
-        $builder = $this->db->table('master_users u')
-            ->select('u.id, u.username as name, u.email, u.is_active, u.created_at, r.name as role_name')
-            ->join('master_user_roles ur', 'ur.user_id = u.id', 'left')
-            ->join('master_roles r', 'r.id = ur.role_id', 'left')
-            ->orderBy('u.id', 'ASC');
+        $builder = $this->db->table('master_user u')
+            ->select('u.id_user, u.username as username, mp.nama_lengkap, u.is_active, u.created_at, r.description as role_name')
+            ->join('master_personil mp', 'mp.id_user = u.id_user', 'left')
+            ->join('master_user_roles ur', 'ur.id_user = u.id_user', 'left')
+            ->join('master_roles r', 'r.id_role = ur.id_role', 'left')
+            ->orderBy('u.id_user', 'ASC');
 
         if ($search) {
             $builder->groupStart()
                 ->like('u.username', $search)
-                ->orLike('u.email', $search)
                 ->groupEnd();
         }
 
@@ -141,12 +140,12 @@ class UserModel extends Model
         // Gabungkan roles per user
         $users = [];
         foreach ($query as $row) {
-            $id = $row['id'];
+            $id = $row['id_user'];
             if (!isset($users[$id])) {
                 $users[$id] = [
-                    'id' => $row['id'],
-                    'name' => $row['name'],
-                    'email' => $row['email'],
+                    'id' => $row['id_user'],
+                    'username' => $row['username'],
+                    'nama_lengkap' => $row['nama_lengkap'],
                     'roles' => [],
                     'status' => $row['is_active'],
                     'created_at' => $row['created_at']
@@ -170,7 +169,6 @@ class UserModel extends Model
         if ($search) {
             $builder->groupStart()
                 ->like('username', $search)
-                ->orLike('email', $search)
                 ->groupEnd();
         }
 
@@ -181,35 +179,13 @@ class UserModel extends Model
         return $builder->countAllResults();
     }
 
-    public function getAllUserListDatatable()
-    {
-        $builder = $this->db->table('master_users u')
-            ->select('u.id, 
-                    u.username as name, 
-                    u.email, 
-                    u.is_active as is_active, 
-                    u.created_at, 
-                    GROUP_CONCAT(r.name) as roles', false)
-            ->join('master_user_roles ur', 'ur.user_id = u.id', 'left')
-            ->join('master_roles r', 'r.id = ur.role_id', 'left')
-            ->groupBy('u.id');
-
-        return $builder; // jangan ->get()->getResultArray()
-    }
-
-    public function getUserDataProfile($identifier)
-    {
-        return $this->select('master_users.id, master_users.username, master_users.email, master_users.password, master_user_profiles.full_name, master_roles.name as role_name')
-            ->join('master_user_profiles', 'master_user_profiles.user_id = master_users.id', 'left')
-            ->join('master_user_roles', 'master_user_roles.user_id = master_users.id', 'left')
-            ->join('master_roles', 'master_roles.id = master_user_roles.role_id', 'left')
-            ->where('email', $identifier)
-            ->orWhere('username', $identifier)
-            ->first();
-    }
-
     public function updateLastLogin($userId)
     {
         return $this->update($userId, ['last_login' => date('Y-m-d H:i:s')]);
+    }
+
+    public function softDeleteUser($userId)
+    {
+        return $this->update($userId, ['is_active' => '0']);
     }
 }
