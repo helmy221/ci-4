@@ -38,7 +38,7 @@ class AuthController extends BaseController
             session()->setFlashdata('notification', [
                 'type'    => 'error',
                 'title'   => 'Error',
-                'message' => 'Email/Username atau password salah!',
+                'message' => 'Username atau password salah!',
             ]);
 
             return redirect()->back()->withInput();
@@ -47,10 +47,9 @@ class AuthController extends BaseController
 
         $token = $jwt->generateToken($user);
         $userData = [
-            'id'    => $user['id'],
-            'email' => $user['email'],
+            'id_user'    => $user['id_user'],
             'username'  => $user['username'] ?? null,
-            'fullname'  => $user['full_name'] ?? null,
+            'nama_lengkap'  => $user['nama_lengkap'] ?? null,
             'roles'  => $user['roles'],
             'permissions' => $user['permissions'],
             'token' => $token
@@ -66,7 +65,7 @@ class AuthController extends BaseController
         ]);
 
         // Update last login
-        $userModel->updateLastLogin($user['id']);
+        $userModel->updateLastLogin($user['id_user']);
 
         // dd($update);
         // exit;
