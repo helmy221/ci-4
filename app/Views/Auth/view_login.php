@@ -3,7 +3,7 @@
 <?= $this->section('content') ?>
 <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
     <div class="text-center mb-6">
-        <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Sign In</h1>
+        <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Pandu (Pengadaan Terpadu)</h1>
         <p class="text-gray-500 dark:text-gray-400">Enter your email and password to sign in</p>
     </div>
 
