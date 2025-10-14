@@ -114,7 +114,7 @@
                             </span>
                         </a>
                     </li>
-                    <li>
+                    <!--<li>
                         <a
                             href="profile.html"
                             @click="selected = (selected === 'Profile' ? '':'Profile')"
@@ -140,7 +140,209 @@
                                 User Profile
                             </span>
                         </a>
+                    </li>-->
+                    
+                    <!-- Menu Item Task -->
+                    <li>
+                        <a
+                        href="#"
+                        @click.prevent="selected = (selected === 'Task' ? '':'Task')"
+                        class="menu-item group"
+                        :class=" (selected === 'Task') || (page === 'taskList' || page === 'taskKanban') ? 'menu-item-active' : 'menu-item-inactive'"
+                        >
+                        <svg
+                            :class="(selected === 'Task') || (page === 'taskList' || page === 'taskKanban') ? 'menu-item-icon-active'  :'menu-item-icon-inactive'"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            d="M7.75586 5.50098C7.75586 5.08676 8.09165 4.75098 8.50586 4.75098H18.4985C18.9127 4.75098 19.2485 5.08676 19.2485 5.50098L19.2485 15.4956C19.2485 15.9098 18.9127 16.2456 18.4985 16.2456H8.50586C8.09165 16.2456 7.75586 15.9098 7.75586 15.4956V5.50098ZM8.50586 3.25098C7.26322 3.25098 6.25586 4.25834 6.25586 5.50098V6.26318H5.50195C4.25931 6.26318 3.25195 7.27054 3.25195 8.51318V18.4995C3.25195 19.7422 4.25931 20.7495 5.50195 20.7495H15.4883C16.7309 20.7495 17.7383 19.7421 17.7383 18.4995L17.7383 17.7456H18.4985C19.7411 17.7456 20.7485 16.7382 20.7485 15.4956L20.7485 5.50097C20.7485 4.25833 19.7411 3.25098 18.4985 3.25098H8.50586ZM16.2383 17.7456H8.50586C7.26322 17.7456 6.25586 16.7382 6.25586 15.4956V7.76318H5.50195C5.08774 7.76318 4.75195 8.09897 4.75195 8.51318V18.4995C4.75195 18.9137 5.08774 19.2495 5.50195 19.2495H15.4883C15.9025 19.2495 16.2383 18.9137 16.2383 18.4995L16.2383 17.7456Z"
+                            fill=""
+                            />
+                        </svg>
+
+                        <span
+                            class="menu-item-text"
+                            :class="sidebarToggle ? 'lg:hidden' : ''"
+                        >
+                            Master
+                        </span>
+
+                        <svg
+                            class="menu-item-arrow"
+                            :class="[(selected === 'Task') ? 'menu-item-arrow-active' : 'menu-item-arrow-inactive', sidebarToggle ? 'lg:hidden' : '' ]"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 20 20"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                            d="M4.79175 7.39584L10.0001 12.6042L15.2084 7.39585"
+                            stroke=""
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            />
+                        </svg>
+                        </a>
+
+                        <!-- Dropdown Menu Start -->
+                        <div
+                        class="translate transform overflow-hidden"
+                        :class="(selected === 'Task') ? 'block' :'hidden'"
+                        >
+                        <ul
+                            :class="sidebarToggle ? 'lg:hidden' : 'flex'"
+                            class="menu-dropdown mt-2 flex flex-col gap-1 pl-9"
+                        >
+                            <li>
+                            <a
+                                href="task-list.html"
+                                class="menu-dropdown-item group"
+                                :class="page === 'taskList' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
+                            >
+                                Unit Organisasi
+                                <!--<span class="absolute right-3 flex items-center gap-1">
+                                <span
+                                    class="menu-dropdown-badge"
+                                    :class="page === 'taskList' ? 'menu-dropdown-badge-active' : 'menu-dropdown-badge-inactive'"
+                                >
+                                    Pro
+                                </span>
+                                </span>-->
+                            </a>
+                            </li>
+                            <li>
+                            <a
+                                href="task-kanban.html"
+                                class="menu-dropdown-item group"
+                                :class="page === 'taskKanban' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
+                            >
+                                Jenis Pengadaan
+                                <!--<span class="absolute right-3 flex items-center gap-1">
+                                <span
+                                    class="menu-dropdown-badge"
+                                    :class="page === 'taskKanban' ? 'menu-dropdown-badge-active' : 'menu-dropdown-badge-inactive'"
+                                >
+                                    Pro
+                                </span>
+                                </span> -->
+                            </a>
+                            </li>
+                            <li>
+                            <a
+                                href="task-list.html"
+                                class="menu-dropdown-item group"
+                                :class="page === 'taskList' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
+                            >
+                                Lokasi Pekerjaan
+                            </a>
+                            </li>
+                        </ul>
+                        </div>
+                        <!-- Dropdown Menu End -->
                     </li>
+                    <!-- Menu Item Task -->
+
+                    <!-- Menu Item Pages -->
+                    <li>
+                        <a
+                        href="#"
+                        @click.prevent="selected = (selected === 'Pages' ? '':'Pages')"
+                        class="menu-item group"
+                        :class="(selected === 'Pages') || (page === 'fileManager' || page === 'pricingTables' || page === 'blank' || page === 'page404' || page === 'page500' || page === 'page503' || page === 'success' || page === 'faq' || page === 'comingSoon' || page === 'maintenance') ? 'menu-item-active' : 'menu-item-inactive'"
+                        >
+                        <svg
+                            :class="(selected === 'Pages') || (page === 'fileManager' || page === 'pricingTables' || page === 'blank' || page === 'page404' || page === 'page500' || page === 'page503' || page === 'success' || page === 'faq' || page === 'comingSoon' || page === 'maintenance') ? 'menu-item-icon-active'  :'menu-item-icon-inactive'"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            d="M8.50391 4.25C8.50391 3.83579 8.83969 3.5 9.25391 3.5H15.2777C15.4766 3.5 15.6674 3.57902 15.8081 3.71967L18.2807 6.19234C18.4214 6.333 18.5004 6.52376 18.5004 6.72268V16.75C18.5004 17.1642 18.1646 17.5 17.7504 17.5H16.248V17.4993H14.748V17.5H9.25391C8.83969 17.5 8.50391 17.1642 8.50391 16.75V4.25ZM14.748 19H9.25391C8.01126 19 7.00391 17.9926 7.00391 16.75V6.49854H6.24805C5.83383 6.49854 5.49805 6.83432 5.49805 7.24854V19.75C5.49805 20.1642 5.83383 20.5 6.24805 20.5H13.998C14.4123 20.5 14.748 20.1642 14.748 19.75L14.748 19ZM7.00391 4.99854V4.25C7.00391 3.00736 8.01127 2 9.25391 2H15.2777C15.8745 2 16.4468 2.23705 16.8687 2.659L19.3414 5.13168C19.7634 5.55364 20.0004 6.12594 20.0004 6.72268V16.75C20.0004 17.9926 18.9931 19 17.7504 19H16.248L16.248 19.75C16.248 20.9926 15.2407 22 13.998 22H6.24805C5.00541 22 3.99805 20.9926 3.99805 19.75V7.24854C3.99805 6.00589 5.00541 4.99854 6.24805 4.99854H7.00391Z"
+                            fill=""
+                            />
+                        </svg>
+
+                        <span
+                            class="menu-item-text"
+                            :class="sidebarToggle ? 'lg:hidden' : ''"
+                        >
+                            Cari Paket
+                        </span>
+
+                        <svg
+                            class="menu-item-arrow absolute right-2.5 top-1/2 -translate-y-1/2 stroke-current"
+                            :class="[(selected === 'Pages') ? 'menu-item-arrow-active' : 'menu-item-arrow-inactive', sidebarToggle ? 'lg:hidden' : '' ]"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 20 20"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                            d="M4.79175 7.39584L10.0001 12.6042L15.2084 7.39585"
+                            stroke=""
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            />
+                        </svg>
+                        </a>
+
+                        <!-- Dropdown Menu Start -->
+                        <div
+                        class="translate transform overflow-hidden"
+                        :class="(selected === 'Pages') ? 'block' :'hidden'"
+                        >
+                        <ul
+                            :class="sidebarToggle ? 'lg:hidden' : 'flex'"
+                            class="menu-dropdown mt-2 flex flex-col gap-1 pl-9"
+                        >
+                            <li>
+                            <a
+                                href="file-manager.html"
+                                class="menu-dropdown-item group"
+                                :class="page === 'fileManager' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
+                            >
+                                All Data
+                            </a>
+                            </li>
+                            <li>
+                            <a
+                                href="file-manager.html"
+                                class="menu-dropdown-item group"
+                                :class="page === 'fileManager' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
+                            >
+                                By Filter
+                            </a>
+                            </li>
+                            <li>
+                            <a
+                                href="pricing-tables.html"
+                                class="menu-dropdown-item group"
+                                :class="page === 'pricingTables' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
+                            >
+                                By Pemenang
+                            </a>
+                            </li>
+                        </ul>
+                        </div>
+                        <!-- Dropdown Menu End -->
+                    </li>
+                    <!-- Menu Item Pages -->
+
+
                 </ul>
 
             </div>
