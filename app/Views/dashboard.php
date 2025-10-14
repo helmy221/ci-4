@@ -58,19 +58,19 @@
                             <div class="flex-shrink-0">
                                 <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow duration-300">
                                     <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
                                     </svg>
                                 </div>
                             </div>
                             <div class="flex-1">
-                                <p class="text-sm font-medium text-gray-600 mb-1 dark:text-gray-300">Total Users</p>
-                                <p class="text-2xl font-bold text-gray-900 dark:text-gray-300">100</p>
+                                <p class="text-sm font-medium text-gray-600 mb-1 dark:text-gray-300">Total Paket</p>
+                                <p class="text-2xl font-bold text-gray-900 dark:text-gray-300">388</p>
                             </div>
                         </div>
                         <div class="mt-4 flex items-center justify-between">
                             <div class="flex items-center space-x-2">
                                 <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                                <span class="text-sm text-green-600 font-semibold">3 active</span>
+                                <span class="text-sm text-green-600 font-semibold">13 active</span>
                             </div>
                             <!-- <div class="flex items-center text-xs text-gray-500">
                             <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -99,14 +99,14 @@
                                 </div>
                             </div>
                             <div class="flex-1">
-                                <p class="text-sm font-medium text-gray-600 mb-1 dark:text-gray-300">Total Roles</p>
-                                <p class="text-2xl font-bold text-gray-900 dark:text-gray-300">100</p>
+                                <p class="text-sm font-medium text-gray-600 mb-1 dark:text-gray-300">Konsultansi Konstruksi</p>
+                                <p class="text-2xl font-bold text-gray-900 dark:text-gray-300">190</p>
                             </div>
                         </div>
                         <div class="mt-4 flex items-center justify-between">
                             <div class="flex items-center space-x-2">
                                 <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                                <span class="text-sm text-green-600 font-semibold">4 active</span>
+                                <span class="text-sm text-green-600 font-semibold">185 Closed</span>
                             </div>
                             <!-- <div class="flex items-center text-xs text-gray-500">
                             <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -135,14 +135,14 @@
                                 </div>
                             </div>
                             <div class="flex-1">
-                                <p class="text-sm font-medium text-gray-600 mb-1 dark:text-gray-300">Total Permissions</p>
-                                <p class="text-2xl font-bold text-gray-900 dark:text-gray-300">100</p>
+                                <p class="text-sm font-medium text-gray-600 mb-1 dark:text-gray-300">Pekerjaan Konstruksi</p>
+                                <p class="text-2xl font-bold text-gray-900 dark:text-gray-300">198</p>
                             </div>
                         </div>
                         <div class="mt-4 flex items-center justify-between">
                             <div class="flex items-center space-x-2">
                                 <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                                <span class="text-sm text-green-600 font-semibold">4 active</span>
+                                <span class="text-sm text-green-600 font-semibold">190 Closed</span>
                             </div>
                             <!-- <div class="flex items-center text-xs text-gray-500">
                             <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -166,7 +166,7 @@
                             <div class="flex-shrink-0">
                                 <div class="w-12 h-12 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow duration-300">
                                     <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
                                     </svg>
                                 </div>
                             </div>
