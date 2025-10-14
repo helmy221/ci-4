@@ -5,11 +5,11 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 
-class TransaksiAllDataController extends BaseController
+class MasterLokasiPekerjaanController extends BaseController
 {
     public function index()
     {
-        return view('transaksi/view_transaksi_alldata', [
+        return view('master/view_master_lokasi_pekerjaan', [
             'page'  => 'All Data Pengadaan',
             'title' => 'All Data - TailAdmin'
         ]);

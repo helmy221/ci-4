@@ -34,6 +34,13 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
     $routes->get('/users', 'UserController::index');
     // $routes->get('/users/create', 'Home::create', ['filter' => 'permission:user.create']);
 
+    //master
+    $routes->get('/masterunitorganisasi', 'MasterUnitOrganisasiController::index');
+    $routes->get('/masterjenispekerjaan', 'MasterJenisPekerjaanController::index');
+    $routes->get('/masterlokasipekerjaan', 'MasterLokasiPekerjaanController::index');
+
     //transaksi
     $routes->get('/alldata', 'TransaksiAllDataController::index');
+    $routes->get('/getdatafilter', 'TransaksiGetDataByFilterController::index');
+    $routes->get('/getdatapemenang', 'TransaksiGetDataByPemenangController::index');
 });
