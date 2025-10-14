@@ -303,7 +303,7 @@
                                         href="<?= base_url('getdatafilter') ?>"
                                         class="menu-dropdown-item group"
                                         :class="page === 'fileManager' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'">
-                                        By Filter
+                                        Filter Pengadaan
                                     </a>
                                 </li>
                                 <li>
