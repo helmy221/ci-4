@@ -109,19 +109,15 @@
                                     </svg>
                                     Edit
                                 </button>
-                                <!-- <button wire:click="toggleUserStatus({{ $user->id }})"
-                                    class="group/btn inline-flex items-center px-3 py-2 text-xs font-semibold text-yellow-600 bg-yellow-50 rounded-lg hover:bg-yellow-100 hover:text-yellow-700 transition-all duration-200 transform hover:scale-105">
-                                    <svg class="w-4 h-4 mr-1.5 group-hover/btn:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        @if($user->is_active)
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728"></path>
-                                        @else
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                        @endif
-                                    </svg>
-                                    {{ $user->is_active ? 'Deactivate' : 'Activate' }}
-                                </button> -->
                                 <button
-                                    @click="nonActiveUser(user.id)"
+                                    @click="ShowConfirm(
+                                                 user.status == 1 ? 'Confirm Deactivate' : 'Confirm Activate',  // title
+                                                 user.status == 1 ? 'Are you sure you want to deactivate this user?' : 'Are you sure you want to activate this user?',  // text
+                                                 user.status == 1 ? 'Yes, deactivate it!' : 'Yes, activate it!',  // confirmText
+                                                'Cancel',  // cancelText
+                                                'nonActiveUser',  // method
+                                                [user.id]  // params (an array of parameters, in this case user ID)
+                                                )"
                                     class="group/btn inline-flex items-center px-3 py-2 text-xs font-semibold rounded-lg transition-all duration-200 transform hover:scale-105
                                     text-yellow-600 bg-yellow-50 hover:bg-yellow-100 hover:text-yellow-700">
                                     <svg class="w-4 h-4 mr-1.5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -133,6 +129,19 @@
                                     </svg>
                                     <span x-text="user.status == 1 ? 'Deactivate' : 'Activate'"></span>
                                 </button>
+                                <!-- <button
+                                    @click="nonActiveUser(user.id)"
+                                    class="group/btn inline-flex items-center px-3 py-2 text-xs font-semibold rounded-lg transition-all duration-200 transform hover:scale-105
+                                    text-yellow-600 bg-yellow-50 hover:bg-yellow-100 hover:text-yellow-700">
+                                    <svg class="w-4 h-4 mr-1.5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            :d="user.status == 1 
+                                            ? 'M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728'
+                                            : 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'">
+                                        </path>
+                                    </svg>
+                                    <span x-text="user.status == 1 ? 'Deactivate' : 'Activate'"></span>
+                                </button> -->
                             </td>
                         </tr>
                     </template>
@@ -141,7 +150,6 @@
                     </tr>
                 </tbody>
             </table>
-
         </div>
     </div>
 

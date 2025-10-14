@@ -1,6 +1,6 @@
 <header
     x-data="{menuToggle: false}"
-    class="sticky top-0 z-99999 flex w-full border-gray-200 bg-white lg:border-b dark:border-gray-800 dark:bg-gray-900">
+    class="sticky top-0 z-999 flex w-full border-gray-200 bg-white lg:border-b dark:border-gray-800 dark:bg-gray-900">
     <div
         class="flex grow flex-col items-center justify-between lg:flex-row lg:px-6">
         <div
@@ -58,10 +58,10 @@
             <!-- Hamburger Toggle BTN -->
 
             <a href="index.html" class="lg:hidden">
-                <img class="dark:hidden" src="./images/logo/logo.svg" alt="Logo" />
+                <img class="dark:hidden" src="<?= base_url('tailadmin/images/logo/logo.svg') ?>" alt="Logo" />
                 <img
                     class="hidden dark:block"
-                    src="./images/logo/logo-dark.svg"
+                    src="<?= base_url('tailadmin/images/logo/logo-dark.svg') ?>"
                     alt="Logo" />
             </a>
 

@@ -184,8 +184,13 @@ class UserModel extends Model
         return $this->update($userId, ['last_login' => date('Y-m-d H:i:s')]);
     }
 
-    public function softDeleteUser($userId)
+    public function deactivateUser($userId)
     {
         return $this->update($userId, ['is_active' => '0']);
+    }
+
+    public function activateUser($userId)
+    {
+        return $this->update($userId, ['is_active' => '1']);
     }
 }
