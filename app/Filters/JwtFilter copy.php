@@ -35,6 +35,13 @@ class JwtFilter implements FilterInterface
 
         // Jika header tidak ada, cek session
         if (!$authHeader) {
+            // session-based fallback (untuk internal view)
+            $sessionUser = auth()->user()->token();
+            if ($sessionUser) {
+                $request->user = $sessionUser;
+                return; // bypass JWT
+            }
+
             return Services::response()
                 ->setJSON(['error' => 'Token not provided'])
                 ->setStatusCode(401);
@@ -47,16 +54,15 @@ class JwtFilter implements FilterInterface
                 ->setStatusCode(401);
         }
 
-        $token = $matches[1];
+        $jwtLib = new JwtLib();
         $decoded = $jwtLib->validateToken($matches[1]);
+        // dd($decoded);
+        // exit;
         if (!$decoded) {
-            log_message('error', 'Token expired or invalid: ' . $token); // Log expired/invalid token
             return Services::response()
                 ->setJSON(['error' => 'Invalid or expired token'])
                 ->setStatusCode(401);
         }
-
-        log_message('info', 'Token is valid for user: ' . $decoded->sub); // Log valid token
 
         // Simpan user dari JWT ke request agar bisa dipakai controller
         $request->user = $decoded;

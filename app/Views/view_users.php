@@ -122,15 +122,13 @@
                                 </button> -->
                                 <button
                                     @click="nonActiveUser(user.id)"
-                                    class="group/btn inline-flex items-center px-3 py-2 text-xs font-semibold rounded-lg transition-all duration-200 transform hover:scale-105"
-                                    :class="user.status == 1 
-                                            ? 'text-yellow-600 bg-yellow-50 hover:bg-yellow-100 hover:text-yellow-700' 
-                                            : 'text-green-600 bg-green-50 hover:bg-green-100 hover:text-green-700'">
+                                    class="group/btn inline-flex items-center px-3 py-2 text-xs font-semibold rounded-lg transition-all duration-200 transform hover:scale-105
+                                    text-yellow-600 bg-yellow-50 hover:bg-yellow-100 hover:text-yellow-700">
                                     <svg class="w-4 h-4 mr-1.5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path
-                                            :d="user.is_active == 1 
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            :d="user.status == 1 
                                             ? 'M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728'
-                                            : 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z">
+                                            : 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'">
                                         </path>
                                     </svg>
                                     <span x-text="user.status == 1 ? 'Deactivate' : 'Activate'"></span>

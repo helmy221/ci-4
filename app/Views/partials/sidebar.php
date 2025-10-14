@@ -9,6 +9,8 @@
         <a href="index.html">
             <span class="logo" :class="sidebarToggle ? 'hidden' : ''">
                 <img class="dark:hidden" src="<?= base_url('tailadmin/images/logo/logo.svg') ?>" alt="Logo" />
+                <!-- <img class="dark:hidden" src="<?= base_url('tailadmin/images/logo/logo-pandu-32.png') ?>" alt="Logo" /> -->
+
                 <img
                     class="hidden dark:block"
                     src="<?= base_url('tailadmin/images/logo/logo-dark.svg') ?>"

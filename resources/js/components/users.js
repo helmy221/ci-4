@@ -5,20 +5,69 @@ window.UserUI = function() {
         showAddModal: false,
         form: { username: '', email: '' },
 
+        // async loadUsers() {
+        //     this.loading = true;
+        //     try {
+        //         const res = await fetch('/api/users', {
+        //         method: 'GET',
+        //         headers: {
+        //             'Authorization': 'Bearer ' + window.jwtToken,
+        //             'Accept': 'application/json'
+        //         }
+        //         });
+        //         const data = await res.json();
+        //         if (data.status === 'success') {
+        //             this.users = data.data;
+        //             // console.log(this.users);
+        //         } else {
+        //             console.error('Failed to load users');
+        //             this.users = [];
+        //         }
+        //     } catch (err) {
+        //         console.error(err);
+        //         this.users = [];
+        //     } finally {
+        //         this.loading = false;
+        //     }
+        // },
+
         async loadUsers() {
             this.loading = true;
             try {
-                const res = await fetch('/api/users');
+                const res = await fetch('/api/users', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + window.jwtToken, // Pastikan jwtToken ada
+                        'Accept': 'application/json'
+                    }
+                });
+
+                // Periksa jika status HTTP 200 atau tidak
+                if (!res.ok) {
+                    // Jika respons status bukan 2xx (misalnya 401 Unauthorized, 403 Forbidden)
+                    if (res.status === 401 || res.status === 403) {
+                        console.error('Unauthorized. Please log in again.');
+                        // Redirect ke halaman login
+                        // window.location.href = "/login";
+                    } else {
+                        console.error('Failed to load users:', res.statusText);
+                    }
+                    this.users = [];
+                    return;
+                }
+
+                // Jika status HTTP 200 OK, lanjutkan parsing data
                 const data = await res.json();
+                
+                // Periksa apakah data.status === 'success'
                 if (data.status === 'success') {
                     this.users = data.data;
-                    // console.log(this.users);
                 } else {
-                    console.error('Failed to load users');
+                    console.error('Failed to load users. API responded with error:', data.message);
                     this.users = [];
                 }
             } catch (err) {
-                console.error(err);
+                console.error('Error during fetching users:', err);
                 this.users = [];
             } finally {
                 this.loading = false;
@@ -38,10 +87,24 @@ window.UserUI = function() {
             .then(res => res.json())
             .then(data => {
                 if (data.status === 'success') {
-                    // Hapus user dari array lokal agar UI langsung update
                     this.users = this.users.filter(u => u.id !== userId);
+
+                    // Tampilkan notification
+                    this.notification = {
+                        type: 'success',
+                        title: 'Success',
+                        message: data.message || 'User berhasil non-aktifkan'
+                    };
+
+                    // Hilangkan notification setelah 3 detik
+                    setTimeout(() => this.notification = null, 3000);
                 } else {
-                    alert(data.message || 'Failed to delete user');
+                    this.notification = {
+                        type: 'error',
+                        title: 'Error',
+                        message: data.message || 'Gagal menghapus user'
+                    };
+                    setTimeout(() => this.notification = null, 3000);
                 }
             })
             .catch(err => console.error(err));

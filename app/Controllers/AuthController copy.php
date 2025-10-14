@@ -57,7 +57,8 @@ class AuthController extends BaseController
             'permissions'   => $user['permissions'],
             'token'         => $token
         ];
-
+        // dd($userData);
+        // exit;
         $jsonData = json_encode($userData);
 
         $encrypData = $encrypter->encrypt($jsonData);
@@ -65,6 +66,8 @@ class AuthController extends BaseController
         session()->set([
             'isLoggedIn' => true,
             'user'       => $encrypData,
+            'jti'        => $jwt->extractJti($token),
+            'expires_at' => time() + 3600
         ]);
 
         // Update last login
@@ -80,9 +83,37 @@ class AuthController extends BaseController
         return redirect()->to('/dashboard');
     }
 
+    public function refresh()
+    {
+        $jwtLib = new \App\Libraries\JwtLib();
+        $oldToken = $this->request->getHeaderLine('Authorization');
+        $oldToken = str_replace('Bearer ', '', $oldToken);
+
+        $sessionUser = json_decode(service('encrypter')->decrypt(session()->get('user')), true);
+
+        $newToken = $jwtLib->refreshToken($oldToken, $sessionUser);
+
+        if (!$newToken) {
+            return $this->response->setJSON(['message' => 'Cannot refresh token'])->setStatusCode(401);
+        }
+
+        session()->set('jti', $jwtLib->extractJti($newToken));
+
+        return $this->response->setJSON(['token' => $newToken]);
+    }
+
     public function logout()
     {
-
+        if (!auth()->check()) {
+            session()->setFlashdata('notification', [
+                'type'    => 'error',
+                'title'   => 'Error',
+                'message' => 'Session Expired, Silahkan Login Ulang!.',
+            ]);
+            return redirect()->to(site_url('login'));
+        }
+        // $jwt       = new JwtLib();
+        // $jwt->revokeToken(session()->get('jti'));
         session()->setFlashdata('notification', [
             'type'    => 'success',
             'title'   => 'Success',

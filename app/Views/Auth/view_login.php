@@ -4,13 +4,13 @@
 <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
     <div class="text-center mb-6">
         <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Pandu (Pengadaan Terpadu)</h1>
-        <p class="text-gray-500 dark:text-gray-400">Enter your email and password to sign in</p>
+        <!-- <p class="text-gray-500 dark:text-gray-400">Enter your email and password to sign in</p> -->
     </div>
 
     <form action="<?= base_url('doLogin') ?>" method="post" class="space-y-5">
         <div>
-            <label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
-            <input type="text" name="identifier" class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700 dark:text-white" placeholder="you@example.com" required>
+            <label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Username</label>
+            <input type="text" name="identifier" class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700 dark:text-white" placeholder="username" required>
         </div>
         <div>
             <label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>

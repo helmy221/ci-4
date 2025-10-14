@@ -5,6 +5,7 @@ namespace App\Controllers\API\Users;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\RESTful\ResourceController;
 use App\Models\UserModel;
+use Config\Services;
 
 class UserAPIController extends ResourceController
 {

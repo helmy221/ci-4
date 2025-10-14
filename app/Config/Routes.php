@@ -16,7 +16,7 @@ $routes->group('api', ['namespace' => 'App\Controllers\API'], function ($routes)
     $routes->post('refresh', 'Auth\AuthControllers::refresh');
 
     // User
-    $routes->group('users', ['filter' => 'jwt'], function ($routes) {
+    $routes->group('users', ['filter' => 'jwt', 'cors'], function ($routes) {
         $routes->get('', 'Users\UserAPIController::index'); // list
         $routes->get('(:num)', 'Users\UserAPIController::show/$1'); // detail
         $routes->post('(:num)/softdelete', 'Users\UserAPIController::softDeleteUser/$1');

@@ -23,11 +23,11 @@ class JwtLib
     public function generateToken($user)
     {
         $payload = [
-            'iss' => 'ci4-app',        // issuer
-            'sub' => $user['id_user'],      // subject (user_id)
-            'username' => $user['username'],
-            'iat' => time(),           // issued at
-            'exp' => time() + $this->expire
+            'iss'       => 'ci4-app',        // issuer
+            'sub'       => $user['id_user'],      // subject (user_id)
+            'username'  => $user['username'],
+            'iat'       => time(),           // issued at
+            'exp'       => time() + $this->expire
         ];
 
         return JWT::encode($payload, $this->key, $this->algo);
@@ -36,7 +36,13 @@ class JwtLib
     public function validateToken($token)
     {
         try {
-            return JWT::decode($token, new Key($this->key, $this->algo));
+            $decoded =  JWT::decode($token, new Key($this->key, $this->algo));
+            // Cek expired token (secara otomatis diperiksa oleh JWT)
+            if (isset($decoded->exp) && $decoded->exp < time()) {
+                return false; // token expired
+            }
+
+            return $decoded; // token valid
         } catch (\Exception $e) {
             return null;
         }

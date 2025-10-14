@@ -18,45 +18,45 @@ class AuthControllers extends ResourceController
         //
     }
 
-    public function login()
-    {
-        $userModel = new UserModel();
-        $userInfoModel = new UserInfoModel();
-        $jwt       = new JwtLib();
+    // public function login()
+    // {
+    //     $userModel = new UserModel();
+    //     $userInfoModel = new UserInfoModel();
+    //     $jwt       = new JwtLib();
 
-        $data = (array) $this->request->getJSON();
+    //     $data = (array) $this->request->getJSON();
 
-        // Validasi input kosong
-        if (!$data || empty($data['email']) || empty($data['password'])) {
-            return $this->response->setJSON([
-                'status'  => 'error',
-                'message' => 'Email and password are required'
-            ])->setStatusCode(400);
-        }
+    //     // Validasi input kosong
+    //     if (!$data || empty($data['email']) || empty($data['password'])) {
+    //         return $this->response->setJSON([
+    //             'status'  => 'error',
+    //             'message' => 'Email and password are required'
+    //         ])->setStatusCode(400);
+    //     }
 
-        $user = $userModel->where('email', $data['email'])->first();
+    //     $user = $userModel->where('email', $data['email'])->first();
 
-        if (!$user || !password_verify($data['password'], $user['password'])) {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Invalid credentials'])->setStatusCode(401);
-        }
+    //     if (!$user || !password_verify($data['password'], $user['password'])) {
+    //         return $this->response->setJSON(['status' => 'error', 'message' => 'Invalid credentials'])->setStatusCode(401);
+    //     }
 
-        $token = $jwt->generateToken($user);
-        $userInfo = $userInfoModel->where('user_id', $user['id'])->first();
+    //     $token = $jwt->generateToken($user);
+    //     $userInfo = $userInfoModel->where('user_id', $user['id'])->first();
 
-        $data = [
-            'name' => $userInfo['full_name'],
-            'username' => $user['username'],
-            'email' => $user['email'],
-            'phone' => $userInfo['phone'],
-            'address' => $userInfo['address']
-        ];
+    //     $data = [
+    //         'name' => $userInfo['full_name'],
+    //         'username' => $user['username'],
+    //         'email' => $user['email'],
+    //         'phone' => $userInfo['phone'],
+    //         'address' => $userInfo['address']
+    //     ];
 
-        return $this->response->setJSON([
-            'status' => 'success',
-            'user_info' => $data,
-            'token'  => $token
-        ]);
-    }
+    //     return $this->response->setJSON([
+    //         'status' => 'success',
+    //         'user_info' => $data,
+    //         'token'  => $token
+    //     ]);
+    // }
 
     public function refresh()
     {
@@ -78,5 +78,21 @@ class AuthControllers extends ResourceController
         ]);
 
         return $this->response->setJSON(['token' => $newToken]);
+    }
+
+    public function refreshToken()
+    {
+        $user = session()->get('user');
+        if (!$user) {
+            return response()->setJSON(['error' => 'Not authenticated'])->setStatusCode(401);
+        }
+
+        $jwtLib = new JwtLib();
+        $newToken = $jwtLib->generateToken($user);
+
+        // Update token di session
+        session()->set('user.token', $newToken);
+
+        return response()->setJSON(['status' => 'success', 'token' => $newToken]);
     }
 }

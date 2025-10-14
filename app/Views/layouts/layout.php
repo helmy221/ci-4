@@ -8,11 +8,14 @@
     <title><?= esc($title ?? 'Dashboard | TailAdmin') ?></title>
     <script>
         // Set token dari session PHP ke global JS
-        window.jwtToken = "<?= auth()->user()->token() ?? '' ?>";
+        const check = "<?= auth()->check() ?>";
+        if (check) {
+            window.jwtToken = "<?= auth()->user()->token() ?? '' ?>";
+            console.log("TOKEN : ", window.jwtToken);
+        } else {
+            window.location.href = "/login";
+        };
     </script>
-    <!-- Include jQuery + DataTables + Alpine.js -->
-    <!-- CSS DataTables -->
-    <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"> -->
 
 
     <?php if (ENVIRONMENT === 'development'): ?>
@@ -22,11 +25,6 @@
         <script type="module" src="<?= base_url('build/assets/app.js') ?>"></script>
     <?php endif; ?>
 
-    <!-- jQuery & DataTables JS -->
-    <!-- <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> -->
-    <!-- <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script> -->
-    <!-- Alpine.js -->
-    <!-- <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script> -->
     <style>
         /* Modern Animations */
         @keyframes fadeInUp {
@@ -83,10 +81,8 @@
 
 <body
     x-data="{ page: 'ecommerce', loaded: true, darkMode: false, stickyMenu: false, sidebarToggle: false, scrollTop: false }"
-    x-init="
-    darkMode = JSON.parse(localStorage.getItem('darkMode'));
-    $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))
-  "
+    x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));
+    $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))"
     :class="{'dark bg-gray-900': darkMode === true}">
     <!-- Preloader -->
     <?= $this->include('partials/preloader') ?>
