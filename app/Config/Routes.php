@@ -33,4 +33,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
     $routes->get('/dashboard', 'Home::index');
     $routes->get('/users', 'UserController::index');
     // $routes->get('/users/create', 'Home::create', ['filter' => 'permission:user.create']);
+
+    //transaksi
+    $routes->get('/alldata', 'TransaksiAllDataController::index');
 });

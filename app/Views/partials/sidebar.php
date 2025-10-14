@@ -311,7 +311,7 @@
                         >
                             <li>
                             <a
-                                href="file-manager.html"
+                                href="<?= base_url('alldata') ?>"
                                 class="menu-dropdown-item group"
                                 :class="page === 'fileManager' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                             >
