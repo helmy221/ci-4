@@ -278,7 +278,7 @@
                             class="menu-item-text"
                             :class="sidebarToggle ? 'lg:hidden' : ''"
                         >
-                            Cari Paket
+                            Transaksi Paket
                         </span>
 
                         <svg
