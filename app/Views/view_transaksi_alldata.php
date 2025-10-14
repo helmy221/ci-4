@@ -13,14 +13,14 @@
                     </div>
                     <div>
                         <h2 class="text-2xl font-bold text-gray-900 dark:text-white/90">All Paket Pengadaan</h2>
-                        <p class="text-sm text-gray-600 mt-1 dark:text-gray-400">Manage system users and their access</p>
+                        <p class="text-sm text-gray-600 mt-1 dark:text-gray-400">All data paket pengadaan</p>
                     </div>
                 </div>
                 <button @click="showAddModal = true" class="group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-xl text-sm font-semibold flex items-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
                     <svg class="w-5 h-5 mr-2 group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                     </svg>
-                    Add User
+                    Add Paket Pengadaan
                 </button>
             </div>
         </div>

@@ -10,7 +10,7 @@ class TransaksiAllDataController extends BaseController
     public function index()
     {
         return view('view_transaksi_alldata', [
-            'page'  => 'Transaksi',
+            'page'  => 'Transaksi All Data',
             'title' => 'All Data - TailAdmin'
         ]);
     }
