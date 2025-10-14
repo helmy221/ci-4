@@ -1,7 +1,22 @@
 <?= $this->extend('layouts/layout') ?>
 
 <?= $this->section('content') ?>
-<div x-data="UserUI()" x-show="!loaded">
+
+
+    <!-- Add User Modal -->
+    <div x-show="showAddModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-xl w-96">
+            <h3 class="text-xl font-bold mb-4">Add User</h3>
+            <form @submit.prevent="submitAddUser">
+                <input type="text" placeholder="Username" x-model="form.username" class="w-full mb-2 px-3 py-2 border rounded" />
+                <input type="email" placeholder="Email" x-model="form.email" class="w-full mb-2 px-3 py-2 border rounded" />
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Save</button>
+                <button type="button" @click="showAddModal=false" class="ml-2 px-4 py-2 border rounded">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+
     <div class="bg-white shadow-xl rounded-2xl border border-gray-200 overflow-hidden dark:border-gray-800 dark:bg-white/[0.03]">
         <div class="bg-gradient-to-r  px-6 py-6 border-b border-gray-200 dark:border-gray-800 dark:bg-">
             <div class="flex justify-between items-center">
@@ -30,132 +45,399 @@
             <div x-show="loading" class="flex justify-center items-center my-4">
                 <div class="h-12 w-12 animate-spin rounded-full border-4 border-solid border-blue-500 border-t-transparent"></div>
             </div>
+            
+<!-- test start-->
+            <div
+                  class="p-5 border-t border-gray-100 dark:border-gray-800 sm:p-6"
+                >
+                        <div
+                        class="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]"
+                        >
+                        <div class="max-w-full overflow-x-auto">
+                            <table class="min-w-full">
+                            <!-- table header start -->
+                            <thead>
+                                <tr class="border-b border-gray-100 dark:border-gray-800">
+                                <th class="px-5 py-3 sm:px-6">
+                                    <div class="flex items-center">
+                                    <p
+                                        class="font-medium text-gray-500 text-theme-xs dark:text-gray-400"
+                                    >
+                                        User
+                                    </p>
+                                    </div>
+                                </th>
+                                <th class="px-5 py-3 sm:px-6">
+                                    <div class="flex items-center">
+                                    <p
+                                        class="font-medium text-gray-500 text-theme-xs dark:text-gray-400"
+                                    >
+                                        Project Name
+                                    </p>
+                                    </div>
+                                </th>
+                                <th class="px-5 py-3 sm:px-6">
+                                    <div class="flex items-center">
+                                    <p
+                                        class="font-medium text-gray-500 text-theme-xs dark:text-gray-400"
+                                    >
+                                        Team
+                                    </p>
+                                    </div>
+                                </th>
+                                <th class="px-5 py-3 sm:px-6">
+                                    <div class="flex items-center">
+                                    <p
+                                        class="font-medium text-gray-500 text-theme-xs dark:text-gray-400"
+                                    >
+                                        Status
+                                    </p>
+                                    </div>
+                                </th>
+                                <th class="px-5 py-3 sm:px-6">
+                                    <div class="flex items-center">
+                                    <p
+                                        class="font-medium text-gray-500 text-theme-xs dark:text-gray-400"
+                                    >
+                                        Budget
+                                    </p>
+                                    </div>
+                                </th>
+                                </tr>
+                            </thead>
+                            <!-- table header end -->
+                            <!-- table body start -->
+                            <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+                                <tr>
+                                <td class="px-5 py-4 sm:px-6">
+                                    <div class="flex items-center">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 overflow-hidden rounded-full">
+                                        <img src="./images/user/user-17.jpg" alt="brand" />
+                                        </div>
 
-            <table id="usersTable" x-data-show="!loading" class="min-w-full">
-                <thead>
-                    <tr class="border-b border-gray-100 dark:border-gray-800">
-                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider transition-colors duration-200 rounded-tl-xl dark:text-gray-400">
-                            <div class="flex items-center space-x-2">
-                                <span>no</span>
-                            </div>
-                        </th>
-                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider transition-colors duration-200 rounded-tl-xl dark:text-gray-400">
-                            <div class="flex items-center space-x-2">
-                                <span>Username</span>
-                            </div>
-                        </th>
-                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider transition-colors duration-200 dark:text-gray-400">
-                            <div class="flex items-center space-x-2">
-                                <span>Fullname</span>
-                            </div>
-                        </th>
-                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider dark:text-gray-400">Roles</th>
-                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider dark:text-gray-400">Status</th>
-                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider dark:text-gray-400">Created</th>
-                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider rounded-tr-xl dark:text-gray-400">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-10 dark:dark:bg-white/[0.03]">
-                    <template x-for="user in users" :key="user.id">
-                        <tr class="border-gray-100 text-xs">
-                            <td class="px-4 py-2 border-b dark:text-gray-400 border-gray-100" x-text="user.id"></td>
-                            <td class="px-4 py-2 border-b dark:text-gray-400 border-gray-100" x-text="user.username"></td>
-                            <td class="px-4 py-2 border-b dark:text-gray-400 border-gray-100" x-text="user.nama_lengkap"></td>
-                            <!-- <td class="px-4 py-2 border-b dark:text-gray-400 border-gray-100" x-text="formatRoles(user.roles)"></td> -->
-                            <td class="px-4 py-2 border-b dark:text-gray-400 border-gray-100">
-                                <template x-if="user.roles && user.roles.length > 0">
-                                    <template x-for="role in user.roles" :key="role.id">
-                                        <span class="inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 shadow-sm">
-                                            <svg class="w-3 h-3 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                                            </svg>
-                                            <span x-text="user.roles"></span>
+                                        <div>
+                                        <span
+                                            class="block font-medium text-gray-800 text-theme-sm dark:text-white/90"
+                                        >
+                                            Lindsey Curtis
                                         </span>
-                                    </template>
-                                </template>
-                            </td>
-                            <!-- <td class="px-4 py-2 border-b dark:text-gray-400 border-gray-100" x-text="user.status"></td> -->
-                            <td class="px-4 py-2 border-b dark:text-gray-400 border-gray-100">
-                                <span
-                                    class="inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-semibold shadow-sm"
-                                    :class="user.status == 1
-                                    ? 'bg-gradient-to-r from-green-100 to-emerald-100 text-green-800'
-                                    : 'bg-gradient-to-r from-red-100 to-pink-100 text-red-800'">
-                                    <div
-                                        class="w-2 h-2 rounded-full mr-2"
-                                        :class="user.status == 1 ? 'bg-green-500 animate-pulse' : 'bg-red-500'">
+                                        <span
+                                            class="block text-gray-500 text-theme-xs dark:text-gray-400"
+                                        >
+                                            Web Designer
+                                        </span>
+                                        </div>
                                     </div>
-                                    <span x-text="user.status == 1? 'Active' : 'Inactive'"></span>
-                                </span>
-                            </td>
-
-                            <!-- <td class="px-4 py-2 border-b dark:text-gray-400 border-gray-100" x-text="formatDate(user.created_at)"></td> -->
-                            <td class="px-4 py-2 border-b dark:text-gray-400 border-gray-100">
-                                <div class="flex items-center text-sm text-gray-500">
-                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                    <div>
-                                        <div class="font-xs" x-text="formatDate(user.created_at)"></div>
-                                        <div class="text-xs" x-text="timeAgo(user.created_at)"></div>
                                     </div>
-                                </div>
-                            </td>
-                            <td class="px-4 py-2 border-b dark:text-gray-400 border-gray-100">
-                                <button
-                                    class="group/btn inline-flex items-center px-3 py-2 text-xs font-semibold text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 hover:text-blue-700 transition-all duration-200 transform hover:scale-105">
-                                    <svg class="w-4 h-4 mr-1.5 group-hover/btn:rotate-12 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                    </svg>
-                                    Edit
-                                </button>
-                                <!-- <button wire:click="toggleUserStatus({{ $user->id }})"
-                                    class="group/btn inline-flex items-center px-3 py-2 text-xs font-semibold text-yellow-600 bg-yellow-50 rounded-lg hover:bg-yellow-100 hover:text-yellow-700 transition-all duration-200 transform hover:scale-105">
-                                    <svg class="w-4 h-4 mr-1.5 group-hover/btn:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        @if($user->is_active)
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728"></path>
-                                        @else
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                        @endif
-                                    </svg>
-                                    {{ $user->is_active ? 'Deactivate' : 'Activate' }}
-                                </button> -->
-                                <button
-                                    @click="nonActiveUser(user.id)"
-                                    class="group/btn inline-flex items-center px-3 py-2 text-xs font-semibold rounded-lg transition-all duration-200 transform hover:scale-105
-                                    text-yellow-600 bg-yellow-50 hover:bg-yellow-100 hover:text-yellow-700">
-                                    <svg class="w-4 h-4 mr-1.5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            :d="user.status == 1 
-                                            ? 'M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728'
-                                            : 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'">
-                                        </path>
-                                    </svg>
-                                    <span x-text="user.status == 1 ? 'Deactivate' : 'Activate'"></span>
-                                </button>
-                            </td>
-                        </tr>
-                    </template>
-                    <tr x-show="!users.length && !loading">
-                        <td colspan="6" class="text-center py-4 text-gray-500">No users found</td>
-                    </tr>
-                </tbody>
-            </table>
+                                </td>
+                                <td class="px-5 py-4 sm:px-6">
+                                    <div class="flex items-center">
+                                    <p class="text-gray-500 text-theme-sm dark:text-gray-400">
+                                        Agency Website
+                                    </p>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4 sm:px-6">
+                                    <div class="flex items-center">
+                                    <div class="flex -space-x-2">
+                                        <div
+                                        class="w-6 h-6 overflow-hidden border-2 border-white rounded-full dark:border-gray-900"
+                                        >
+                                        <img src="./images/user/user-22.jpg" alt="user" />
+                                        </div>
+                                        <div
+                                        class="w-6 h-6 overflow-hidden border-2 border-white rounded-full dark:border-gray-900"
+                                        >
+                                        <img src="./images/user/user-23.jpg" alt="user" />
+                                        </div>
+                                        <div
+                                        class="w-6 h-6 overflow-hidden border-2 border-white rounded-full dark:border-gray-900"
+                                        >
+                                        <img src="./images/user/user-24.jpg" alt="user" />
+                                        </div>
+                                    </div>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4 sm:px-6">
+                                    <div class="flex items-center">
+                                    <p
+                                        class="rounded-full bg-success-50 px-2 py-0.5 text-theme-xs font-medium text-success-700 dark:bg-success-500/15 dark:text-success-500"
+                                    >
+                                        Active
+                                    </p>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4 sm:px-6">
+                                    <div class="flex items-center">
+                                    <p class="text-gray-500 text-theme-sm dark:text-gray-400">3.9K</p>
+                                    </div>
+                                </td>
+                                </tr>
+                                <tr>
+                                <td class="px-5 py-4 sm:px-6">
+                                    <div class="flex items-center">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 overflow-hidden rounded-full">
+                                        <img src="./images/user/user-18.jpg" alt="brand" />
+                                        </div>
 
-        </div>
-    </div>
+                                        <div>
+                                        <span
+                                            class="block font-medium text-gray-800 text-theme-sm dark:text-white/90"
+                                        >
+                                            Kaiya George
+                                        </span>
+                                        <span
+                                            class="block text-gray-500 text-theme-xs dark:text-gray-400"
+                                        >
+                                            Project Manager
+                                        </span>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4 sm:px-6">
+                                    <div class="flex items-center">
+                                    <p class="text-gray-500 text-theme-sm dark:text-gray-400">
+                                        Technology
+                                    </p>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4 sm:px-6">
+                                    <div class="flex items-center">
+                                    <div class="flex -space-x-2">
+                                        <div
+                                        class="w-6 h-6 overflow-hidden border-2 border-white rounded-full dark:border-gray-900"
+                                        >
+                                        <img src="./images/user/user-25.jpg" alt="user" />
+                                        </div>
+                                        <div
+                                        class="w-6 h-6 overflow-hidden border-2 border-white rounded-full dark:border-gray-900"
+                                        >
+                                        <img src="./images/user/user-26.jpg" alt="user" />
+                                        </div>
+                                    </div>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4 sm:px-6">
+                                    <div class="flex items-center">
+                                    <p
+                                        class="rounded-full bg-warning-50 px-2 py-0.5 text-theme-xs font-medium text-warning-700 dark:bg-warning-500/15 dark:text-warning-400"
+                                    >
+                                        Pending
+                                    </p>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4 sm:px-6">
+                                    <div class="flex items-center">
+                                    <p class="text-gray-500 text-theme-sm dark:text-gray-400">
+                                        24.9K
+                                    </p>
+                                    </div>
+                                </td>
+                                </tr>
+                                <tr>
+                                <td class="px-5 py-4 sm:px-6">
+                                    <div class="flex items-center">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 overflow-hidden rounded-full">
+                                        <img src="./images/user/user-19.jpg" alt="brand" />
+                                        </div>
 
-    <!-- Add User Modal -->
-    <div x-show="showAddModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-xl w-96">
-            <h3 class="text-xl font-bold mb-4">Add User</h3>
-            <form @submit.prevent="submitAddUser">
-                <input type="text" placeholder="Username" x-model="form.username" class="w-full mb-2 px-3 py-2 border rounded" />
-                <input type="email" placeholder="Email" x-model="form.email" class="w-full mb-2 px-3 py-2 border rounded" />
-                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Save</button>
-                <button type="button" @click="showAddModal=false" class="ml-2 px-4 py-2 border rounded">Cancel</button>
-            </form>
+                                        <div>
+                                        <span
+                                            class="block font-medium text-gray-800 text-theme-sm dark:text-white/90"
+                                        >
+                                            Zain Geidt
+                                        </span>
+                                        <span
+                                            class="block text-gray-500 text-theme-xs dark:text-gray-400"
+                                        >
+                                            Content Writer
+                                        </span>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4 sm:px-6">
+                                    <div class="flex items-center">
+                                    <p class="text-gray-500 text-theme-sm dark:text-gray-400">
+                                        Blog Writing
+                                    </p>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4 sm:px-6">
+                                    <div class="flex items-center">
+                                    <div class="flex -space-x-2">
+                                        <div
+                                        class="w-6 h-6 overflow-hidden border-2 border-white rounded-full dark:border-gray-900"
+                                        >
+                                        <img src="./images/user/user-27.jpg" alt="user" />
+                                        </div>
+                                    </div>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4 sm:px-6">
+                                    <div class="flex items-center">
+                                    <p
+                                        class="rounded-full bg-success-50 px-2 py-0.5 text-theme-xs font-medium text-success-700 dark:bg-success-500/15 dark:text-success-500"
+                                    >
+                                        Active
+                                    </p>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4 sm:px-6">
+                                    <div class="flex items-center">
+                                    <p class="text-gray-500 text-theme-sm dark:text-gray-400">
+                                        12.7K
+                                    </p>
+                                    </div>
+                                </td>
+                                </tr>
+                                <tr>
+                                <td class="px-5 py-4 sm:px-6">
+                                    <div class="flex items-center">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 overflow-hidden rounded-full">
+                                        <img src="./images/user/user-20.jpg" alt="brand" />
+                                        </div>
+
+                                        <div>
+                                        <span
+                                            class="block font-medium text-gray-800 text-theme-sm dark:text-white/90"
+                                        >
+                                            Abram Schleifer
+                                        </span>
+                                        <span
+                                            class="block text-gray-500 text-theme-xs dark:text-gray-400"
+                                        >
+                                            Digital Marketer
+                                        </span>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4 sm:px-6">
+                                    <div class="flex items-center">
+                                    <p class="text-gray-500 text-theme-sm dark:text-gray-400">
+                                        Social Media
+                                    </p>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4 sm:px-6">
+                                    <div class="flex items-center">
+                                    <div class="flex -space-x-2">
+                                        <div
+                                        class="w-6 h-6 overflow-hidden border-2 border-white rounded-full dark:border-gray-900"
+                                        >
+                                        <img src="./images/user/user-28.jpg" alt="user" />
+                                        </div>
+                                        <div
+                                        class="w-6 h-6 overflow-hidden border-2 border-white rounded-full dark:border-gray-900"
+                                        >
+                                        <img src="./images/user/user-29.jpg" alt="user" />
+                                        </div>
+                                        <div
+                                        class="w-6 h-6 overflow-hidden border-2 border-white rounded-full dark:border-gray-900"
+                                        >
+                                        <img src="./images/user/user-30.jpg" alt="user" />
+                                        </div>
+                                    </div>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4 sm:px-6">
+                                    <div class="flex items-center">
+                                    <p
+                                        class="rounded-full bg-error-50 px-2 py-0.5 text-theme-xs font-medium text-error-700 dark:bg-error-500/15 dark:text-error-500"
+                                    >
+                                        Cancel
+                                    </p>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4 sm:px-6">
+                                    <div class="flex items-center">
+                                    <p class="text-gray-500 text-theme-sm dark:text-gray-400">2.8K</p>
+                                    </div>
+                                </td>
+                                </tr>
+                                <tr>
+                                <td class="px-5 py-4 sm:px-6">
+                                    <div class="flex items-center">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 overflow-hidden rounded-full">
+                                        <img src="./images/user/user-21.jpg" alt="brand" />
+                                        </div>
+
+                                        <div>
+                                        <span
+                                            class="block font-medium text-gray-800 text-theme-sm dark:text-white/90"
+                                        >
+                                            Carla George
+                                        </span>
+                                        <span
+                                            class="block text-gray-500 text-theme-xs dark:text-gray-400"
+                                        >
+                                            Front-end Developer
+                                        </span>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4 sm:px-6">
+                                    <div class="flex items-center">
+                                    <p class="text-gray-500 text-theme-sm dark:text-gray-400">
+                                        Website
+                                    </p>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4 sm:px-6">
+                                    <div class="flex items-center">
+                                    <div class="flex -space-x-2">
+                                        <div
+                                        class="w-6 h-6 overflow-hidden border-2 border-white rounded-full dark:border-gray-900"
+                                        >
+                                        <img src="./images/user/user-31.jpg" alt="user" />
+                                        </div>
+                                        <div
+                                        class="w-6 h-6 overflow-hidden border-2 border-white rounded-full dark:border-gray-900"
+                                        >
+                                        <img src="./images/user/user-32.jpg" alt="user" />
+                                        </div>
+                                        <div
+                                        class="w-6 h-6 overflow-hidden border-2 border-white rounded-full dark:border-gray-900"
+                                        >
+                                        <img src="./images/user/user-33.jpg" alt="user" />
+                                        </div>
+                                    </div>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4 sm:px-6">
+                                    <div class="flex items-center">
+                                    <p
+                                        class="rounded-full bg-success-50 px-2 py-0.5 text-theme-xs font-medium text-success-700 dark:bg-success-500/15 dark:text-success-500"
+                                    >
+                                        Active
+                                    </p>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4 sm:px-6">
+                                    <div class="flex items-center">
+                                    <p class="text-gray-500 text-theme-sm dark:text-gray-400">4,5K</p>
+                                    </div>
+                                </td>
+                                </tr>
+                            </tbody>
+                            </table>
+                        </div>
+                        </div>
+
+                        </div>
+                    <!-- test end-->
+
+            </div>
         </div>
-    </div>
-</div>
+
+
+
 <?= $this->endSection() ?>
