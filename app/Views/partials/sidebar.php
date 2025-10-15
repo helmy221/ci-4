@@ -8,7 +8,7 @@
         class="flex items-center gap-2 pt-8 sidebar-header pb-7">
         <a href="index.html">
             <span class="logo" :class="sidebarToggle ? 'hidden' : ''">
-                <img class="dark:hidden" src="<?= base_url('tailadmin/images/logo/logo.svg') ?>" alt="Logo" />
+                <img class="dark:hidden w-40 h-auto" src="<?= base_url('tailadmin/images/logo/logo.svg') ?>" alt="Logo" />
                 <!-- <img class="dark:hidden" src="<?= base_url('tailadmin/images/logo/logo-pandu-32.png') ?>" alt="Logo" /> -->
 
                 <img
