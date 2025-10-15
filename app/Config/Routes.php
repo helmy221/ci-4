@@ -31,10 +31,11 @@ $routes->group('api', ['namespace' => 'App\Controllers\API'], function ($routes)
 
 $routes->group('', ['filter' => 'auth'], function ($routes) {
     $routes->get('/dashboard', 'Home::index');
-    $routes->get('/users', 'UserController::index');
-    // $routes->get('/users/create', 'Home::create', ['filter' => 'permission:user.create']);
+    $routes->get('/profile', 'Profile::index');
 
     //master
+    $routes->get('/users', 'UserController::index');
+    // $routes->get('/users/create', 'Home::create', ['filter' => 'permission:user.create']);
     $routes->get('/masterunitorganisasi', 'MasterUnitOrganisasiController::index');
     $routes->get('/masterjenispekerjaan', 'MasterJenisPekerjaanController::index');
     $routes->get('/masterlokasipekerjaan', 'MasterLokasiPekerjaanController::index');

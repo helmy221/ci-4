@@ -195,7 +195,7 @@
                                 class="menu-dropdown mt-2 flex flex-col gap-1 pl-9">
                                 <li>
                                     <a
-                                        href="task-list.html"
+                                        href="<?= base_url('masterunitorganisasi') ?>"
                                         class="menu-dropdown-item group"
                                         :class="page === 'taskList' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'">
                                         Unit Organisasi
@@ -211,7 +211,7 @@
                                 </li>
                                 <li>
                                     <a
-                                        href="task-kanban.html"
+                                        href="<?= base_url('masterjenispekerjaan') ?>"
                                         class="menu-dropdown-item group"
                                         :class="page === 'taskKanban' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'">
                                         Jenis Pengadaan
@@ -227,7 +227,7 @@
                                 </li>
                                 <li>
                                     <a
-                                        href="task-list.html"
+                                        href="<?= base_url('masterlokasipekerjaan') ?>"
                                         class="menu-dropdown-item group"
                                         :class="page === 'taskList' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'">
                                         Lokasi Pekerjaan
@@ -292,7 +292,7 @@
                                 class="menu-dropdown mt-2 flex flex-col gap-1 pl-9">
                                 <li>
                                     <a
-                                        href="file-manager.html"
+                                        href="<?= base_url('alldata') ?>"
                                         class="menu-dropdown-item group"
                                         :class="page === 'fileManager' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'">
                                         All Data
@@ -300,15 +300,15 @@
                                 </li>
                                 <li>
                                     <a
-                                        href="file-manager.html"
+                                        href="<?= base_url('getdatafilter') ?>"
                                         class="menu-dropdown-item group"
                                         :class="page === 'fileManager' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'">
-                                        By Filter
+                                        Filter Paket
                                     </a>
                                 </li>
                                 <li>
                                     <a
-                                        href="pricing-tables.html"
+                                        href="<?= base_url('getdatapemenang') ?>"
                                         class="menu-dropdown-item group"
                                         :class="page === 'pricingTables' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'">
                                         By Pemenang
