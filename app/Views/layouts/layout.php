@@ -11,7 +11,7 @@
         const check = "<?= auth()->check() ?>";
         if (check) {
             window.jwtToken = "<?= auth()->user()->token() ?? '' ?>";
-            console.log("TOKEN : ", window.jwtToken);
+            // console.log("TOKEN : ", window.jwtToken);
         } else {
             window.location.href = "/login";
         };
@@ -76,6 +76,11 @@
             transition: justify-content 0.3s ease-out;
             /* Menambahkan transisi pada header */
         }
+
+        .swal-backdrop-custom {
+            z-index: 999999 !important;
+            /* Set a high z-index for the backdrop */
+        }
     </style>
 </head>
 
@@ -115,6 +120,28 @@
             <?= $this->include('partials/footer') ?>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        window.showConfirm = function(title, text, confirmText = 'Yes, proceed!', cancelText = 'Cancel') {
+            return Swal.fire({
+                title: title,
+                text: text,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3b82f6',
+                cancelButtonColor: '#ef4444',
+                confirmButtonText: confirmText,
+                cancelButtonText: cancelText,
+                reverseButtons: true,
+                customClass: {
+                    backdrop: 'swal-backdrop-custom' // Add custom class for the popup
+                }
+            }).then((result) => {
+                // Optionally, handle the result here
+                return result;
+            });
+        };
+    </script>
 </body>
 
 </html>

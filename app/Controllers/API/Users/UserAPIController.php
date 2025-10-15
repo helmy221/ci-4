@@ -58,14 +58,24 @@ class UserAPIController extends ResourceController
                 ->setJSON(['status' => 'error', 'message' => 'User not found'])
                 ->setStatusCode(404);
         }
-
-        if ($this->model->softDeleteUser($userId)) { // soft delete karena useSoftDeletes = true
-            return $this->response
-                ->setJSON(['status' => 'success', 'message' => 'User soft deleted successfully']);
+        if ($user['is_active'] == 0) {
+            if ($this->model->activateUser($userId)) { // soft delete karena useSoftDeletes = true
+                return $this->response
+                    ->setJSON(['status' => 'success', 'message' => 'User activate successfully']);
+            } else {
+                return $this->response
+                    ->setJSON(['status' => 'error', 'message' => 'Failed to activate user'])
+                    ->setStatusCode(500);
+            }
         } else {
-            return $this->response
-                ->setJSON(['status' => 'error', 'message' => 'Failed to delete user'])
-                ->setStatusCode(500);
+            if ($this->model->deactivateUser($userId)) { // soft delete karena useSoftDeletes = true
+                return $this->response
+                    ->setJSON(['status' => 'success', 'message' => 'User deactivate successfully']);
+            } else {
+                return $this->response
+                    ->setJSON(['status' => 'error', 'message' => 'Failed to deactivate user'])
+                    ->setStatusCode(500);
+            }
         }
     }
 

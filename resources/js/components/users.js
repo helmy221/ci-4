@@ -5,32 +5,6 @@ window.UserUI = function() {
         showAddModal: false,
         form: { username: '', email: '' },
 
-        // async loadUsers() {
-        //     this.loading = true;
-        //     try {
-        //         const res = await fetch('/api/users', {
-        //         method: 'GET',
-        //         headers: {
-        //             'Authorization': 'Bearer ' + window.jwtToken,
-        //             'Accept': 'application/json'
-        //         }
-        //         });
-        //         const data = await res.json();
-        //         if (data.status === 'success') {
-        //             this.users = data.data;
-        //             // console.log(this.users);
-        //         } else {
-        //             console.error('Failed to load users');
-        //             this.users = [];
-        //         }
-        //     } catch (err) {
-        //         console.error(err);
-        //         this.users = [];
-        //     } finally {
-        //         this.loading = false;
-        //     }
-        // },
-
         async loadUsers() {
             this.loading = true;
             try {
@@ -74,41 +48,58 @@ window.UserUI = function() {
             }
         },
 
-        nonActiveUser(userId) {
-            if (!confirm('Are you sure you want to delete this user?')) return;
+           async nonActiveUser(userId) {
+                return fetch(`/api/users/${userId}/softdelete`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + window.jwtToken,
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(res => res.json())  // Parse response as JSON
+                .then(data => {
+                    if (data.status === 'success') {
+                        this.users = this.users.filter(u => u.id !== userId);
 
-            fetch(`/api/users/${userId}/softdelete`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': 'Bearer ' + window.jwtToken,
-                    'Accept': 'application/json'
-                }
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    this.users = this.users.filter(u => u.id !== userId);
+                        // Tampilkan notification
+                        this.notification = {
+                            type: 'success',
+                            title: 'Success',
+                            message: data.message || 'User berhasil non-aktifkan'
+                        };
 
-                    // Tampilkan notification
-                    this.notification = {
-                        type: 'success',
-                        title: 'Success',
-                        message: data.message || 'User berhasil non-aktifkan'
-                    };
+                         // Call showNotification to display the notification
+                        showNotification(this.notification.type, this.notification.title, this.notification.message);
 
-                    // Hilangkan notification setelah 3 detik
-                    setTimeout(() => this.notification = null, 3000);
-                } else {
-                    this.notification = {
-                        type: 'error',
-                        title: 'Error',
-                        message: data.message || 'Gagal menghapus user'
-                    };
-                    setTimeout(() => this.notification = null, 3000);
-                }
-            })
-            .catch(err => console.error(err));
-        },
+                        // Hilangkan notification setelah 3 detik
+                        setTimeout(() => this.notification = null, 3000);
+                    } else {
+                        this.notification = {
+                            type: 'error',
+                            title: 'Error',
+                            message: data.message || 'Gagal menghapus user'
+                        };
+
+                         // Call showNotification to display the notification
+                        showNotification(this.notification.type, this.notification.title, this.notification.message);
+
+                        setTimeout(() => this.notification = null, 3000);
+                    }
+                })
+                .catch(err => {
+                    console.error('Error during fetching:', err);
+                            // Set error notification for network or other errors
+                this.notification = {
+                    type: 'error',
+                    title: 'Error',
+                    message: 'An error occurred while trying to deactivate the user.'
+                };
+
+                // Call showNotification to display the error notification
+                showNotification(this.notification.type, this.notification.title, this.notification.message);
+
+                });
+            },
 
         async submitAddUser() {
             fetch('/api/users', {
@@ -126,6 +117,39 @@ window.UserUI = function() {
                     alert(data.message || 'Failed to add user');
                 }
             }).catch(err => console.error(err));
+        },
+
+        async ShowConfirm(title, text, confirmText, cancelText, method, params) {
+            this.title = title;
+            this.text = text;
+            this.confirmText = confirmText;
+            this.cancelText = cancelText;
+
+            console.log(`Method: ${method}`);
+            console.log(`Params:`, params);
+
+            window.showConfirm(this.title, this.text, this.confirmText, this.cancelText).then(result => {
+                if (result.isConfirmed) {
+                    if (typeof this[method] === 'function') {
+                        console.log(`Calling method: ${method}`);
+                        // Call the method dynamically and return the promise
+                        this[method](...params)  // Call the method with params
+                            .then(response => {
+                                console.log(response);  // Handle success
+                                this.showModal = false;  // Close modal after action
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);  // Handle error
+                                this.showModal = false;  // Close modal even if there's an error
+                            });
+                    } else {
+                        console.error(`Method ${method} not found`);
+                        this.showModal = false;
+                    }
+                } else {
+                    this.showModal = false; // Close modal if not confirmed
+                }
+            });
         },
 
         formatRoles(roles) {

@@ -1,6 +1,6 @@
 <aside
     :class="sidebarToggle ? 'translate-x-0 lg:w-[90px]' : '-translate-x-full'"
-    class="sidebar fixed left-0 top-0 z-9999 flex h-screen w-[290px] flex-col overflow-y-hidden border-r border-gray-200 bg-white px-5 dark:border-gray-800 dark:bg-black lg:static lg:translate-x-0 transition-all duration-300 ease-out">
+    class="sidebar fixed left-0 top-0 z-999 flex h-screen w-[290px] flex-col overflow-y-hidden border-r border-gray-200 bg-white px-5 dark:border-gray-800 dark:bg-black lg:static lg:translate-x-0 transition-all duration-300 ease-out">
     <!-- class="sidebar fixed left-0 top-0 z-9999 flex h-screen w-[290px] flex-col overflow-y-hidden border-r border-gray-200 bg-white px-5 dark:border-gray-800 dark:bg-black lg:static lg:translate-x-0"> -->
     <!-- SIDEBAR HEADER -->
     <div
@@ -195,7 +195,7 @@
                                 class="menu-dropdown mt-2 flex flex-col gap-1 pl-9">
                                 <li>
                                     <a
-                                        href="<?= base_url('masterunitorganisasi') ?>"
+                                        href="task-list.html"
                                         class="menu-dropdown-item group"
                                         :class="page === 'taskList' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'">
                                         Unit Organisasi
@@ -211,7 +211,7 @@
                                 </li>
                                 <li>
                                     <a
-                                        href="<?= base_url('masterjenispekerjaan') ?>"
+                                        href="task-kanban.html"
                                         class="menu-dropdown-item group"
                                         :class="page === 'taskKanban' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'">
                                         Jenis Pengadaan
@@ -227,7 +227,7 @@
                                 </li>
                                 <li>
                                     <a
-                                        href="<?= base_url('masterlokasipekerjaan') ?>"
+                                        href="task-list.html"
                                         class="menu-dropdown-item group"
                                         :class="page === 'taskList' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'">
                                         Lokasi Pekerjaan
@@ -292,7 +292,7 @@
                                 class="menu-dropdown mt-2 flex flex-col gap-1 pl-9">
                                 <li>
                                     <a
-                                        href="<?= base_url('alldata') ?>"
+                                        href="file-manager.html"
                                         class="menu-dropdown-item group"
                                         :class="page === 'fileManager' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'">
                                         All Data
@@ -300,15 +300,15 @@
                                 </li>
                                 <li>
                                     <a
-                                        href="<?= base_url('getdatafilter') ?>"
+                                        href="file-manager.html"
                                         class="menu-dropdown-item group"
                                         :class="page === 'fileManager' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'">
-                                        Filter Pengadaan
+                                        By Filter
                                     </a>
                                 </li>
                                 <li>
                                     <a
-                                        href="<?= base_url('getdatapemenang') ?>"
+                                        href="pricing-tables.html"
                                         class="menu-dropdown-item group"
                                         :class="page === 'pricingTables' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'">
                                         By Pemenang
