@@ -17,12 +17,27 @@ $routes->group('api', ['namespace' => 'App\Controllers\API'], function ($routes)
 
     // User
     $routes->group('users', ['filter' => 'jwt', 'cors'], function ($routes) {
-        $routes->get('', 'Users\UserAPIController::index'); // list
-        $routes->get('(:num)', 'Users\UserAPIController::show/$1'); // detail
+        $routes->get('', 'Users\UserAPIController::getListUser'); // list
+        // $routes->get('(:num)', 'Users\UserAPIController::show/$1'); // detail
         $routes->post('(:num)/softdelete', 'Users\UserAPIController::softDeleteUser/$1');
         // $routes->post('', 'Api\UserController::store'); // create
-        // $routes->put('(:num)', 'Api\UserController::update/$1'); // update
+        $routes->put('update/(:num)', 'Users\UserAPIController::update/$1'); // update
         // $routes->delete('(:num)', 'Api\UserController::delete/$1'); // delete
+    });
+
+    // Roles
+    $routes->group('roles', ['filter' => 'jwt', 'cors'], function ($routes) {
+        $routes->get('', 'Roles\RolesAPIController::getListRoles'); // list
+    });
+
+    // Unist
+    $routes->group('units', ['filter' => 'jwt', 'cors'], function ($routes) {
+        $routes->get('', 'Units\UnitsAPIController::getListUnits'); // list
+    });
+
+    // Jabatan
+    $routes->group('jabatan', ['filter' => 'jwt', 'cors'], function ($routes) {
+        $routes->get('', 'Jabatan\JabatanAPIController::getListJabatan'); // list
     });
 });
 

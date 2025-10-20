@@ -114,55 +114,143 @@ class UserModel extends Model
         return $user;
     }
 
-    public function getAllUserList($limit = 10, $offset = 0, $search = null, $status = null)
+    public function getAllUserList($limit, $offset, $search, $status)
     {
-        $builder = $this->db->table('master_user u')
-            ->select('u.id_user, u.username as username, mp.nama_lengkap, u.is_active, u.created_at, r.description as role_name')
-            ->join('master_personil mp', 'mp.id_user = u.id_user', 'left')
-            ->join('master_user_roles ur', 'ur.id_user = u.id_user', 'left')
-            ->join('master_roles r', 'r.id_role = ur.id_role', 'left')
-            ->orderBy('u.id_user', 'ASC');
+        $where = "";
+        if (!empty($search)) {
+            $where = "AND u.username LIKE '%$search%'";
+        }
+        // Cek apakah status 1 dan this.showInactive diaktifkan
+        if ($status == 1 && !$this->showInactive) {
+            // Tambahkan kondisi WHERE untuk status aktif
+            $where .= " AND u.is_active = $status";
+        }
+        $query = $this->db->query("SELECT u.id_user as id, 
+                                            u.username as username, 
+                                            mp.nama_lengkap as nama_lengkap, 
+                                            mp.id_master_jabatan as id_master_jabatan, 
+                                            mp.id_master_organisasi as id_master_organisasi, 
+                                            u.is_active as status, 
+                                            u.created_at
+                                    FROM master_user u
+                                    LEFT JOIN master_personil mp ON mp.id_user = u.id_user
+                                    WHERE 1=1 -- Selalu true untuk memudahkan penambahan kondisi
+                                    $where
+                                    ORDER BY u.id_user ASC
+                                    LIMIT $limit OFFSET $offset
+                                ");
 
-        if ($search) {
-            $builder->groupStart()
-                ->like('u.username', $search)
-                ->groupEnd();
+        $users = $query->getResultArray();
+
+        // Step 2: Ambil roles berdasarkan id_user
+        $userIds = array_column($users, 'id');  // Ambil array id_user dari hasil query user
+        $userIds = implode(',', $userIds);
+
+        // Query untuk mengambil roles
+        $roleQuery = $this->db->query("SELECT ur.id_user, r.id_role, r.display_name
+                                        FROM master_user_roles ur
+                                        LEFT JOIN master_roles r ON r.id_role = ur.id_role
+                                        WHERE ur.id_user IN ($userIds)
+                                    ");
+
+        $roles = $roleQuery->getResultArray();
+        $rolesPerUser = [];
+        foreach ($roles as $role) {
+            $rolesPerUser[$role['id_user']][] = [
+                'id_role' => $role['id_role'],
+                'display_name' => $role['display_name']
+            ];
         }
 
-        if ($status) {
-            $builder->where('u.is_active', $status);
-        }
-
-        $builder->limit($limit, $offset);
-
-        $query = $builder->get()->getResultArray();
-
-        // Gabungkan roles per user
-        $users = [];
-        foreach ($query as $row) {
-            $id = $row['id_user'];
-            if (!isset($users[$id])) {
-                $users[$id] = [
-                    'id' => $row['id_user'],
-                    'username' => $row['username'],
-                    'nama_lengkap' => $row['nama_lengkap'],
-                    'roles' => [],
-                    'status' => $row['is_active'],
-                    'created_at' => $row['created_at']
-                ];
+        // Step 4: Gabungkan data user dengan roles
+        foreach ($users as &$user) {
+            if (isset($rolesPerUser[$user['id']])) {
+                $user['roles'] = $rolesPerUser[$user['id']];  // Menambahkan roles ke user
+            } else {
+                $user['roles'] = [];  // Jika tidak ada roles, set roles sebagai array kosong
             }
-            if ($row['role_name']) {
-                $users[$id]['roles'][] = $row['role_name'];
-            }
         }
 
-        return array_values($users);
+        // Mengembalikan data user dengan roles
+        return $users;
+        //     // Gabungkan roles per user
+        // $users = [];
+        // foreach ($result as $row) {
+        //     $id = $row['id_user'];
+        //     if (!isset($users[$id])) {
+        //         $users[$id] = [
+        //             'id' => $row['id_user'],
+        //             'username' => $row['username'],
+        //             'nama_lengkap' => $row['nama_lengkap'],
+        //             'roles' => [],
+        //             'id_master_jabatan' => $row['id_master_jabatan'],
+        //             'id_master_organisasi' => $row['id_master_organisasi'],
+        //             'status' => $row['is_active'],
+        //             'created_at' => $row['created_at']
+        //         ];
+        //     }
+        //     if ($row['role_name']) {
+        //         $users[$id]['roles'][] = [
+        //             'id_role' => $row['id_role'],
+        //             'display_name' => $row['role_name']
+        //         ];
+        //     }
+        // }
+
+        // return array_values($users);
     }
+
+    // public function getAllUserList($limit, $offset, $search, $status)
+    // {
+    //     $sub = $this->db->table('master_user u')
+    //         ->select('u.id_user, u.username as username, mp.nama_lengkap as nama_lengkap, mp.id_master_jabatan as id_master_jabatan, mp.id_master_organisasi as id_master_organisasi, u.is_active, u.created_at')
+    //         ->join('master_personil mp', 'mp.id_user = u.id_user', 'left')
+    //         // ->like('u.username', $search)
+    //         ->where('u.is_active', $status)
+    //         ->orderBy('u.id_user', 'ASC')
+    //         ->limit($limit, $offset);
+
+    //     $subQuerySql = $sub->getCompiledSelect();
+
+    //     $builder = $this->db->table("($subQuerySql) as u")
+    //         ->select('u.*, r.id_role, r.display_name as role_name')
+    //         ->join('master_user_roles ur', 'ur.id_user = u.id_user', 'left')
+    //         ->join('master_roles r', 'r.id_role = ur.id_role', 'left')
+    //         ->orderBy('u.id_user', 'ASC');
+
+    //     $query = $builder->get()->getResultArray();
+
+    //     // Gabungkan roles per user
+    //     $users = [];
+    //     foreach ($query as $row) {
+    //         $id = $row['id_user'];
+    //         if (!isset($users[$id])) {
+    //             $users[$id] = [
+    //                 'id' => $row['id_user'],
+    //                 'username' => $row['username'],
+    //                 'nama_lengkap' => $row['nama_lengkap'],
+    //                 'roles' => [],
+    //                 'id_master_jabatan' => $row['id_master_jabatan'],
+    //                 'id_master_organisasi' => $row['id_master_organisasi'],
+    //                 'status' => $row['is_active'],
+    //                 'created_at' => $row['created_at']
+    //             ];
+    //         }
+    //         if ($row['role_name']) {
+    //             $users[$id]['roles'][] = [
+    //                 'id_role' => $row['id_role'],
+    //                 'display_name' => $row['role_name']
+    //             ];
+    //         }
+    //     }
+
+    //     return array_values($users);
+    // }
 
     /**
      * Count total users with optional search & status filter
      */
-    public function countUsersList($search = null, $status = null)
+    public function countUsersList($search, $status)
     {
         $builder = $this->db->table($this->table);
 
@@ -192,5 +280,10 @@ class UserModel extends Model
     public function activateUser($userId)
     {
         return $this->update($userId, ['is_active' => '1']);
+    }
+
+    public function updateDataPersonil($userId, $userDataPersonil)
+    {
+        return $this->db->table('master_personil')->where('id_user', $userId)->update($userDataPersonil);
     }
 }

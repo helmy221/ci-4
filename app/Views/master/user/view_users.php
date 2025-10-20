@@ -23,9 +23,39 @@
                     Add User
                 </button>
             </div>
+
+            <div class="mt-6 flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0 lg:space-x-6">
+                <div class="flex-1">
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                        <input x-model="search" type="text" placeholder="Search users by name, email..."
+                            class="block w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                            @change="loadUsers()">
+                    </div>
+                </div>
+                <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+                    <label class="flex items-center px-4 py-3 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors duration-200">
+                        <input x-model="showInactive" type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500 focus:ring-offset-0"
+                            @change="loadUsers()">
+                        <span class="ml-3 text-sm font-medium text-gray-700">Show Inactive</span>
+                    </label>
+                    <select x-model="perPage" class="px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm font-medium transition-all duration-200"
+                        @change="loadUsers()">
+                        <option value="5">5 per page</option>
+                        <option value="10">10 per page</option>
+                        <option value="25">25 per page</option>
+                        <option value="50">50 per page</option>
+                    </select>
+                </div>
+            </div>
         </div>
 
-        <div class="overflow-x-auto" x-init="loadUsers()">
+
+        <div class="overflow-x-auto" x-init="loadUsers(),loadUnits(), loadRoles(), loadJabatan()">
             <!-- Loading Spinner -->
             <div x-show="loading" class="flex justify-center items-center my-4">
                 <div class="h-12 w-12 animate-spin rounded-full border-4 border-solid border-blue-500 border-t-transparent"></div>
@@ -64,17 +94,18 @@
                             <!-- <td class="px-4 py-2 border-b dark:text-gray-400 border-gray-100" x-text="formatRoles(user.roles)"></td> -->
                             <td class="px-4 py-2 border-b dark:text-gray-400 border-gray-100">
                                 <template x-if="user.roles && user.roles.length > 0">
-                                    <template x-for="role in user.roles" :key="role.id">
-                                        <span class="inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 shadow-sm">
+                                    <template x-for="role in user.roles" :key="role.id_role">
+                                        <span class="inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 shadow-sm ml-1">
                                             <svg class="w-3 h-3 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
                                             </svg>
-                                            <span x-text="user.roles"></span>
+                                            <!-- Menampilkan nama role -->
+                                            <span x-text="role.display_name"></span>
                                         </span>
                                     </template>
                                 </template>
                             </td>
-                            <!-- <td class="px-4 py-2 border-b dark:text-gray-400 border-gray-100" x-text="user.status"></td> -->
+
                             <td class="px-4 py-2 border-b dark:text-gray-400 border-gray-100">
                                 <span
                                     class="inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-semibold shadow-sm"
@@ -89,7 +120,6 @@
                                 </span>
                             </td>
 
-                            <!-- <td class="px-4 py-2 border-b dark:text-gray-400 border-gray-100" x-text="formatDate(user.created_at)"></td> -->
                             <td class="px-4 py-2 border-b dark:text-gray-400 border-gray-100">
                                 <div class="flex items-center text-sm text-gray-500">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -101,14 +131,18 @@
                                     </div>
                                 </div>
                             </td>
+
                             <td class="px-4 py-2 border-b dark:text-gray-400 border-gray-100">
-                                <button
-                                    class="group/btn inline-flex items-center px-3 py-2 text-xs font-semibold text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 hover:text-blue-700 transition-all duration-200 transform hover:scale-105">
+                                <!-- Edit -->
+                                <button @click="openEditModal(user)"
+                                    class=" group/btn inline-flex items-center px-3 py-2 text-xs font-semibold text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 hover:text-blue-700 transition-all duration-200 transform hover:scale-105">
                                     <svg class="w-4 h-4 mr-1.5 group-hover/btn:rotate-12 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                                     </svg>
                                     Edit
                                 </button>
+
+                                <!-- Active and Deactive -->
                                 <button
                                     @click="ShowConfirm(
                                                  user.status == 1 ? 'Confirm Deactivate' : 'Confirm Activate',  // title
@@ -129,19 +163,6 @@
                                     </svg>
                                     <span x-text="user.status == 1 ? 'Deactivate' : 'Activate'"></span>
                                 </button>
-                                <!-- <button
-                                    @click="nonActiveUser(user.id)"
-                                    class="group/btn inline-flex items-center px-3 py-2 text-xs font-semibold rounded-lg transition-all duration-200 transform hover:scale-105
-                                    text-yellow-600 bg-yellow-50 hover:bg-yellow-100 hover:text-yellow-700">
-                                    <svg class="w-4 h-4 mr-1.5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            :d="user.status == 1 
-                                            ? 'M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728'
-                                            : 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'">
-                                        </path>
-                                    </svg>
-                                    <span x-text="user.status == 1 ? 'Deactivate' : 'Activate'"></span>
-                                </button> -->
                             </td>
                         </tr>
                     </template>
@@ -151,8 +172,76 @@
                 </tbody>
             </table>
         </div>
-    </div>
+        <!-- Pagination -->
+        <div class="px-6 py-4 bg-gradient-to-r from-gray-50 to-blue-50 border-t border-gray-200 rounded-b-2xl">
+            <div class="flex justify-between items-center">
 
+                <!-- Page Number Display -->
+                <div class="flex items-center">
+                    <span class="text-sm font-semibold text-gray-700">
+                        Showing
+                        <span x-text="(page - 1) * perPage + 1"></span> to
+                        <span x-text="Math.min(page * perPage, total)"></span>
+                        of <span x-text="total"></span> users
+                    </span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <!-- Previous Page Button -->
+                    <button
+                        :disabled="page === 1"
+                        @click="page = Math.max(1, page - 1); loadUsers()"
+                        class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md disabled:bg-gray-400">
+                        Previous
+                    </button>
+
+                    <!-- Page Numbers with Ellipsis -->
+                    <template x-if="page > 3">
+                        <button
+                            @click="page = 1; loadUsers()"
+                            class="px-4 py-2 bg-white hover:bg-gray-50 text-blue-600 rounded-md">
+                            1
+                        </button>
+                    </template>
+
+                    <template x-if="page > 4">
+                        <span class="px-4 py-2 text-gray-500">...</span>
+                    </template>
+
+                    <!-- Loop through pages to create page links (Maximum 5 pages) -->
+                    <template x-for="pageNum in visiblePages" :key="pageNum">
+                        <button
+                            @click="page = pageNum; loadUsers()"
+                            :class="{'bg-blue-600 text-white': page === pageNum, 'bg-white hover:bg-gray-50 text-blue-600': page !== pageNum}"
+                            class="px-4 py-2 rounded-md transition-all duration-200">
+                            <span x-text="pageNum"></span>
+                        </button>
+                    </template>
+
+                    <template x-if="page < pages - 2">
+                        <span class="px-4 py-2 text-gray-500">...</span>
+                    </template>
+
+                    <template x-if="page < pages - 3">
+                        <button
+                            @click="page = pages; loadUsers()"
+                            class="px-4 py-2 bg-white hover:bg-gray-50 text-blue-600 rounded-md">
+                            <span x-text="pages"></span>
+                        </button>
+                    </template>
+
+                    <!-- Next Page Button -->
+                    <button
+                        :disabled="page === pages"
+                        @click="page = Math.min(pages, page + 1); loadUsers()"
+                        class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md disabled:bg-gray-400">
+                        Next
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <?= $this->include('master/user/form_edit') ?>
     <!-- Add User Modal -->
     <div x-show="showAddModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
         <div class="bg-white dark:bg-gray-800 p-6 rounded-xl w-96">

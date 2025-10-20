@@ -9,7 +9,7 @@ class UserController extends BaseController
 {
     public function index()
     {
-        return view('master/view_users', [
+        return view('master/user/view_users', [
             'page'  => 'users',
             'title' => 'Users - TailAdmin'
         ]);

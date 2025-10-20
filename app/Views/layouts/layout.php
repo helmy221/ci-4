@@ -11,7 +11,7 @@
         const check = "<?= auth()->check() ?>";
         if (check) {
             window.jwtToken = "<?= auth()->user()->token() ?? '' ?>";
-            // console.log("TOKEN : ", window.jwtToken);
+            console.log("TOKEN : ", window.jwtToken);
         } else {
             window.location.href = "/login";
         };
