@@ -13,15 +13,15 @@
                         </svg>
                     </div>
                     <div>
-                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white/90">Jenis Pekerjaan</h2>
-                        <p class="text-sm text-gray-600 mt-1 dark:text-gray-400">Data Jenis Pekerjaan</p>
+                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white/90">Jenis Pengadaan</h2>
+                        <p class="text-sm text-gray-600 mt-1 dark:text-gray-400">Data Jenis Pengadaan</p>
                     </div>
                 </div>
                 <button @click="showAddModal = true" class="group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-xl text-sm font-semibold flex items-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
                     <svg class="w-5 h-5 mr-2 group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                     </svg>
-                    Add Jenis Pekerjaan
+                    Add Jenis Pengadaan
                 </button>
             </div>
         </div>
@@ -177,14 +177,32 @@
     </div>
 
 
-    <!-- Add User Modal -->
+    <!-- Add Jenis Pengadaan Modal -->
     <div x-show="showAddModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
         <div class="bg-white dark:bg-gray-800 p-6 rounded-xl w-96">
-            <h3 class="text-xl font-bold mb-4">Add Jenis Pekerjaan</h3>
+            <h3 class="text-xl font-bold mb-4">Add Jenis Pengadaan</h3>
             <form @submit.prevent="submitAddUser">
-                <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"> Upload file </label>
-                <input type="file" class="focus:border-ring-brand-300 shadow-theme-xs focus:file:ring-brand-300 h-11 w-full overflow-hidden rounded-lg border border-gray-300 bg-transparent text-sm text-gray-500 transition-colors file:mr-5 file:border-collapse file:cursor-pointer file:rounded-l-lg file:border-0 file:border-r file:border-solid file:border-gray-200 file:bg-gray-50 file:py-3 file:pr-3 file:pl-3.5 file:text-sm file:text-gray-700 placeholder:text-gray-400 hover:file:bg-gray-100 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400 dark:text-white/90 dark:file:border-gray-800 dark:file:bg-white/[0.03] dark:file:text-gray-400 dark:placeholder:text-gray-400" />
-                <br><br>
+                <!-- Elements start -->
+                <div class="mb-4">
+                    <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                        Nama Jenis Pengadaan
+                    </label>
+                    <input type="text" class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" />
+                </div>
+                <div class="mb-4">
+                    <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                        Kode Jenis Pengadaan
+                    </label>
+                    <input type="text" class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" />
+                </div>
+                <div>
+                    <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                        Keterangan
+                    </label>
+                    <textarea placeholder="Enter a description..." type="text" rows="3" class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"></textarea>
+                </div>
+                <!-- Elements end -->
+                <br>
                 <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Save</button>
                 <button type="button" @click="showAddModal=false" class="ml-2 px-4 py-2 border rounded">Cancel</button>
             </form>
