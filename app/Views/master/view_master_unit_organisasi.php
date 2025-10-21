@@ -1,7 +1,8 @@
 <?= $this->extend('layouts/layout') ?>
 
 <?= $this->section('content') ?>
-<div x-data="UserUI()" x-show="!loaded">
+<!--<div x-data="UserUI()" x-show="!loaded">-->
+<div x-data="UserUI()">
     <div class="bg-white shadow-xl rounded-2xl border border-gray-200 overflow-hidden dark:border-gray-800 dark:bg-white/[0.03]">
 
         <div class="bg-gradient-to-r  px-6 py-6 border-b border-gray-200 dark:border-gray-800 dark:bg-">
@@ -109,7 +110,7 @@
                                             </td>
                                             <td class="px-5 py-4 sm:px-6">
                                                 <div class="flex items-center space-x-2">
-                                                    <button type="button" @click="$dispatch('open-edit', { id: <?= $org['id_unit_organisasi'] ?>, nama: <?= json_encode($org['nama_unit_organisasi']) ?>, kode: <?= json_encode($org['kode_unit_organisasi']) ?>, keterangan: <?= json_encode($org['keterangan']) ?>, is_active: <?= json_encode($org['is_active']) ?> })" class="text-sm px-3 py-1 bg-yellow-500 hover:bg-yellow-600 text-white rounded">Edit</button>
+                                                    <button type="button" @click="openEditModal({ id: <?= $org['id_unit_organisasi'] ?>, nama: <?= json_encode($org['nama_unit_organisasi']) ?>, kode: <?= json_encode($org['kode_unit_organisasi']) ?>, keterangan: <?= json_encode($org['keterangan']) ?>, is_active: <?= json_encode($org['is_active']) ?> })" class="text-sm px-3 py-1 bg-yellow-500 hover:bg-yellow-600 text-white rounded">Edit</button>
                                                     <button type="button" class="text-sm px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded">Delete</button>
                                                 </div>
                                         </tr>
@@ -162,39 +163,28 @@
             </form>
         </div>
     </div>
-</div>
-<!-- Edit Modal (Alpine) -->
-<div x-data="{
-        showEditModal: false,
-        edit: { id: '', nama: '', kode: '', keterangan: '', is_active: '' },
-        submitEdit() {
-            // Replace with actual submission (AJAX or form post)
-            console.log('Submitting edit', this.edit);
-            // Example: post via fetch to controller endpoint
-            // After success:
-            this.showEditModal = false;
-        }
-    }" @open-edit.window="(e) => { edit.id = e.detail.id; edit.nama = e.detail.nama; edit.kode = e.detail.kode; edit.keterangan = e.detail.keterangan; edit.is_active = e.detail.is_active; showEditModal = true }" x-cloak>
-    <div x-show="showEditModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+
+    <!-- Edit Modal (uses UserUI() scope) -->
+    <div x-show="showEditModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
         <div class="bg-white dark:bg-gray-800 p-6 rounded-xl w-96">
             <h3 class="text-xl font-bold mb-4">Edit Unit Organisasi</h3>
-            <form @submit.prevent="submitEdit">
-                <input type="hidden" x-model="edit.id">
+            <form @submit.prevent="submitEditUser()">
+                <input type="hidden" x-model="editForm.id">
                 <div class="mb-3">
                     <label class="block text-sm">Nama Unit Organisasi</label>
-                    <input x-model="edit.nama" type="text" class="w-full rounded border px-3 py-2" />
+                    <input x-model="editForm.nama" type="text" class="w-full rounded border px-3 py-2" />
                 </div>
                 <div class="mb-3">
                     <label class="block text-sm">Kode Unit Organisasi</label>
-                    <input x-model="edit.kode" type="text" class="w-full rounded border px-3 py-2" />
+                    <input x-model="editForm.kode" type="text" class="w-full rounded border px-3 py-2" />
                 </div>
                 <div class="mb-3">
                     <label class="block text-sm">Keterangan</label>
-                    <textarea x-model="edit.keterangan" rows="3" class="w-full rounded border px-3 py-2"></textarea>
+                    <textarea x-model="editForm.keterangan" rows="3" class="w-full rounded border px-3 py-2"></textarea>
                 </div>
                 <div class="mb-3">
                     <label class="block text-sm">Status</label>
-                    <select x-model="edit.is_active" class="w-full rounded border px-3 py-2">
+                    <select x-model="editForm.is_active" class="w-full rounded border px-3 py-2">
                         <option value="1">Aktif</option>
                         <option value="0">Non aktif</option>
                     </select>
@@ -206,6 +196,7 @@
             </form>
         </div>
     </div>
+
 </div>
 
 <?= $this->endSection() ?>
