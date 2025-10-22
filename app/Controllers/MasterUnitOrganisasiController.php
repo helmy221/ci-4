@@ -14,8 +14,8 @@ class MasterUnitOrganisasiController extends BaseController
         $data['organisasi'] = $UnitOrganisasiModel->where('is_active', '1')->findAll();
 
         // Add page metadata into the same $data array so the view receives everything as one array
-        $data['page']  = 'All Data Pengadaan';
-        $data['title'] = 'All Data - TailAdmin';
+        $data['page']  = 'Master Unit Organisasi';
+        $data['title'] = 'Master Unit Organisasi';
 
         return view('master/view_master_unit_organisasi', $data);
     }

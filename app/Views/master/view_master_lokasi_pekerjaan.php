@@ -42,27 +42,27 @@
                                 <tr class="border-b border-gray-100 dark:border-gray-800">
                                     <th class="px-5 py-3 sm:px-6">
                                         <div class="flex items-center">
-                                            <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400"> User </p>
+                                            <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400"> Id </p>
                                         </div>
                                     </th>
                                     <th class="px-5 py-3 sm:px-6">
                                         <div class="flex items-center">
-                                            <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400"> Project Name </p>
+                                            <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400"> Nama Lokasi </p>
                                         </div>
                                     </th>
                                     <th class="px-5 py-3 sm:px-6">
                                         <div class="flex items-center">
-                                            <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400"> Team </p>
+                                            <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400"> Parent Lokasi </p>
                                         </div>
                                     </th>
                                     <th class="px-5 py-3 sm:px-6">
                                         <div class="flex items-center">
-                                            <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400"> Status </p>
+                                            <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400"> Keterangan </p>
                                         </div>
                                     </th>
                                     <th class="px-5 py-3 sm:px-6">
                                         <div class="flex items-center">
-                                            <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400"> Budget </p>
+                                            <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400"> Aksi </p>
                                         </div>
                                     </th>
                                 </tr>
@@ -70,103 +70,44 @@
                             <!-- table header end -->
                             <!-- table body start -->
                             <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
-                                <tr>
-                                    <td class="px-5 py-4 sm:px-6">
-                                        <div class="flex items-center">
-                                            <div class="flex items-center gap-3">
-                                                <div class="w-10 h-10 overflow-hidden rounded-full">
-                                                    <img src="./images/user/user-17.jpg" alt="brand" />
+                                <?php if (!empty($lokasi_pekerjaan) && is_array($lokasi_pekerjaan)) : ?>
+                                    <?php foreach ($lokasi_pekerjaan as $lokasi) : ?>
+                                        <tr>
+                                            <td class="px-5 py-4 sm:px-6">
+                                                <div class="flex items-center">
+                                                    <p class="text-gray-500 text-theme-sm dark:text-gray-400"> <?= $lokasi['id_lokasi_provinsi'] ?> </p>
                                                 </div>
-                                                <div>
-                                                    <span class="block font-medium text-gray-800 text-theme-sm dark:text-white/90"> Lindsey Curtis </span>
-                                                    <span class="block text-gray-500 text-theme-xs dark:text-gray-400"> Web Designer </span>
+                                            </td>
+                                            <td class="px-5 py-4 sm:px-6">
+                                                <div class="flex items-center">
+                                                    <p class="text-gray-500 text-theme-sm dark:text-gray-400"> <?= $lokasi['nama_provinsi'] ?> </p>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-5 py-4 sm:px-6">
-                                        <div class="flex items-center">
-                                            <p class="text-gray-500 text-theme-sm dark:text-gray-400"> Agency Website </p>
-                                        </div>
-                                    </td>
-                                    <td class="px-5 py-4 sm:px-6">
-                                        <div class="flex items-center">
-                                            <div class="flex -space-x-2">
-                                                <div class="w-6 h-6 overflow-hidden border-2 border-white rounded-full dark:border-gray-900">
-                                                    <img src="./images/user/user-22.jpg" alt="user" />
+                                            </td>
+                                            <td class="px-5 py-4 sm:px-6">
+                                                <div class="flex items-center">
+                                                    <p class="rounded-full bg-success-50 px-2 py-0.5 text-theme-xs font-medium text-success-700 dark:bg-success-500/15 dark:text-success-500"> <?= $lokasi['id_parent_provinsi'] ?> </p>
                                                 </div>
-                                                <div class="w-6 h-6 overflow-hidden border-2 border-white rounded-full dark:border-gray-900">
-                                                    <img src="./images/user/user-23.jpg" alt="user" />
+                                            </td>
+                                            <td class="px-5 py-4 sm:px-6">
+                                                <div class="flex items-center">
+                                                    <p class="text-gray-500 text-theme-sm dark:text-gray-400"><?= $lokasi['keterangan'] ?></p>
                                                 </div>
-                                                <div class="w-6 h-6 overflow-hidden border-2 border-white rounded-full dark:border-gray-900">
-                                                    <img src="./images/user/user-24.jpg" alt="user" />
+                                            </td>
+                                            <td class="px-5 py-4 sm:px-6">
+                                                <div class="flex items-center space-x-2">
+                                                    <button type="button" @click="openEditModal({ id: <?= $lokasi['id_lokasi_provinsi'] ?>, nama: <?= json_encode($lokasi['nama_provinsi']) ?>, kode: <?= json_encode($lokasi['id_parent_provinsi']) ?>, keterangan: <?= json_encode($lokasi['keterangan']) ?>})" class="text-sm px-3 py-1 bg-yellow-500 hover:bg-yellow-600 text-white rounded">Edit</button>
+                                                    <button type="button" class="text-sm px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded">Delete</button>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-5 py-4 sm:px-6">
-                                        <div class="flex items-center">
-                                            <p class="rounded-full bg-success-50 px-2 py-0.5 text-theme-xs font-medium text-success-700 dark:bg-success-500/15 dark:text-success-500"> Active </p>
-                                        </div>
-                                    </td>
-                                    <td class="px-5 py-4 sm:px-6">
-                                        <div class="flex items-center">
-                                            <p class="text-gray-500 text-theme-sm dark:text-gray-400">3.9K</p>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="px-5 py-4 sm:px-6">
-                                        <div class="flex items-center">
-                                            <div class="flex items-center gap-3">
-                                                <div class="w-10 h-10 overflow-hidden rounded-full">
-                                                    <img src="./images/user/user-18.jpg" alt="brand" />
-                                                </div>
-                                                <div>
-                                                    <span class="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                                        Kaiya George
-                                                    </span>
-                                                    <span class="block text-gray-500 text-theme-xs dark:text-gray-400">
-                                                        Project Manager
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-5 py-4 sm:px-6">
-                                        <div class="flex items-center">
-                                            <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                                Technology
-                                            </p>
-                                        </div>
-                                    </td>
-                                    <td class="px-5 py-4 sm:px-6">
-                                        <div class="flex items-center">
-                                            <div class="flex -space-x-2">
-                                                <div class="w-6 h-6 overflow-hidden border-2 border-white rounded-full dark:border-gray-900">
-                                                    <img src="./images/user/user-25.jpg" alt="user" />
-                                                </div>
-                                                <div class="w-6 h-6 overflow-hidden border-2 border-white rounded-full dark:border-gray-900">
-                                                    <img src="./images/user/user-26.jpg" alt="user" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-5 py-4 sm:px-6">
-                                        <div class="flex items-center">
-                                            <p class="rounded-full bg-warning-50 px-2 py-0.5 text-theme-xs font-medium text-warning-700 dark:bg-warning-500/15 dark:text-warning-400">
-                                                Pending
-                                            </p>
-                                        </div>
-                                    </td>
-                                    <td class="px-5 py-4 sm:px-6">
-                                        <div class="flex items-center">
-                                            <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                                24.9K
-                                            </p>
-                                        </div>
-                                    </td>
-                                </tr>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach ?>
+                                <?php else: ?>
+                                    <tr>
+                                        <td class="px-5 py-4 sm:px-6" colspan="5">
+                                            <div class="text-center text-gray-500">No data available.</div>
+                                        </td>
+                                    </tr>
+                                <?php endif; ?>
                             </tbody>
                         </table>
                     </div>
