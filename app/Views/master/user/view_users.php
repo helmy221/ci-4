@@ -16,7 +16,7 @@
                         <p class="text-sm text-gray-600 mt-1 dark:text-gray-400">Manage system users and their access</p>
                     </div>
                 </div>
-                <button @click="showAddModal = true" class="group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-xl text-sm font-semibold flex items-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                <button @click="openAddModal" class="group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-xl text-sm font-semibold flex items-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
                     <svg class="w-5 h-5 mr-2 group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                     </svg>
@@ -32,7 +32,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                             </svg>
                         </div>
-                        <input x-model="search" type="text" placeholder="Search users by name, email..."
+                        <input x-model="search" type="text" placeholder="Search users by username"
                             class="block w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                             @change="loadUsers()">
                     </div>
@@ -141,6 +141,13 @@
                                     </svg>
                                     Edit
                                 </button>
+                                <!-- <button @click="openEditModal(user)"
+                                    class=" group/btn inline-flex items-center px-3 py-2 text-xs font-semibold text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 hover:text-blue-700 transition-all duration-200 transform hover:scale-105">
+                                    <svg class="w-4 h-4 mr-1.5 group-hover/btn:rotate-12 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                    </svg>
+                                    Edit
+                                </button> -->
 
                                 <!-- Active and Deactive -->
                                 <button
@@ -242,8 +249,9 @@
         </div>
     </div>
     <?= $this->include('master/user/form_edit') ?>
+    <?= $this->include('master/user/form_add') ?>
     <!-- Add User Modal -->
-    <div x-show="showAddModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+    <!-- <div x-show="showAddModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
         <div class="bg-white dark:bg-gray-800 p-6 rounded-xl w-96">
             <h3 class="text-xl font-bold mb-4">Add User</h3>
             <form @submit.prevent="submitAddUser">
@@ -253,6 +261,6 @@
                 <button type="button" @click="showAddModal=false" class="ml-2 px-4 py-2 border rounded">Cancel</button>
             </form>
         </div>
-    </div>
+    </div> -->
 </div>
 <?= $this->endSection() ?>

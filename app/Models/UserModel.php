@@ -54,12 +54,15 @@ class UserModel extends Model
      * @return array
      */
 
-    public function getUserData($identifier)
+    public function getUsername($identifier)
     {
-        return $this->where('email', $identifier)
-            ->orWhere('username', $identifier)
-            ->Where('is_active', true)
+        return $this->where('username', $identifier)
             ->first();
+    }
+
+    public function insertUser(array $userData)
+    {
+        return $this->insert($userData);
     }
 
     public function getUserWithRolesAndPermissions(string $identifier): ?array
@@ -199,53 +202,6 @@ class UserModel extends Model
 
         // return array_values($users);
     }
-
-    // public function getAllUserList($limit, $offset, $search, $status)
-    // {
-    //     $sub = $this->db->table('master_user u')
-    //         ->select('u.id_user, u.username as username, mp.nama_lengkap as nama_lengkap, mp.id_master_jabatan as id_master_jabatan, mp.id_master_organisasi as id_master_organisasi, u.is_active, u.created_at')
-    //         ->join('master_personil mp', 'mp.id_user = u.id_user', 'left')
-    //         // ->like('u.username', $search)
-    //         ->where('u.is_active', $status)
-    //         ->orderBy('u.id_user', 'ASC')
-    //         ->limit($limit, $offset);
-
-    //     $subQuerySql = $sub->getCompiledSelect();
-
-    //     $builder = $this->db->table("($subQuerySql) as u")
-    //         ->select('u.*, r.id_role, r.display_name as role_name')
-    //         ->join('master_user_roles ur', 'ur.id_user = u.id_user', 'left')
-    //         ->join('master_roles r', 'r.id_role = ur.id_role', 'left')
-    //         ->orderBy('u.id_user', 'ASC');
-
-    //     $query = $builder->get()->getResultArray();
-
-    //     // Gabungkan roles per user
-    //     $users = [];
-    //     foreach ($query as $row) {
-    //         $id = $row['id_user'];
-    //         if (!isset($users[$id])) {
-    //             $users[$id] = [
-    //                 'id' => $row['id_user'],
-    //                 'username' => $row['username'],
-    //                 'nama_lengkap' => $row['nama_lengkap'],
-    //                 'roles' => [],
-    //                 'id_master_jabatan' => $row['id_master_jabatan'],
-    //                 'id_master_organisasi' => $row['id_master_organisasi'],
-    //                 'status' => $row['is_active'],
-    //                 'created_at' => $row['created_at']
-    //             ];
-    //         }
-    //         if ($row['role_name']) {
-    //             $users[$id]['roles'][] = [
-    //                 'id_role' => $row['id_role'],
-    //                 'display_name' => $row['role_name']
-    //             ];
-    //         }
-    //     }
-
-    //     return array_values($users);
-    // }
 
     /**
      * Count total users with optional search & status filter

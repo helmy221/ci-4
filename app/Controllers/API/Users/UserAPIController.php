@@ -19,7 +19,16 @@ class UserAPIController extends ResourceController
      */
     protected $format = 'json';
     protected $modelName = UserModel::class;
+    protected $modelRoles;
     use ResponseTrait;
+
+    public function __construct()
+    {
+        $this->db = \Config\Database::connect();
+
+        // Inisialisasi model tambahan
+        $this->modelRoles = new RolesModel();
+    }
 
     public function index()
     {
@@ -125,7 +134,93 @@ class UserAPIController extends ResourceController
      */
     public function create()
     {
-        //
+        $data = $this->request->getJSON();
+
+        //validasi data
+        if (empty($data->username) || empty($data->nama_lengkap)) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Username dan Nama Lengkap wajib diisi.'
+            ])->setStatusCode(ResponseInterface::HTTP_BAD_REQUEST);
+        }
+
+        //cek username sudah ada atau belum
+        $existingUser = $this->model->getUsername($data->username);
+        if ($existingUser) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Username sudah digunakan.',
+            ])->setStatusCode(ResponseInterface::HTTP_CONFLICT);
+        }
+
+        //Mulai transaksi
+        $this->db->transStart();
+        try {
+            //simpan master_user
+            $userData = [
+                'username' => $data->username,
+                'password' => password_hash('defaultpassword', PASSWORD_DEFAULT),
+                'is_active' => isset($data->status) ? $data->status : 1,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ];
+            $userId = $this->model->insertUser($userData);
+
+            if (!$userId) {
+                throw new \Exception('Gagal menyimpan data master_user.');
+            }
+
+            //simpan master_data_personil
+            $userDataPersonil = [
+                'id_user' => $userId,
+                'nama_lengkap' => $data->nama_lengkap,
+                'id_master_jabatan' => $data->id_master_jabatan,
+                'id_master_organisasi' => $data->id_unit_organisasi,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ];
+            $insertPersonil = $this->db->table('master_personil')->insert($userDataPersonil);
+
+            if (!$insertPersonil) {
+                throw new \Exception('Gagal menyimpan data master_personil.');
+            }
+
+            //simpan user roles
+            if (!empty($data->roles)) {
+                $rolesData = [];
+                foreach ($data->roles as $roleId) {
+                    $rolesData[] = [
+                        'id_user'    => $userId,
+                        'id_role'    => $roleId,
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ];
+                }
+                $savedRoles = $this->modelRoles->saveUserRole($rolesData);
+                if (!$savedRoles) {
+                    throw new \Exception('Gagal menyimpan data user role.');
+                }
+            }
+
+            $this->db->transComplete();
+
+            // Cek status transaksi
+            if ($this->db->transStatus() === false) {
+                throw new \Exception('Transaksi database gagal.');
+            }
+
+            return $this->response->setJSON([
+                'success' => true,
+                'message' => 'User berhasil ditambahkan.'
+            ]);
+        } catch (\Exception $e) {
+            // Rollback transaksi jika terjadi error
+            $this->db->transRollback();
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Gagal menambahkan user: ' . $e->getMessage(),
+            ])->setStatusCode(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**

@@ -20,7 +20,7 @@ $routes->group('api', ['namespace' => 'App\Controllers\API'], function ($routes)
         $routes->get('', 'Users\UserAPIController::getListUser'); // list
         // $routes->get('(:num)', 'Users\UserAPIController::show/$1'); // detail
         $routes->post('(:num)/softdelete', 'Users\UserAPIController::softDeleteUser/$1');
-        // $routes->post('', 'Api\UserController::store'); // create
+        $routes->post('add', 'Users\UserAPIController::create'); // create
         $routes->put('update/(:num)', 'Users\UserAPIController::update/$1'); // update
         // $routes->delete('(:num)', 'Api\UserController::delete/$1'); // delete
     });

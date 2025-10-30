@@ -8,6 +8,7 @@ window.UserUI = function() {
         selectedUnit: null,
         selectedJabatan: null,
         loading: true,
+        loadingAction: false,
         showAddModal: false,
         showEditModal: false,
         showInactive: false,
@@ -17,7 +18,9 @@ window.UserUI = function() {
         total: 0,  // Total number of users (initialized to 0)
         search: '',  // Search query (initialized to an empty string)
         pages: 0,
-        form: { username: '', nama_lengkap: '', status: 0 },
+        AddForm: {},
+        editForm: {},
+        errors: {},
 
         get visiblePages() {
             const start = Math.max(1, this.page - 2);  
@@ -60,7 +63,7 @@ window.UserUI = function() {
                     if (res.status === 401 || res.status === 403) {
                         console.error('Unauthorized. Please log in again.');
                         // Redirect ke halaman login
-                        window.location.href = "/login";
+                        // window.location.href = "/logout";
                     } else {
                         console.error('Failed to load users:', res.statusText);
                     }
@@ -177,8 +180,8 @@ window.UserUI = function() {
             .then(res => res.json())  // Parse response as JSON
             .then(data => {
                 if (data.status === 'success') {
-                    this.users = this.users.filter(u => u.id !== userId);
-
+                    // this.users = this.users.filter(u => u.id !== userId);
+                    this.loadUsers();
                     // Tampilkan notification
                     this.notification = {
                         type: 'success',
@@ -188,7 +191,7 @@ window.UserUI = function() {
 
                     // Call showNotification to display the notification
                     showNotification(this.notification.type, this.notification.title, this.notification.message);
-
+                    
                     // Hilangkan notification setelah 3 detik
                     setTimeout(() => this.notification = null, 3000);
                 } else {
@@ -217,6 +220,34 @@ window.UserUI = function() {
             showNotification(this.notification.type, this.notification.title, this.notification.message);
 
             });
+        },
+
+        validateForm() {
+            this.errors = {};
+            if (this.showAddModal) {
+                if (!this.AddForm.username.trim()) {
+                    this.errors.username = 'Username wajib diisi.';
+                }
+                if (!this.AddForm.nama_lengkap.trim()) {
+                    this.errors.nama_lengkap = 'Nama lengkap wajib diisi.';
+                }
+            }
+
+            if (this.showEditModal) {
+                if (!this.editForm.username.trim()) {
+                    this.errors.username = 'Username wajib diisi.';
+                }
+                if (!this.editForm.nama_lengkap.trim()) {
+                    this.errors.nama_lengkap = 'Nama lengkap wajib diisi.';
+                }
+            }
+
+            // return true jika tidak ada error
+            return Object.keys(this.errors).length === 0;
+        },
+        
+        clearError(field) {
+            if (this.errors[field]) delete this.errors[field];
         },
 
         async submitAddUser() {
@@ -270,11 +301,7 @@ window.UserUI = function() {
             });
         },
 
-        // Method untuk membuka modal edit dan mengirim event ke modal
         async openEditModal(user) {
-            // Dispatch event untuk membuka modal dan mengirim data user
-            this.$dispatch('open-edit-modal', { user: user });
-            this.showEditModal = true; 
             this.editForm = JSON.parse(JSON.stringify(user));
             this.selectedRoles = user.roles.map(role => ({
                 id_role: role.id_role,
@@ -282,6 +309,16 @@ window.UserUI = function() {
             }));
             this.selectedUnit = user.id_master_organisasi;
             this.selectedJabatan = user.id_master_jabatan;
+            this.showEditModal = true;
+            // console.log('Open Modal Edit:', this.editForm);
+        },
+
+        async closeEditModal() {
+            this.showEditModal = false;
+            this.editForm = {};
+            this.selectedRoles = [];
+            this.selectedUnit = '';
+            this.selectedJabatan = '';
         },
 
         toggleRole(role) {
@@ -299,13 +336,14 @@ window.UserUI = function() {
                 id : this.editForm.id,
                 username: this.$refs.usernameEdit.value,
                 nama_lengkap: this.$refs.nama_lengkapEdit.value,
-                status: this.$refs.statusEdit.checked ? 1 : 0,
+                status: this.editForm.status,
                 roles: this.selectedRoles.map(role => role.id_role),
                 id_unit_organisasi: this.selectedUnit,
                 id_master_jabatan: this.selectedJabatan
             }
+            console.log('Submitting edited user 1:', this.editForm);
 
-            // console.log('Submitting edited user:', form_update);
+            console.log('Submitting edited user 2:', form_update);
             try {
                 const res = await fetch(`api/users/update/${form_update.id}`, {
                     method: 'PUT',
@@ -334,6 +372,93 @@ window.UserUI = function() {
                 }
             } catch (err) {
                 console.error('Update failed : ', err);
+            }
+        },
+
+        async openAddModal() {
+            this.AddForm = {
+                username: '',
+                nama_lengkap: '',
+                id_master_jabatan: null,
+                id_master_organisasi: null,
+                password: '12345678',
+                roles: [],
+                status: 1,
+            };
+            this.showAddModal = true;
+            this.$nextTick(() => this.$refs.usernameInput.focus());
+            console.log('Open Modal Add:', this.AddForm);
+        },
+
+        async closeAddModal() {
+            this.showAddModal = false;
+            this.AddForm = { username: '', nama_lengkap: '', status: 1, id_master_jabatan: null, id_master_organisasi: null };
+            this.selectedRoles = [];
+            this.selectedUnit = '';
+            this.selectedJabatan = '';
+            
+        },
+
+        async submitAddUser() {
+            // Ambil nilai terbaru dari input
+            this.AddForm = {
+                username: this.AddForm.username,
+                nama_lengkap: this.AddForm.nama_lengkap,
+                id_unit_organisasi: this.selectedUnit,
+                id_master_jabatan: this.selectedJabatan,
+                password: this.AddForm.password,
+                roles: this.selectedRoles.map(role => role.id_role),
+                status: this.AddForm.status,
+            }
+            console.log('Submitting Add user :', this.AddForm);
+            if (!this.validateForm()) return;
+            this.loadingAction = true;
+            try {
+                const response = await fetch(`api/users/add`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type' : 'application/json',
+                        'Authorization': 'Bearer ' + window.jwtToken
+                    },
+                    body: JSON.stringify(this.AddForm)
+                });
+                const result  = await response.json();
+
+                
+                if (response.ok && result.success) {
+                this.notification = {
+                    type: 'success',
+                    title: 'Success',
+                    message: result.message || 'User berhasil di Update!.'
+                };
+                if (this.loadUsers) {
+                    this.loadUsers();  // Memuat ulang daftar users setelah update
+                }
+                this.showAddModal = false;
+                this.AddForm = { username: '', nama_lengkap: '', status: 1, id_master_jabatan: null, id_master_organisasi: null };
+                this.selectedRoles = [];
+                this.selectedUnit = '';
+                this.selectedJabatan = '';
+                } else {
+                this.notification = {
+                    type: 'error',
+                    title: 'Error',
+                    message: result.message || 'Terjadi kesalahan.'
+                };
+                }
+                showNotification(this.notification.type, this.notification.title, this.notification.message);
+                setTimeout(() => this.notification = null, 3000);
+            } catch (err) {
+                console.error('Update failed : ', err);
+                this.notification = {
+                    type: 'error',
+                    title: 'Error',
+                    message: err || 'Terjadi kesalahan.'
+                };
+                showNotification(this.notification.type, this.notification.title, this.notification.message);
+                setTimeout(() => this.notification = null, 3000);
+            } finally {
+                this.loadingAction = false;
             }
         },
 
