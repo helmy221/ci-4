@@ -58,6 +58,13 @@ class AuthControllers extends ResourceController
     //     ]);
     // }
 
+    public function authCheck()
+    {
+        return $this->response->setJSON([
+            'isAuthenticated' => auth()->check()
+        ]);
+    }
+
     public function refresh()
     {
         $authHeader = $this->request->getHeaderLine('Authorization');

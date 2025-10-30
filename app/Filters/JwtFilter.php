@@ -48,18 +48,31 @@ class JwtFilter implements FilterInterface
         }
 
         $token = $matches[1];
-        $decoded = $jwtLib->validateToken($matches[1]);
-        if (!$decoded) {
-            log_message('error', 'Token expired or invalid: ' . $token); // Log expired/invalid token
-            return Services::response()
-                ->setJSON(['error' => 'Invalid or expired token'])
-                ->setStatusCode(401);
+        // $decoded = $jwtLib->validateToken($matches[1]);
+        try {
+            // $decoded = JWT::decode($token, new Key(getenv('JWT_SECRET'), 'HS256'));
+            $decoded = $jwtLib->validateToken($matches[1]);
+            // Simpan info user jika perlu
+            $request->user = $decoded;
+        } catch (\Exception $e) {
+            log_message('error', 'Token expired or invalid: ' . $token);
+
+            // 🔴 Auto redirect ke logout
+            session()->destroy();
+            return redirect()->to(site_url('logout'));
         }
+        // if (!$decoded) {
+        //     log_message('error', 'Token expired or invalid: ' . $token); // Log expired/invalid token
 
-        log_message('info', 'Token is valid for user: ' . $decoded->sub); // Log valid token
+        //     return Services::response()
+        //         ->setJSON(['error' => 'Invalid or expired token'])
+        //         ->setStatusCode(401);
+        // }
 
-        // Simpan user dari JWT ke request agar bisa dipakai controller
-        $request->user = $decoded;
+        // log_message('info', 'Token is valid for user: ' . $decoded->sub); // Log valid token
+
+        // // Simpan user dari JWT ke request agar bisa dipakai controller
+        // $request->user = $decoded;
     }
 
     /**

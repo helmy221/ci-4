@@ -8,13 +8,13 @@
     <title><?= esc($title ?? 'Dashboard | TailAdmin') ?></title>
     <script>
         // Set token dari session PHP ke global JS
-        const check = "<?= auth()->check() ?>";
-        if (check) {
-            window.jwtToken = "<?= auth()->user()->token() ?? '' ?>";
-            console.log("TOKEN : ", window.jwtToken);
-        } else {
-            window.location.href = "/login";
-        };
+        // const check = "<?= auth()->check() ?>";
+        // if (check) {
+        //     window.jwtToken = "<?= auth()->user()->token() ?? '' ?>";
+        //     console.log("TOKEN : ", window.jwtToken);
+        // } else {
+        //     window.location.href = "/login";
+        // };
     </script>
 
 
@@ -122,6 +122,11 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        const isAuthenticated = <?= json_encode(auth()->check()) ?>;
+        if (isAuthenticated) {
+            window.jwtToken = "<?= auth()->user()->token() ?? '' ?>";
+            console.log("TOKEN : ", window.jwtToken);
+        }
         window.showConfirm = function(title, text, confirmText = 'Yes, proceed!', cancelText = 'Cancel') {
             return Swal.fire({
                 title: title,
