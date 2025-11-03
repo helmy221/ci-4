@@ -37,7 +37,7 @@ class PersonilSeeder extends Seeder
             $rows[] = [
                 'id_user' => $idUser,
                 'nama_lengkap' => $m['nama_lengkap'],
-                'master_jabatan_id' => $idJab, // sesuai kolom di dump
+                'id_master_jabatan' => $idJab, // sesuai kolom di dump
                 'created_at' => $now,
                 'updated_at' => $now,
             ];

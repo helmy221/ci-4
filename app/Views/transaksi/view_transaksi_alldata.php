@@ -258,7 +258,7 @@
 
     <!-- Modal Background -->
     <div x-show="showAddModal"
-        class="fixed inset-0 z-50 flex justify-center bg-black/50 overflow-y-auto pt-20">
+        class="fixed inset-0 z-99999 flex justify-center bg-black/50 overflow-y-auto pt-20">
         <!-- Modal Box -->
         <div class="relative bg-white dark:bg-gray-800 w-full max-w-2xl mx-auto my-10 rounded-2xl shadow-xl flex flex-col max-h-[90vh]">
             <!-- Header -->
@@ -281,8 +281,67 @@
                             placeholder="Masukkan nama paket"
                             class="w-full h-11 rounded-lg border border-gray-300 bg-transparent px-4 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90" />
                     </div>
-
                     <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
+                            Unit Organisasi
+                        </label>
+                        <select
+                            class="w-full h-11 rounded-lg border border-gray-300 bg-transparent px-4 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90">
+                            <option value="0">Pilih Unit Organisasi</option>
+                            <option>SDA - Direktorat Jenderal Sumber Daya Air</option>
+                            <option>BM - Direktorat Jenderal Bina Marga</option>
+                            <option>CK - Direktorat Jenderal Cipta Karya</option>
+                            <option>PS - Direktorat Jenderal Prasarana Strategis</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
+                            Nama Ketua Kelompok Kerja
+                        </label>
+                        <input
+                            type="text"
+                            placeholder="Masukkan nama ketua kelompok kerja"
+                            class="w-full h-11 rounded-lg border border-gray-300 bg-transparent px-4 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
+                            Lokasi Pekerjaan
+                        </label>
+                        <select
+                            class="w-full h-11 rounded-lg border border-gray-300 bg-transparent px-4 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90">
+                            <option value="0">Pilih Lokasi Pekerjaan</option>
+                            <option>Jawa Barat</option>
+                            <option>Luar Jawa Barat</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
+                            Nilai Kontrak (%)
+                        </label>
+                        <input
+                            type="number"
+                            placeholder="Masukkan nilai kontrak"
+                            class="w-full h-11 rounded-lg border border-gray-300 bg-transparent px-4 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
+                            Nilai Harga Perkiraan Sendiri (Rp)
+                        </label>
+                        <input
+                            type="number"
+                            placeholder="Masukkan nilai HPS"
+                            class="w-full h-11 rounded-lg border border-gray-300 bg-transparent px-4 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
+                            Nama Pemenang
+                        </label>
+                        <input
+                            type="text"
+                            placeholder="Masukkan nama pemenang"
+                            class="w-full h-11 rounded-lg border border-gray-300 bg-transparent px-4 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90" />
+                    </div>
+                    <!--<div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
                             Nomor Kontrak
                         </label>
@@ -290,18 +349,7 @@
                             type="text"
                             placeholder="Contoh: 123/SPK/2025"
                             class="w-full h-11 rounded-lg border border-gray-300 bg-transparent px-4 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90" />
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
-                            Nilai Kontrak (Rp)
-                        </label>
-                        <input
-                            type="number"
-                            placeholder="Masukkan nilai kontrak"
-                            class="w-full h-11 rounded-lg border border-gray-300 bg-transparent px-4 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90" />
-                    </div>
-
+                    </div>-->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
                             Jenis Pengadaan
@@ -309,12 +357,11 @@
                         <select
                             class="w-full h-11 rounded-lg border border-gray-300 bg-transparent px-4 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90">
                             <option>Pilih jenis pengadaan</option>
-                            <option>Barang</option>
-                            <option>Jasa</option>
+                            <option>JK - Jasa Konsultansi Konstruksi</option>
+                            <option>PK - Pekerjaan Konstruksi</option>
                         </select>
                     </div>
-
-                    <div>
+                    <!--<div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
                             Tahun Anggaran
                         </label>
@@ -322,17 +369,23 @@
                             type="text"
                             placeholder="Contoh: 2025"
                             class="w-full h-11 rounded-lg border border-gray-300 bg-transparent px-4 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90" />
-                    </div>
-
+                    </div>-->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
-                            Tanggal Kontrak
+                            Tanggal Penetapan Pemenang Awal
                         </label>
                         <input
                             type="date"
                             class="w-full h-11 rounded-lg border border-gray-300 bg-transparent px-4 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90" />
                     </div>
-
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
+                            Tanggal Penetapan Pemenang Final
+                        </label>
+                        <input
+                            type="date"
+                            class="w-full h-11 rounded-lg border border-gray-300 bg-transparent px-4 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90" />
+                    </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
                             Keterangan
