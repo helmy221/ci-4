@@ -1,9 +1,9 @@
 <!-- Notification Container -->
 <?php $uri = current_url(true)->getPath(); ?>
 <?php if ($uri == '/login') { ?>
-    <div id="notification-container" class="fixed top-5 right-4 z-[9999]"></div>
+    <div id="notification-container" class="fixed top-5 right-4 z-[999999]"></div>
 <?php } else { ?>
-    <div id="notification-container" class="fixed top-20 right-4 z-[9999]"></div>
+    <div id="notification-container" class="fixed top-20 right-4 z-[999999]"></div>
 <?php } ?>
 <script>
     const uri = <?= json_encode($uri) ?>;

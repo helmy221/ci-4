@@ -6,6 +6,7 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 
+$routes->get('/', 'AuthController::index');
 $routes->get('/login', 'AuthController::index');
 $routes->post('/doLogin', 'AuthController::doLogin');
 $routes->get('/logout', 'AuthController::logout');
@@ -38,6 +39,12 @@ $routes->group('api', ['namespace' => 'App\Controllers\API'], function ($routes)
     // Jabatan
     $routes->group('jabatan', ['filter' => 'jwt', 'cors'], function ($routes) {
         $routes->get('', 'Jabatan\JabatanAPIController::getListJabatan'); // list
+    });
+
+    // Transaksi
+    $routes->group('transaksi', ['filter' => 'jwt', 'cros'], function ($routes) {
+        $routes->post('uploadPengadaan', 'Transaksi\TransaksiAllDataAPIController::uploadPaketPengadaan');
+        $routes->get('download/(:any)', 'Transaksi\TransaksiAllDataAPIController::downloaFormuploadPaketPengadaan/$1');
     });
 });
 
