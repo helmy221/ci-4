@@ -35,6 +35,34 @@ class TransaksiAllDataAPIController extends ResourceController
         //
     }
 
+    public function getAllPaketPemenang()
+    {
+        $page = (int)($this->request->getGet('page') ?? 1);
+        $limit = (int)($this->request->getGet('limit') ?? 5);
+        $search = $this->request->getGet('search') ?? '';
+
+
+        if ($page < 1) $page = 1;
+        if ($limit < 1) $limit = 5;
+
+        $offset = ($page - 1) * $limit;
+
+        $paketPengadaan = $this->model->getAllPaketPemenangList($limit, $offset, $search);
+
+        $total = $this->model->countPaketPemenangList($search);
+
+        return $this->respond([
+            'status' => 'success',
+            'data' => $paketPengadaan,
+            'pagination' => [
+                'total' => $total,
+                'page' => $page,
+                'limit' => $limit,
+                'pages' => ceil($total / $limit)
+            ]
+        ]);
+    }
+
     public function uploadPaketPengadaan()
     {
         $file = $this->request->getFile('excel_file');
