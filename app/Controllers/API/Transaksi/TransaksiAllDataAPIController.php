@@ -89,21 +89,41 @@ class TransaksiAllDataAPIController extends ResourceController
 
             $batchData = [];
             $invalidRows = [];
+            $existingIds = $this->db->table('transaksi_pemenang_pengadaan')
+                ->select('id_rup')
+                ->get()
+                ->getResultArray();
+            // $existingIds = array_column($existingIds, 'id_rup');
+            $existingIds = array_map('strval', array_column($existingIds, 'id_rup'));
 
             foreach ($data as $i => $row) {
                 if ($i === 1) continue; // skip header
                 if (empty(array_filter($row))) continue; // skip baris kosong total
 
-                $namaPaket = trim($row['B'] ?? '');
-                $idUnit = (int) ($row['C'] ?? 0);
-                $ketuaPokja = trim($row['D'] ?? '');
-                $idProv = (int) ($row['E'] ?? 0);
-                $persen = trim($row['F'] ?? '');
-                $rawHps = trim($row['G'] ?? '');
-                $tanggalTayang = trim($row['J'] ?? '');
-                $tanggalPenetapan = trim($row['K'] ?? '');
+                // $idRup = trim($row['B'] ?? '');
+                $namaPaket = trim($row['C'] ?? '');
+                $idUnit = (int) ($row['D'] ?? 0);
+                $ketuaPokja = trim($row['E'] ?? '');
+                $idProv = (int) ($row['F'] ?? 0);
+                $persen = trim($row['G'] ?? '');
+                $rawHps = trim($row['H'] ?? '');
+                $tanggalTayang = trim($row['K'] ?? '');
+                $tanggalPenetapan = trim($row['L'] ?? '');
 
                 // ✅ VALIDASI WAJIB ISI
+                $idRup = $this->cleanIdRup($row['B'] ?? '');
+
+                if ($idRup === '') {
+                    $invalidRows[] = ['row' => $i, 'error' => 'Kolom id_rup kosong.'];
+                    continue;
+                }
+
+                // ✅ Cek duplikat dengan strict type-safe
+                if (in_array($idRup, $existingIds, true)) {
+                    $invalidRows[] = ['row' => $i, 'error' => "Data dengan id_rup '{$idRup}' sudah ada. Dilewati."];
+                    continue;
+                }
+
                 if (empty($namaPaket)) {
                     $invalidRows[] = ['row' => $i, 'error' => 'Kolom nama_paket kosong.'];
                     continue;
@@ -156,40 +176,52 @@ class TransaksiAllDataAPIController extends ResourceController
 
                 // ✅ TAMBAHKAN DATA KE BATCH
                 $batchData[] = [
+                    'id_rup' => $idRup,
                     'nama_paket' => $namaPaket,
                     'id_unit_organisasi' => $idUnit,
                     'ketua_pokja' => $ketuaPokja,
                     'id_lokasi_provinsi' => $idProv,
                     'persentase_nilai_kontrak' => $persentase,
                     'harga_perkiraan_sendiri' => $hpsValue,
-                    'pemenang' => trim($row['H'] ?? ''),
-                    'durasi_pemilihan' => (int) ($row['I'] ?? 0),
+                    'pemenang' => trim($row['I'] ?? ''),
+                    'durasi_pemilihan' => (int) ($row['J'] ?? 0),
                     'tanggal_tayang' => $tglTayang,
                     'tanggal_penetapan' => $tglPenetapan,
-                    'id_master_jenis_pengadaan' => (int) ($row['L'] ?? 0),
-                    'tanggal_penetapan_awal' => date('Y-m-d', strtotime($row['M'] ?? '')),
-                    'tanggal_penetapan_final' => date('Y-m-d', strtotime($row['N'] ?? '')),
-                    'keterangan' => trim($row['O'] ?? ''),
+                    'id_master_jenis_pengadaan' => (int) ($row['M'] ?? 0),
+                    'tanggal_penetapan_awal' => date('Y-m-d', strtotime($row['N'] ?? '')),
+                    'tanggal_penetapan_final' => date('Y-m-d', strtotime($row['O'] ?? '')),
+                    'keterangan' => trim($row['P'] ?? ''),
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s')
                 ];
-            }
 
-            // echo "<pre>";
-            // print_r($batchData);
-            // echo "</pre>";
-            // exit;
+                $existingIds[] = $idRup;
+            }
 
             // ✅ Hapus file setelah diproses
             if (file_exists($path)) {
                 unlink($path);
             }
 
+            // echo "<pre>";
+            // print_r($batchData);
+            // echo "<pre>";
+            // exit;
+
             // 🚫 Jika ADA baris invalid, rollback (gagal total)
-            if (!empty($invalidRows)) {
+            // if (!empty($invalidRows)) {
+            //     return $this->respond([
+            //         'success' => false,
+            //         'message' => '❌ Ditemukan data tidak valid. Proses dibatalkan.',
+            //         'invalid' => $invalidRows
+            //     ], ResponseInterface::HTTP_BAD_REQUEST);
+            // }
+
+            // 🚫 Jika semua baris invalid
+            if (empty($batchData)) {
                 return $this->respond([
                     'success' => false,
-                    'message' => '❌ Ditemukan data tidak valid. Proses dibatalkan.',
+                    'message' => '❌ Semua data duplikat atau tidak valid. Tidak ada data disimpan.',
                     'invalid' => $invalidRows
                 ], ResponseInterface::HTTP_BAD_REQUEST);
             }
@@ -512,5 +544,12 @@ class TransaksiAllDataAPIController extends ResourceController
     public function delete($id = null)
     {
         //
+    }
+
+    function cleanIdRup($value)
+    {
+        // hilangkan spasi, tab, dan karakter non-print
+        $value = preg_replace('/\s+/', '', trim($value ?? ''));
+        return (string) $value;
     }
 }

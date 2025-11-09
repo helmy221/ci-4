@@ -121,7 +121,9 @@ window.paketPengadaan = function() {
                         message: result.message || 'Terjadi kesalahan.'
                     };
                 }
-
+                if (this.loadPaketPengadaan) {
+                    this.loadPaketPengadaan();  // Memuat ulang daftar users setelah update
+                }
                 showNotification(this.notification.type, this.notification.title, this.notification.message);
                 setTimeout(() => this.notification = null, 3000);
             } catch (error) {

@@ -14,6 +14,7 @@ class PaketPengadaanModel extends Model
     protected $protectFields    = true;
     protected $allowedFields    = [
         'id_transaksi_pemenang',
+        'id_rup',
         'nama_paket',
         'id_unit_organisasi',
         'ketua_pokja',
