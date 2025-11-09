@@ -44,6 +44,7 @@ import "jsvectormap";
 
 import '../js/components/users';
 import '../js/components/paketPengadaan';
+import '../js/components/masterUnitOrganisasi';
 
 
 console.log("TailAdmin + CI4 running with Vite!");

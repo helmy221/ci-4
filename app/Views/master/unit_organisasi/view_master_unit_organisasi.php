@@ -2,9 +2,8 @@
 
 <?= $this->section('content') ?>
 <!--<div x-data="UserUI()" x-show="!loaded">-->
-<div x-data="UserUI()">
+<div x-data="MasterUnitOrganisasiUI()">
     <div class="bg-white shadow-xl rounded-2xl border border-gray-200 overflow-hidden dark:border-gray-800 dark:bg-white/[0.03]">
-
         <div class="bg-gradient-to-r  px-6 py-6 border-b border-gray-200 dark:border-gray-800 dark:bg-">
             <div class="flex justify-between items-center">
                 <div class="flex items-center space-x-4">
@@ -28,11 +27,8 @@
         </div>
 
 
-        <div class="overflow-x-auto" x-init="loadUsers()">
-            <!-- Loading Spinner -->
-            <div x-show="loading" class="flex justify-center items-center my-4">
-                <div class="h-12 w-12 animate-spin rounded-full border-4 border-solid border-blue-500 border-t-transparent"></div>
-            </div>
+        <!--<div class="overflow-x-auto" x-init="loadMasterUnitOrganisasi0()">-->
+        <div class="overflow-x-auto">
             <!-- test start-->
             <div class="p-5 border-t border-gray-100 dark:border-gray-800 sm:p-6">
                 <div class="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
@@ -110,7 +106,9 @@
                                             </td>
                                             <td class="px-5 py-4 sm:px-6">
                                                 <div class="flex items-center space-x-2">
-                                                    <button type="button" @click="openEditModal({ id: <?= $org['id_unit_organisasi'] ?>, nama: <?= json_encode($org['nama_unit_organisasi']) ?>, kode: <?= json_encode($org['kode_unit_organisasi']) ?>, keterangan: <?= json_encode($org['keterangan']) ?>, is_active: <?= json_encode($org['is_active']) ?> })" class="text-sm px-3 py-1 bg-yellow-500 hover:bg-yellow-600 text-white rounded">Edit</button>
+                                                    <button type="button" @click='openEditModal(<?= json_encode($org, JSON_HEX_APOS | JSON_HEX_QUOT) ?>)' class="text-sm px-3 py-1 bg-yellow-500 hover:bg-yellow-600 text-white rounded">
+                                                        Edit
+                                                    </button>
                                                     <button type="button" class="text-sm px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded">Delete</button>
                                                 </div>
                                         </tr>
@@ -131,72 +129,6 @@
         </div>
     </div>
 
-
-    <!-- Add Organisasi Modal -->
-    <div x-show="showAddModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-xl w-96">
-            <h3 class="text-xl font-bold mb-4">Add Unit Organisasi</h3>
-            <form @submit.prevent="submitAddUser">
-                <!-- Elements start -->
-                <div class="mb-4">
-                    <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                        Nama Unit Organisasi
-                    </label>
-                    <input type="text" class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" />
-                </div>
-                <div class="mb-4">
-                    <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                        Kode Unit Organisasi
-                    </label>
-                    <input type="text" class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" />
-                </div>
-                <div>
-                    <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                        Keterangan
-                    </label>
-                    <textarea placeholder="Enter a description..." type="text" rows="3" class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"></textarea>
-                </div>
-                <!-- Elements end -->
-                <br>
-                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Save</button>
-                <button type="button" @click="showAddModal=false" class="ml-2 px-4 py-2 border rounded">Cancel</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Edit Modal (uses UserUI() scope) -->
-    <div x-show="showEditModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-xl w-96">
-            <h3 class="text-xl font-bold mb-4">Edit Unit Organisasi</h3>
-            <form @submit.prevent="submitEditUser()">
-                <input type="hidden" x-model="editForm.id">
-                <div class="mb-3">
-                    <label class="block text-sm">Nama Unit Organisasi</label>
-                    <input x-model="editForm.nama" type="text" class="w-full rounded border px-3 py-2" />
-                </div>
-                <div class="mb-3">
-                    <label class="block text-sm">Kode Unit Organisasi</label>
-                    <input x-model="editForm.kode" type="text" class="w-full rounded border px-3 py-2" />
-                </div>
-                <div class="mb-3">
-                    <label class="block text-sm">Keterangan</label>
-                    <textarea x-model="editForm.keterangan" rows="3" class="w-full rounded border px-3 py-2"></textarea>
-                </div>
-                <div class="mb-3">
-                    <label class="block text-sm">Status</label>
-                    <select x-model="editForm.is_active" class="w-full rounded border px-3 py-2">
-                        <option value="1">Aktif</option>
-                        <option value="0">Non aktif</option>
-                    </select>
-                </div>
-                <div class="flex justify-end">
-                    <button type="button" @click="showEditModal=false" class="mr-2 px-4 py-2 border rounded">Cancel</button>
-                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Save</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
+    <?= $this->include('master/unit_organisasi/view_master_unit_organisasi_edit') ?>
 </div>
-
 <?= $this->endSection() ?>

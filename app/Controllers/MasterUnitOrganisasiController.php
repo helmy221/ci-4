@@ -17,6 +17,6 @@ class MasterUnitOrganisasiController extends BaseController
         $data['page']  = 'Master Unit Organisasi';
         $data['title'] = 'Master Unit Organisasi';
 
-        return view('master/view_master_unit_organisasi', $data);
+        return view('master/unit_organisasi/view_master_unit_organisasi', $data);
     }
 }
