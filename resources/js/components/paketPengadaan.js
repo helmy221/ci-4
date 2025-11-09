@@ -61,7 +61,13 @@ window.paketPengadaan = function() {
                 // console.log("Page", data);
                 // Periksa apakah data.status === 'success'
                 if (data.status === 'success') {
-                    this.paketPengadaan = data.data;  // Set users data
+                    const startIndex = (page - 1) * limit + 1;
+
+                    this.paketPengadaan = data.data.map((item, index) => ({
+                        no: startIndex + index,   // nomor urut global
+                        ...item
+                    }));
+                    // this.paketPengadaan = data.data;  // Set users data
                     this.total = data.pagination.total;  // Set total number of users
                     this.pages = data.pagination.pages;  // Set total number of pages
                     // console.log("Page", this.users);

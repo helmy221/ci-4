@@ -49,7 +49,7 @@
                     </div>
                     <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
                         <select x-model="perPage" class="px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm font-medium transition-all duration-200"
-                            @change="loadPaketPengadaan()">
+                            @change="page = 1; loadPaketPengadaan()">
                             <option value="5">5 per page</option>
                             <option value="10">10 per page</option>
                             <option value="25">25 per page</option>
@@ -60,12 +60,15 @@
             </div>
 
 
-            <div class="overflow-x-auto" x-init="loadPaketPengadaan()">
+            <div class="relative overflow-x-auto" x-init="loadPaketPengadaan()">
                 <!-- <div class="overflow-x-auto"> -->
                 <!-- Loading Spinner -->
-                <div x-show="loading" class="flex justify-center items-center my-4">
-                    <div class="h-12 w-12 animate-spin rounded-full border-4 border-solid border-blue-500 border-t-transparent"></div>
-                </div>
+                <template x-if="loading">
+                    <div class="absolute inset-0 flex flex-col items-center justify-center bg-white/80 dark:bg-gray-900/70 z-10 backdrop-blur-sm">
+                        <div class="h-12 w-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                        <p class="mt-3 text-sm font-medium text-gray-600 dark:text-gray-300">Memuat data...</p>
+                    </div>
+                </template>
 
                 <!-- test start-->
                 <table id="paketPengadaanTable" x-data-show="!loading" class="min-w-full">
@@ -107,7 +110,7 @@
                     <tbody class="bg-white divide-y divide-gray-10 dark:dark:bg-white/[0.03]">
                         <template x-for="paketPengadaanData in paketPengadaan" :key="paketPengadaanData.id_transaksi_pemenang">
                             <tr class="border-gray-100 text-xs">
-                                <td class="px-2 py-2 border-b dark:text-gray-200 border-gray-100" x-text="paketPengadaanData.id_transaksi_pemenang"></td>
+                                <td class="px-2 py-2 border-b dark:text-gray-200 border-gray-100" x-text="paketPengadaanData.no"></td>
                                 <td class="px-2 py-2 border-b dark:text-gray-400 border-gray-100" x-text="paketPengadaanData.nama_paket"></td>
                                 <td class="px-2 py-2 border-b dark:text-gray-400 border-gray-100 whitespace-nowrap" x-text="paketPengadaanData.provinsi"></td>
                                 <td class="px-2 py-2 border-b dark:text-gray-400 border-gray-100 whitespace-nowrap" x-text="$rupiah(paketPengadaanData.harga_perkiraan_sendiri)"></td>
@@ -147,6 +150,74 @@
                     </tbody>
                 </table>
                 <!-- test end-->
+            </div>
+            <!-- Pagination -->
+            <div class="px-6 py-4 bg-gradient-to-r from-gray-50 to-blue-50 border-t border-gray-200 rounded-b-2xl">
+                <div class="flex justify-between items-center">
+
+                    <!-- Page Number Display -->
+                    <div class="flex items-center">
+                        <span class="text-sm font-semibold text-gray-700">
+                            Showing
+                            <span x-text="(page - 1) * perPage + 1"></span> to
+                            <span x-text="Math.min(page * perPage, total)"></span>
+                            of <span x-text="total"></span> users
+                        </span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <!-- Previous Page Button -->
+                        <button
+                            :disabled="page === 1"
+                            @click="page = Math.max(1, page - 1); loadPaketPengadaan()"
+                            class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md disabled:bg-gray-400">
+                            Previous
+                        </button>
+
+                        <!-- Page Numbers with Ellipsis -->
+                        <template x-if="page > 3">
+                            <button
+                                @click="page = 1; loadPaketPengadaan()"
+                                class="px-4 py-2 bg-white hover:bg-gray-50 text-blue-600 rounded-md">
+                                1
+                            </button>
+                        </template>
+
+                        <template x-if="page > 4">
+                            <span class="px-4 py-2 text-gray-500">...</span>
+                        </template>
+
+                        <!-- Loop through pages to create page links (Maximum 5 pages) -->
+                        <template x-for="pageNum in visiblePages" :key="pageNum">
+                            <button
+                                @click="page = pageNum; loadPaketPengadaan()"
+                                :class="{'bg-blue-600 text-white': page === pageNum, 'bg-white hover:bg-gray-50 text-blue-600': page !== pageNum}"
+                                class="px-4 py-2 rounded-md transition-all duration-200">
+                                <span x-text="pageNum"></span>
+                            </button>
+                        </template>
+
+                        <template x-if="page < pages - 2">
+                            <span class="px-4 py-2 text-gray-500">...</span>
+                        </template>
+
+                        <template x-if="page < pages - 3">
+                            <button
+                                @click="page = pages; loadPaketPengadaan()"
+                                class="px-4 py-2 bg-white hover:bg-gray-50 text-blue-600 rounded-md">
+                                <span x-text="pages"></span>
+                            </button>
+                        </template>
+
+                        <!-- Next Page Button -->
+                        <button
+                            :disabled="page === pages"
+                            @click="page = Math.min(pages, page + 1); loadPaketPengadaan()"
+                            class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md disabled:bg-gray-400">
+                            Next
+                        </button>
+                    </div>
+                </div>
+
             </div>
         </div>
 
