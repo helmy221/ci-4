@@ -4,6 +4,34 @@ import Alpine from "alpinejs";
 import persist from "@alpinejs/persist";
 
 // import './authStore.js';
+Alpine.magic("rupiah", () => (value) => {
+  if (value === null || value === undefined || value === "") return "-";
+
+  // pastikan string
+  let str = String(value).trim();
+
+  // ubah koma ke titik agar bisa di-parseFloat (contoh: 1189998412,00 → 1189998412.00)
+  str = str.replace(",", ".");
+
+  const number = parseFloat(str);
+
+  if (isNaN(number)) return value;
+
+  // format ke gaya Indonesia (titik ribuan, koma desimal)
+  let formatted = number.toLocaleString("id-ID", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+
+  // hilangkan semua spasi (kadang locale menambah non-breaking space)
+  formatted = formatted.replace(/\s/g, "");
+
+  // tambahkan prefix Rp tanpa spasi
+  return "Rp " + formatted;
+});
+
+
+
 
 Alpine.plugin(persist);
 window.Alpine = Alpine;
@@ -45,6 +73,7 @@ import "jsvectormap";
 import '../js/components/users';
 import '../js/components/paketPengadaan';
 import '../js/components/masterUnitOrganisasi';
+
 
 
 console.log("TailAdmin + CI4 running with Vite!");

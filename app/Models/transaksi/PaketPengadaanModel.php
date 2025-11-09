@@ -14,6 +14,7 @@ class PaketPengadaanModel extends Model
     protected $protectFields    = true;
     protected $allowedFields    = [
         'id_transaksi_pemenang',
+        'id_rup',
         'nama_paket',
         'id_unit_organisasi',
         'ketua_pokja',
@@ -61,4 +62,54 @@ class PaketPengadaanModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+
+    public function getAllPaketPemenangList($limit, $offset, $search)
+    {
+        $where = "";
+        if (!empty($search)) {
+            $where = "AND u.nama_paket LIKE '%$search%'";
+        }
+
+        $query = $this->db->query("SELECT tpp.id_transaksi_pemenang,
+                                          tpp.nama_paket,
+                                          unit.nama_unit_organisasi AS nama_unit,
+                                          tpp.ketua_pokja,
+                                          lokasi.nama_provinsi AS provinsi,
+                                          tpp.persentase_nilai_kontrak,
+                                          tpp.harga_perkiraan_sendiri,
+                                          tpp.pemenang,
+                                          tpp.durasi_pemilihan,
+                                          tpp.tanggal_tayang,
+                                          tpp.tanggal_penetapan,
+                                          jenis.nama_master_jenis_pengadaan AS nama_pengadaan,
+                                          tpp.tanggal_penetapan_awal,
+                                          tpp.tanggal_penetapan_final,
+                                          tpp.keterangan,
+                                          tpp.created_at,
+                                          tpp.updated_at
+                                    FROM transaksi_pemenang_pengadaan tpp
+                                    LEFT JOIN master_unit_organisasi unit ON unit.id_unit_organisasi = tpp.id_unit_organisasi
+                                    LEFT JOIN master_lokasi_provinsi lokasi ON lokasi.id_lokasi_provinsi = tpp.id_lokasi_provinsi
+                                    LEFT JOIN master_jenis_pengadaan jenis ON jenis.id_master_jenis_pengadaan = tpp.id_master_jenis_pengadaan
+                                    WHERE 1=1 -- Selalu true untuk memudahkan penambahan kondisi
+                                    $where
+                                    ORDER BY tpp.id_transaksi_pemenang ASC
+                                    LIMIT $limit OFFSET $offset
+                                ");
+
+        return $query->getResultArray();
+    }
+
+    public function countPaketPemenangList($search)
+    {
+        $builder = $this->db->table($this->table);
+
+        if ($search) {
+            $builder->groupStart()
+                ->like('nama_paket', $search)
+                ->groupEnd();
+        }
+        return $builder->countAllResults();
+    }
 }

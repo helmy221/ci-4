@@ -32,155 +32,120 @@
                         </button>
                     </div>
                 </div>
+
+                <!-- Datatable -->
+                <div class="mt-6 flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0 lg:space-x-6">
+                    <div class="flex-1">
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </div>
+                            <input x-model="search" type="text" placeholder="Search Paket Pengadaan by Nama Paket"
+                                class="block w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                                @change="loadPaketPengadaan()">
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+                        <select x-model="perPage" class="px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm font-medium transition-all duration-200"
+                            @change="loadPaketPengadaan()">
+                            <option value="5">5 per page</option>
+                            <option value="10">10 per page</option>
+                            <option value="25">25 per page</option>
+                            <option value="50">50 per page</option>
+                        </select>
+                    </div>
+                </div>
             </div>
 
 
-            <!-- <div class="overflow-x-auto" x-init="loadUsers()"> -->
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto" x-init="loadPaketPengadaan()">
+                <!-- <div class="overflow-x-auto"> -->
                 <!-- Loading Spinner -->
-                <!-- <div x-show="loading" class="flex justify-center items-center my-4">
+                <div x-show="loading" class="flex justify-center items-center my-4">
                     <div class="h-12 w-12 animate-spin rounded-full border-4 border-solid border-blue-500 border-t-transparent"></div>
-                </div> -->
-                <!-- test start-->
-                <div class="p-5 border-t border-gray-100 dark:border-gray-800 sm:p-6">
-                    <div class="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
-                        <div class="max-w-full overflow-x-auto">
-                            <table class="min-w-full">
-                                <!-- table header start -->
-                                <thead>
-                                    <tr class="border-b border-gray-100 dark:border-gray-800">
-                                        <th class="px-5 py-3 sm:px-6">
-                                            <div class="flex items-center">
-                                                <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400"> User </p>
-                                            </div>
-                                        </th>
-                                        <th class="px-5 py-3 sm:px-6">
-                                            <div class="flex items-center">
-                                                <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400"> Project Name </p>
-                                            </div>
-                                        </th>
-                                        <th class="px-5 py-3 sm:px-6">
-                                            <div class="flex items-center">
-                                                <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400"> Team </p>
-                                            </div>
-                                        </th>
-                                        <th class="px-5 py-3 sm:px-6">
-                                            <div class="flex items-center">
-                                                <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400"> Status </p>
-                                            </div>
-                                        </th>
-                                        <th class="px-5 py-3 sm:px-6">
-                                            <div class="flex items-center">
-                                                <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400"> Budget </p>
-                                            </div>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <!-- table header end -->
-                                <!-- table body start -->
-                                <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
-                                    <tr>
-                                        <td class="px-5 py-4 sm:px-6">
-                                            <div class="flex items-center">
-                                                <div class="flex items-center gap-3">
-                                                    <div class="w-10 h-10 overflow-hidden rounded-full">
-                                                        <img src="./images/user/user-17.jpg" alt="brand" />
-                                                    </div>
-                                                    <div>
-                                                        <span class="block font-medium text-gray-800 text-theme-sm dark:text-white/90"> Lindsey Curtis </span>
-                                                        <span class="block text-gray-500 text-theme-xs dark:text-gray-400"> Web Designer </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-5 py-4 sm:px-6">
-                                            <div class="flex items-center">
-                                                <p class="text-gray-500 text-theme-sm dark:text-gray-400"> Agency Website </p>
-                                            </div>
-                                        </td>
-                                        <td class="px-5 py-4 sm:px-6">
-                                            <div class="flex items-center">
-                                                <div class="flex -space-x-2">
-                                                    <div class="w-6 h-6 overflow-hidden border-2 border-white rounded-full dark:border-gray-900">
-                                                        <img src="./images/user/user-22.jpg" alt="user" />
-                                                    </div>
-                                                    <div class="w-6 h-6 overflow-hidden border-2 border-white rounded-full dark:border-gray-900">
-                                                        <img src="./images/user/user-23.jpg" alt="user" />
-                                                    </div>
-                                                    <div class="w-6 h-6 overflow-hidden border-2 border-white rounded-full dark:border-gray-900">
-                                                        <img src="./images/user/user-24.jpg" alt="user" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-5 py-4 sm:px-6">
-                                            <div class="flex items-center">
-                                                <p class="rounded-full bg-success-50 px-2 py-0.5 text-theme-xs font-medium text-success-700 dark:bg-success-500/15 dark:text-success-500"> Active </p>
-                                            </div>
-                                        </td>
-                                        <td class="px-5 py-4 sm:px-6">
-                                            <div class="flex items-center">
-                                                <p class="text-gray-500 text-theme-sm dark:text-gray-400">3.9K</p>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-5 py-4 sm:px-6">
-                                            <div class="flex items-center">
-                                                <div class="flex items-center gap-3">
-                                                    <div class="w-10 h-10 overflow-hidden rounded-full">
-                                                        <img src="./images/user/user-18.jpg" alt="brand" />
-                                                    </div>
-                                                    <div>
-                                                        <span class="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                                            Kaiya George
-                                                        </span>
-                                                        <span class="block text-gray-500 text-theme-xs dark:text-gray-400">
-                                                            Project Manager
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-5 py-4 sm:px-6">
-                                            <div class="flex items-center">
-                                                <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                                    Technology
-                                                </p>
-                                            </div>
-                                        </td>
-                                        <td class="px-5 py-4 sm:px-6">
-                                            <div class="flex items-center">
-                                                <div class="flex -space-x-2">
-                                                    <div class="w-6 h-6 overflow-hidden border-2 border-white rounded-full dark:border-gray-900">
-                                                        <img src="./images/user/user-25.jpg" alt="user" />
-                                                    </div>
-                                                    <div class="w-6 h-6 overflow-hidden border-2 border-white rounded-full dark:border-gray-900">
-                                                        <img src="./images/user/user-26.jpg" alt="user" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-5 py-4 sm:px-6">
-                                            <div class="flex items-center">
-                                                <p class="rounded-full bg-warning-50 px-2 py-0.5 text-theme-xs font-medium text-warning-700 dark:bg-warning-500/15 dark:text-warning-400">
-                                                    Pending
-                                                </p>
-                                            </div>
-                                        </td>
-                                        <td class="px-5 py-4 sm:px-6">
-                                            <div class="flex items-center">
-                                                <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                                    24.9K
-                                                </p>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
                 </div>
+
+                <!-- test start-->
+                <table id="paketPengadaanTable" x-data-show="!loading" class="min-w-full">
+                    <thead>
+                        <tr class="border-b border-gray-100 dark:border-gray-800">
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider transition-colors duration-200 rounded-tl-xl dark:text-gray-400">
+                                <div class="flex items-center space-x-2">
+                                    <span>no</span>
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider transition-colors duration-200 rounded-tl-xl dark:text-gray-400">
+                                <div class="flex items-center space-x-2">
+                                    <span>Nama Paket</span>
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider transition-colors duration-200 dark:text-gray-400">
+                                <div class="flex items-center space-x-2">
+                                    <span>Lokasi</span>
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider transition-colors duration-200 dark:text-gray-400">
+                                <div class="flex items-center space-x-2">
+                                    <span>HPS</span>
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider transition-colors duration-200 dark:text-gray-400">
+                                <div class="flex items-center space-x-2">
+                                    <span>Pemenang</span>
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider transition-colors duration-200 dark:text-gray-400">
+                                <div class="flex items-center space-x-2">
+                                    <span>Tanggal Penentapan</span>
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider rounded-tr-xl dark:text-gray-400">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-10 dark:dark:bg-white/[0.03]">
+                        <template x-for="paketPengadaanData in paketPengadaan" :key="paketPengadaanData.id_transaksi_pemenang">
+                            <tr class="border-gray-100 text-xs">
+                                <td class="px-2 py-2 border-b dark:text-gray-200 border-gray-100" x-text="paketPengadaanData.id_transaksi_pemenang"></td>
+                                <td class="px-2 py-2 border-b dark:text-gray-400 border-gray-100" x-text="paketPengadaanData.nama_paket"></td>
+                                <td class="px-2 py-2 border-b dark:text-gray-400 border-gray-100 whitespace-nowrap" x-text="paketPengadaanData.provinsi"></td>
+                                <td class="px-2 py-2 border-b dark:text-gray-400 border-gray-100 whitespace-nowrap" x-text="$rupiah(paketPengadaanData.harga_perkiraan_sendiri)"></td>
+                                <td class="px-2 py-2 border-b dark:text-gray-400 border-gray-100" x-text="paketPengadaanData.pemenang"></td>
+                                <td class="px-2 py-2 border-b dark:text-gray-400 border-gray-100" x-text="paketPengadaanData.tanggal_penetapan"></td>
+                                <td class="px-4 py-2 border-b dark:text-gray-400 border-gray-100 whitespace-nowrap">
+                                    <button @click="openEditModal(user)"
+                                        class=" group/btn inline-flex items-center px-3 py-2 text-xs font-semibold text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 hover:text-blue-700 transition-all duration-200 transform hover:scale-105">
+                                        <svg class="w-4 h-4 mr-1.5 group-hover/btn:rotate-20 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"></path>
+                                        </svg>
+                                        Detail
+                                    </button>
+                                    <!-- Edit -->
+                                    <button @click="openEditModal(user)"
+                                        class="group/btn inline-flex items-center px-3 py-2 text-xs font-semibold rounded-lg transition-all duration-200 transform hover:scale-105
+                                            text-yellow-600 bg-yellow-50 hover:bg-yellow-100 hover:text-yellow-700">
+                                        <svg class="w-4 h-4 mr-1.5 group-hover/btn:rotate-12 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                        </svg>
+                                        Edit
+                                    </button>
+                                    <button @click="openEditModal(user)"
+                                        class="group/btn inline-flex items-center px-3 py-2 text-xs font-semibold rounded-lg transition-all duration-200 transform hover:scale-105
+                                            text-red-600 bg-red-50 hover:bg-red-100 hover:text-red-700">
+                                        <svg class="w-4 h-4 mr-1.5 group-hover/btn:rotate-12 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"></path>
+                                        </svg>
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        </template>
+                        <tr x-show="!paketPengadaan.length && !loading">
+                            <td colspan="6" class="text-center py-4 text-gray-500">No Paket Pengadaan found</td>
+                        </tr>
+                    </tbody>
+                </table>
                 <!-- test end-->
             </div>
         </div>
