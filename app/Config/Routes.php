@@ -24,6 +24,7 @@ $routes->group('api', ['namespace' => 'App\Controllers\API'], function ($routes)
         $routes->post('add', 'Users\UserAPIController::create'); // create
         $routes->put('update/(:num)', 'Users\UserAPIController::update/$1'); // update
         // $routes->delete('(:num)', 'Api\UserController::delete/$1'); // delete
+
     });
 
     // Roles
@@ -31,9 +32,12 @@ $routes->group('api', ['namespace' => 'App\Controllers\API'], function ($routes)
         $routes->get('', 'Roles\RolesAPIController::getListRoles'); // list
     });
 
-    // Unist
+    // Units
     $routes->group('units', ['filter' => 'jwt', 'cors'], function ($routes) {
         $routes->get('', 'Units\UnitsAPIController::getListUnits'); // list
+
+        $routes->post('add', 'Units\UnitsAPIController::create'); // create
+        $routes->put('update/(:num)', 'Units\UnitsAPIController::update/$1'); // update
     });
 
     // Jabatan

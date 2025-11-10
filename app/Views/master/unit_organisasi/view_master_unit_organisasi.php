@@ -17,7 +17,7 @@
                         <p class="text-sm text-gray-600 mt-1 dark:text-gray-400">Data Unit Organisasi</p>
                     </div>
                 </div>
-                <button @click="showAddModal = true" class="group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-xl text-sm font-semibold flex items-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                <button @click="openAddModal" class="group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-xl text-sm font-semibold flex items-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
                     <svg class="w-5 h-5 mr-2 group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                     </svg>
@@ -92,7 +92,7 @@
                                             </td>
                                             <td class="px-5 py-4 sm:px-6">
                                                 <div class="flex items-center">
-                                                    <p class="rounded-full bg-success-50 px-2 py-0.5 text-theme-xs font-medium text-success-700 dark:bg-success-500/15 dark:text-success-500"> <?= $org['keterangan'] ?> </p>
+                                                    <p class="text-gray-500 text-theme-sm dark:text-gray-400"> <?= $org['keterangan'] ?> </p>
                                                 </div>
                                             </td>
                                             <td class="px-5 py-4 sm:px-6">
@@ -109,7 +109,7 @@
                                                     <button type="button" @click='openEditModal(<?= json_encode($org, JSON_HEX_APOS | JSON_HEX_QUOT) ?>)' class="text-sm px-3 py-1 bg-yellow-500 hover:bg-yellow-600 text-white rounded">
                                                         Edit
                                                     </button>
-                                                    <button type="button" class="text-sm px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded">Delete</button>
+                                                    <!--<button type="button" class="text-sm px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded">Delete</button>-->
                                                 </div>
                                         </tr>
                                     <?php endforeach ?>
@@ -130,5 +130,6 @@
     </div>
 
     <?= $this->include('master/unit_organisasi/view_master_unit_organisasi_edit') ?>
+    <?= $this->include('master/unit_organisasi/view_master_unit_organisasi_add') ?>
 </div>
 <?= $this->endSection() ?>

@@ -225,20 +225,20 @@ window.MasterUnitOrganisasiUI = function() {
         validateForm() {
             this.errors = {};
             if (this.showAddModal) {
-                if (!this.AddForm.username.trim()) {
-                    this.errors.username = 'Username wajib diisi.';
+                if (!this.AddForm.nama_unit_organisasi.trim()) {
+                    this.errors.nama_unit_organisasi = 'Nama Unit Organisasi wajib diisi.';
                 }
-                if (!this.AddForm.nama_lengkap.trim()) {
-                    this.errors.nama_lengkap = 'Nama lengkap wajib diisi.';
+                if (!this.AddForm.kode_unit_organisasi.trim()) {
+                    this.errors.kode_unit_organisasi = 'Kode Unit Organisasi wajib diisi.';
                 }
             }
 
             if (this.showEditModal) {
-                if (!this.editForm.username.trim()) {
-                    this.errors.username = 'Username wajib diisi.';
+                if (!this.editForm.nama_unit_organisasi.trim()) {
+                    this.errors.nama_unit_organisasi = 'Nama Unit Organisasi wajib diisi.';
                 }
-                if (!this.editForm.nama_lengkap.trim()) {
-                    this.errors.nama_lengkap = 'Nama lengkap wajib diisi.';
+                if (!this.editForm.kode_unit_organisasi.trim()) {
+                    this.errors.kode_unit_organisasi = 'Kode Unit Organisasi wajib diisi.';
                 }
             }
 
@@ -250,8 +250,8 @@ window.MasterUnitOrganisasiUI = function() {
             if (this.errors[field]) delete this.errors[field];
         },
 
-        async submitAddUser() {
-            fetch('/api/users', {
+        async submitAddUnit() {
+            fetch('/api/units', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(this.form)
@@ -260,10 +260,15 @@ window.MasterUnitOrganisasiUI = function() {
             .then(data => {
                 if(data.status === 'success') {
                     this.showAddModal = false;
-                    this.form = { username: '', email: '' };
-                    this.loadUsers(); // Reload users after adding
+                    //this.form = { username: '', email: '' };
+                    //this.loadUsers(); // Reload users after adding
+
+                    // Reload halaman setelah update selesai (beri sedikit delay supaya notifikasi terlihat)
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
                 } else {
-                    alert(data.message || 'Failed to add user');
+                    alert(data.message || 'Failed to add unit');
                 }
             }).catch(err => console.error(err));
         },
@@ -330,22 +335,25 @@ window.MasterUnitOrganisasiUI = function() {
             }
         },
 
-        async submitEditUser() {
+        async submitEditUnit() {
             // Ambil nilai terbaru dari input
             const form_update = {
                 id : this.editForm.id,
-                username: this.$refs.usernameEdit.value,
-                nama_lengkap: this.$refs.nama_lengkapEdit.value,
-                status: this.editForm.status,
-                roles: this.selectedRoles.map(role => role.id_role),
-                id_unit_organisasi: this.selectedUnit,
-                id_master_jabatan: this.selectedJabatan
+                id_unit_organisasi: this.$refs.id_unit_organisasiEdit.value,
+                //username: this.$refs.usernameEdit.value,
+                nama_unit_organisasi: this.$refs.nama_unitEdit.value,
+                kode_unit_organisasi: this.$refs.kode_unitEdit.value,
+                keterangan: this.$refs.keteranganEdit.value,
+                is_active: this.editForm.is_active
+                //roles: this.selectedRoles.map(role => role.id_role),
+                //id_unit_organisasi: this.selectedUnit,
+                //id_master_jabatan: this.selectedJabatan
             }
             console.log('Submitting edited user 1:', this.editForm);
 
             console.log('Submitting edited user 2:', form_update);
             try {
-                const res = await fetch(`api/users/update/${form_update.id}`, {
+                const res = await fetch(`api/units/update/${form_update.id_unit_organisasi}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type' : 'application/json',
@@ -360,16 +368,22 @@ window.MasterUnitOrganisasiUI = function() {
                 this.notification = {
                     type: 'success',
                     title: 'Success',
-                    message: data.message || 'User berhasil di Update!.'
+                    message: data.message || 'Unit berhasil di Update!.'
                 };
 
                 // Call showNotification to display the notification
                 showNotification(this.notification.type, this.notification.title, this.notification.message);
                 // Hilangkan notification setelah 3 detik
-                setTimeout(() => this.notification = null, 3000);
-                if (this.loadUsers) {
-                    this.loadUsers();  // Memuat ulang daftar users setelah update
-                }
+                setTimeout(() => this.notification = null, 2000);
+                
+                //if (this.loadUsers) {
+                //    this.loadUsers();  // Memuat ulang daftar units setelah update
+                //}
+
+                // Reload halaman setelah update selesai (beri sedikit delay supaya notifikasi terlihat)
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
             } catch (err) {
                 console.error('Update failed : ', err);
             }
@@ -377,44 +391,38 @@ window.MasterUnitOrganisasiUI = function() {
 
         async openAddModal() {
             this.AddForm = {
-                username: '',
-                nama_lengkap: '',
-                id_master_jabatan: null,
-                id_master_organisasi: null,
-                password: '12345678',
-                roles: [],
-                status: 1,
+                nama_unit_organisasi: '',
+                kode_unit_organisasi: '',
+                keterangan: null,
+                is_active: 1,
             };
             this.showAddModal = true;
-            this.$nextTick(() => this.$refs.usernameInput.focus());
+            this.$nextTick(() => this.$refs.nama_unit_organisasiInput.focus());
             console.log('Open Modal Add:', this.AddForm);
         },
 
         async closeAddModal() {
             this.showAddModal = false;
-            this.AddForm = { username: '', nama_lengkap: '', status: 1, id_master_jabatan: null, id_master_organisasi: null };
-            this.selectedRoles = [];
-            this.selectedUnit = '';
-            this.selectedJabatan = '';
+            this.AddForm = { nama_unit_organisasi: '', kode_unit_organisasi: '', keterangan: '', is_active: 1 };
+            //this.selectedRoles = [];
+            //this.selectedUnit = '';
+            //this.selectedJabatan = '';
             
         },
 
-        async submitAddUser() {
+        async submitAddUnit() {
             // Ambil nilai terbaru dari input
             this.AddForm = {
-                username: this.AddForm.username,
-                nama_lengkap: this.AddForm.nama_lengkap,
-                id_unit_organisasi: this.selectedUnit,
-                id_master_jabatan: this.selectedJabatan,
-                password: this.AddForm.password,
-                roles: this.selectedRoles.map(role => role.id_role),
-                status: this.AddForm.status,
+                nama_unit_organisasi: this.AddForm.nama_unit_organisasi,
+                kode_unit_organisasi: this.AddForm.kode_unit_organisasi,
+                keterangan: this.AddForm.keterangan,
+                is_active: this.AddForm.is_active,
             }
-            console.log('Submitting Add user :', this.AddForm);
+            console.log('Submitting Add unit :', this.AddForm);
             if (!this.validateForm()) return;
             this.loadingAction = true;
             try {
-                const response = await fetch(`api/users/add`, {
+                const response = await fetch(`api/units/add`, {
                     method: 'POST',
                     headers: {
                         'Content-Type' : 'application/json',
@@ -424,27 +432,29 @@ window.MasterUnitOrganisasiUI = function() {
                 });
                 const result  = await response.json();
 
-                
                 if (response.ok && result.success) {
-                this.notification = {
-                    type: 'success',
-                    title: 'Success',
-                    message: result.message || 'User berhasil di Update!.'
-                };
-                if (this.loadUsers) {
-                    this.loadUsers();  // Memuat ulang daftar users setelah update
-                }
-                this.showAddModal = false;
-                this.AddForm = { username: '', nama_lengkap: '', status: 1, id_master_jabatan: null, id_master_organisasi: null };
-                this.selectedRoles = [];
-                this.selectedUnit = '';
-                this.selectedJabatan = '';
+                    this.notification = {
+                        type: 'success',
+                        title: 'Success',
+                        message: result.message || 'Unit berhasil di Update!.'
+                    };
+                    //if (this.loadUsers) {
+                    //    this.loadUsers();  // Memuat ulang daftar users setelah update
+                    //}
+
+                    // Reload halaman setelah update selesai (beri sedikit delay supaya notifikasi terlihat)
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
+                    
+                    this.showAddModal = false;
+                    this.AddForm = { nama_unit_organisasi: '', kode_unit_organisasi: '', keterangan: '', is_active: 1 };
                 } else {
-                this.notification = {
-                    type: 'error',
-                    title: 'Error',
-                    message: result.message || 'Terjadi kesalahan.'
-                };
+                    this.notification = {
+                        type: 'error',
+                        title: 'Error',
+                        message: result.message || 'Terjadi kesalahan.'
+                    };
                 }
                 showNotification(this.notification.type, this.notification.title, this.notification.message);
                 setTimeout(() => this.notification = null, 3000);

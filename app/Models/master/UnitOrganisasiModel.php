@@ -52,4 +52,15 @@ class UnitOrganisasiModel extends Model
             ->get()
             ->getResultArray();
     }
+
+    public function getNamaUnit($identifier)
+    {
+        return $this->where('nama_unit_organisasi', $identifier)
+            ->first();
+    }
+
+    public function insertMasterUnit(array $unitData)
+    {
+        return $this->insert($unitData);
+    }
 }

@@ -13,7 +13,7 @@
 
         <div class="mt-3">
             <div class="space-y-6">
-                <form @submit.prevent="submitEditUser">
+                <form @submit.prevent="submitEditUnit">
                     <div class="space-y-6 border-gray-100 dark:border-gray-800">
                         <div class="grid grid-cols-2 gap-2">
                             <!-- Elements -->
@@ -25,8 +25,9 @@
                                 <input
                                     type="text"
                                     x-bind:value="editForm.id_unit_organisasi"
+                                    readonly
                                     class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
-                                    x-ref="usernameEdit" />
+                                    x-ref="id_unit_organisasiEdit" />
                             </div>
 
                             <!-- Elements -->
@@ -39,7 +40,7 @@
                                     type="text"
                                     x-bind:value="editForm.nama_unit_organisasi"
                                     class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
-                                    x-ref="nama_lengkapEdit" />
+                                    x-ref="nama_unitEdit" />
                             </div>
                         </div>
 
@@ -54,7 +55,7 @@
                                     type="text"
                                     x-bind:value="editForm.kode_unit_organisasi"
                                     class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
-                                    x-ref="usernameEdit" />
+                                    x-ref="kode_unitEdit" />
                             </div>
 
                             <!-- Elements -->
@@ -67,7 +68,7 @@
                                     type="text"
                                     x-bind:value="editForm.keterangan"
                                     class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
-                                    x-ref="nama_lengkapEdit" />
+                                    x-ref="keteranganEdit" />
                             </div>
                         </div>
 
@@ -111,7 +112,7 @@
 
                         <div class="flex justify-end space-x-3 pt-4">
                             <button type="button" @click="closeEditModal" class="ml-2 px-4 py-2 border rounded">Cancel</button>
-                            <button type="button" @click="submitEditUser()" class="bg-blue-600 text-white px-4 py-2 rounded">Save</button>
+                            <button type="button" @click="submitEditUnit()" class="bg-blue-600 text-white px-4 py-2 rounded">Save</button>
                         </div>
                     </div>
                 </form>
