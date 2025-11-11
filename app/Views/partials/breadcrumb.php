@@ -12,7 +12,9 @@
           Dashboard
         </a>
       </li>
-      <?php if ($page !== 'dashboard') { ?>
+      <?php //if ($page !== 'dashboard') { 
+      ?>
+      <?php if (!empty($page) && $page !== 'dashboard') { ?>
         <svg
           class="stroke-current"
           width="17"

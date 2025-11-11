@@ -71,4 +71,9 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
     $routes->get('/alldata', 'TransaksiAllDataController::index');
     $routes->get('/getdatafilter', 'TransaksiGetDataByFilterController::index');
     $routes->get('/getdatapemenang', 'TransaksiGetDataByPemenangController::index');
+
+    $routes->get('/cari-data-paket-pengadaan', 'TransaksiGetDataByFilterController::hasil');
+    $routes->get('/cari-data-pemenang', 'TransaksiGetDataByPemenangController::hasil');
+    // AJAX endpoint for paket by pemenang (used by modal)
+    $routes->get('/transaksi/pemenang/list', 'TransaksiGetDataByPemenangController::apiListByPemenang');
 });

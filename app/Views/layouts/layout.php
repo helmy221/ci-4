@@ -109,7 +109,7 @@
             <main>
                 <div class="p-4 mx-auto max-w-screen-2xl md:p-6">
                     <!-- Breadcrumb Start -->
-                    <div x-data="{ pageName: `<?= $page ?>`}">
+                    <div x-data="{ pageName: <?= json_encode($page ?? '') ?> }">
                         <?= $this->include('partials/breadcrumb') ?>
                     </div>
                     <!-- Breadcrumb End -->

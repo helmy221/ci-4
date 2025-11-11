@@ -74,6 +74,7 @@ import '../js/components/users';
 import '../js/components/paketPengadaan';
 import '../js/components/masterUnitOrganisasi';
 
-
+import '../js/components/transaksiFilter';
+import '../js/components/transaksiPemenang';
 
 console.log("TailAdmin + CI4 running with Vite!");

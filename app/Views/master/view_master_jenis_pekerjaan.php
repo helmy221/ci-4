@@ -60,11 +60,11 @@
                                             <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400"> Keterangan </p>
                                         </div>
                                     </th>
-                                    <th class="px-5 py-3 sm:px-6">
+                                    <!--<th class="px-5 py-3 sm:px-6">
                                         <div class="flex items-center">
                                             <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400"> Aksi </p>
                                         </div>
-                                    </th>
+                                    </th> -->
                                 </tr>
                             </thead>
                             <!-- table header end -->
@@ -93,12 +93,12 @@
                                                     <p class="text-gray-500 text-theme-sm dark:text-gray-400"><?= $jenis['keterangan'] ?> </p>
                                                 </div>
                                             </td>
-                                            <td class="px-5 py-4 sm:px-6">
+                                            <!--<td class="px-5 py-4 sm:px-6">
                                                 <div class="flex items-center space-x-2">
                                                     <button type="button" @click="openEditModal({ id: <?= $jenis['id_master_jenis_pengadaan'] ?>, nama: <?= json_encode($jenis['nama_master_jenis_pengadaan']) ?>, kode: <?= json_encode($jenis['singkatan_master_jenis_pengadaan']) ?>, keterangan: <?= json_encode($jenis['keterangan']) ?> })" class="text-sm px-3 py-1 bg-yellow-500 hover:bg-yellow-600 text-white rounded">Edit</button>
                                                     <button type="button" class="text-sm px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded">Delete</button>
                                                 </div>
-                                            </td>
+                                            </td> -->
                                         </tr>
                                     <?php endforeach ?>
                                 <?php else: ?>

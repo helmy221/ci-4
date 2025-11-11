@@ -29,7 +29,7 @@
     <div
         class="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
         <!-- Sidebar Menu -->
-        <nav x-data="{ selected: '<?= $page ?>' }">
+        <nav x-data="{ selected: '<?= $page ?? '' ?>', page: '<?= $page ?? '' ?>' }">
             <!-- Menu Group -->
             <div>
                 <h3 class="mb-4 text-xs uppercase leading-[20px] text-gray-400">
