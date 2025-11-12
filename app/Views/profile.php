@@ -49,7 +49,7 @@
                                     class="flex flex-col items-center w-full gap-6 xl:flex-row">
                                     <div
                                         class="w-20 h-20 overflow-hidden border border-gray-200 rounded-full dark:border-gray-800">
-                                        <img src="./images/user/owner.jpg" alt="user" />
+                                        <img src="<?= base_url('tailadmin/images/user/user.png') ?>" alt="user" />
                                     </div>
                                     <div class="order-3 xl:order-2">
                                         <h4
