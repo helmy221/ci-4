@@ -79,7 +79,8 @@
         </div>
 
         <!-- DataTables assets (CDN) and init script -->
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+        <!--<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">-->
+        <link rel="stylesheet" href="<?= base_url('assets/jquery.dataTables.min.css') ?>">
         <style>
             /* Tweak DataTables controls to match Tailwind-like appearance */
             .dataTables_wrapper .dataTables_filter input {
@@ -141,8 +142,10 @@
                 padding-right: 0.75rem;
             }
         </style>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+        <!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+        <script src="<?= base_url('assets/jquery-3.6.0.min.js') ?>"></script>
+        <!--<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>-->
+        <script src="<?= base_url('assets/jquery.dataTables.min.js') ?>"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 // Initialize DataTable on the results table

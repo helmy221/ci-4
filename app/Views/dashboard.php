@@ -210,7 +210,9 @@
 <?php // Chart script block 
 ?>
 <?= $this->section('scripts') ?> <!-- load script ini di layout-->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Load local Chart.js from public assets -->
+<!--<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
+<script src="<?= base_url('assets/chart.js') ?>"></script>
 <script>
     (function() {
         const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
