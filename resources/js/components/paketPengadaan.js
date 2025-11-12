@@ -194,5 +194,74 @@ window.paketPengadaan = function() {
             }
             // window.location.href = '/uploads/template/Template_Form_Daftar_Pemenang.xlsx';
         },
+        // Detail modal state
+        showDetailModal: false,
+        detailForm: {},
+
+        openDetailModal(item) {
+            // clone to avoid mutating list directly
+            this.detailForm = Object.assign({}, item);
+            this.showDetailModal = true;
+        },
+
+        closeDetailModal() {
+            this.showDetailModal = false;
+            this.detailForm = {};
+        },
+
+        async saveDetail() {
+            if (!this.detailForm || !this.detailForm.id_transaksi_pemenang) {
+                showNotification('error', 'Error', 'Invalid paket id');
+                return;
+            }
+
+            const id = this.detailForm.id_transaksi_pemenang;
+
+            // Prepare payload - send only updatable fields
+            const payload = {
+                nama_paket: this.detailForm.nama_paket,
+                ketua_pokja: this.detailForm.ketua_pokja,
+                id_lokasi_provinsi: this.detailForm.id_lokasi_provinsi,
+                persentase_nilai_kontrak: Number(this.detailForm.persentase_nilai_kontrak) || 0,
+                harga_perkiraan_sendiri: Number(this.detailForm.harga_perkiraan_sendiri) || 0,
+                pemenang: this.detailForm.pemenang,
+                durasi_pemilihan: this.detailForm.durasi_pemilihan,
+                tanggal_penetapan: this.detailForm.tanggal_penetapan,
+                keterangan: this.detailForm.keterangan,
+                id_master_jenis_pengadaan: this.detailForm.id_master_jenis_pengadaan,
+                id_unit_organisasi: this.detailForm.id_unit_organisasi
+            };
+
+            try {
+                const res = await fetch(`/api/transaksi/update/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': 'Bearer ' + window.jwtToken,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+                if (res.ok && data.status === 'success') {
+                    showNotification('success', 'Berhasil', data.message || 'Paket berhasil disimpan');
+                    this.closeDetailModal();
+                    this.loadPaketPengadaan();
+                } else {
+                    showNotification('error', 'Gagal', data.message || 'Gagal menyimpan paket');
+                }
+            } catch (err) {
+                console.error(err);
+                showNotification('error', 'Error', err.message || 'Terjadi kesalahan');
+            }
+        },
+
+        formatRupiah(value) {
+            if (value === null || value === undefined || value === '') return '-';
+            const num = Number(value);
+            if (isNaN(num)) return value;
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(num);
+        },
     }
 }

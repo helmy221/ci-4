@@ -13,7 +13,7 @@
                     </div>
                     <div>
                         <h2 class="text-2xl font-bold text-gray-900 dark:text-white/90">Filter Paket Pengadaan</h2>
-                        <p class="text-sm text-gray-600 mt-1 dark:text-gray-400">Filter data pemenang</p>
+                        <p class="text-sm text-gray-600 mt-1 dark:text-gray-400">Filter data Pengadaan</p>
                     </div>
                 </div>
             </div>

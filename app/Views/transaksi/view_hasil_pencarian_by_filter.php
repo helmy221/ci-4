@@ -13,7 +13,7 @@
                     </div>
                     <div>
                         <h2 class="text-2xl font-bold text-gray-900 dark:text-white/90">Filter Paket Pengadaan</h2>
-                        <p class="text-sm text-gray-600 mt-1 dark:text-gray-400">Filter data pemenang</p>
+                        <p class="text-sm text-gray-600 mt-1 dark:text-gray-400">Filter data Pengadaan</p>
                     </div>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                                         <th class="col-name px-6 py-3 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Nama</th>
                                         <th class="px-6 py-3 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Ketua Pokja</th>
                                         <th class="px-6 py-3 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Pemenang</th>
-                                        <th class="px-6 py-3 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Harga</th>
+                                        <th class="px-6 py-3 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Harga Perkiraan Sendiri</th>
                                         <th class="px-6 py-3 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Action</th>
                                     </tr>
                                 </thead>
@@ -62,7 +62,11 @@
                                         <?php endforeach ?>
                                     <?php else: ?>
                                         <tr>
-                                            <td class="px-6 py-4 text-sm text-gray-500" colspan="6">Tidak ada data ditemukan.</td>
+                                            <td class="px-6 py-4 text-sm text-gray-500 text-center">Tidak ada data ditemukan.</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
                                         </tr>
                                     <?php endif ?>
                                 </tbody>
@@ -143,7 +147,39 @@
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 // Initialize DataTable on the results table
-                    if (typeof $ !== 'undefined' && $('#resultsTable').length) {
+                if (typeof $ !== 'undefined' && $('#resultsTable').length) {
+                    // Ensure the table body rows have the same number of cells as the header.
+                    // Some server-side templates output a single <td colspan="N"> which can
+                    // make DataTables complain (tn/18). Fix common case dynamically.
+                    try {
+                        var $table = $('#resultsTable');
+                        var headerCount = $table.find('thead tr').first().find('th').length;
+                        var $tbody = $table.find('tbody');
+                        var $rows = $tbody.find('tr');
+                        if ($rows.length === 1) {
+                            var tdCount = $rows.first().find('td').length;
+                            if (tdCount === 1) {
+                                var $onlyTd = $rows.first().find('td').first();
+                                var colspan = parseInt($onlyTd.attr('colspan') || '0', 10);
+                                // If it's a colspan placeholder, rebuild the row into headerCount cells
+                                if (colspan > 1 && colspan !== headerCount) {
+                                    var msg = $onlyTd.html();
+                                    var newCells = '<td class="px-6 py-4 text-sm text-gray-500 text-center">' + msg + '</td>';
+                                    for (var i = 1; i < headerCount; i++) newCells += '<td></td>';
+                                    $rows.first().html(newCells);
+                                }
+                            }
+                        }
+                        // Recompute header/first-row counts and only init if they match
+                        var firstRowCellCount = $table.find('tbody tr').first().find('td').length || 0;
+                        if (headerCount !== firstRowCellCount) {
+                            console.warn('DataTables init aborted: header columns (%d) != first row cells (%d)', headerCount, firstRowCellCount);
+                            return;
+                        }
+                    } catch (e) {
+                        console.warn('Error while normalizing table rows for DataTables:', e);
+                    }
+
                     $('#resultsTable').DataTable({
                         responsive: true,
                         pageLength: 10,
@@ -157,11 +193,15 @@
                             {
                                 targets: 3,
                                 searchable: false,
-                                createdCell: function (td, cellData, rowData, row, col) {
+                                createdCell: function(td, cellData, rowData, row, col) {
                                     var raw = $(td).data('order');
                                     if (raw !== undefined && raw !== null && raw !== '') {
                                         try {
-                                            var nf = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 });
+                                            var nf = new Intl.NumberFormat('id-ID', {
+                                                style: 'currency',
+                                                currency: 'IDR',
+                                                maximumFractionDigits: 0
+                                            });
                                             $(td).text(nf.format(Number(raw)));
                                         } catch (e) {
                                             // Fallback to simple formatting

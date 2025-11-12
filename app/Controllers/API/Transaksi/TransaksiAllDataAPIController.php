@@ -472,6 +472,57 @@ class TransaksiAllDataAPIController extends ResourceController
      */
     public function edit($id = null) {}
 
+    public function update($id = null)
+    {
+        // Expect JSON body
+        $payload = $this->request->getJSON(true);
+
+        if (!$id) {
+            return $this->respond(['status' => 'error', 'message' => 'Missing id'], ResponseInterface::HTTP_BAD_REQUEST);
+        }
+
+        if (!$payload || !is_array($payload)) {
+            return $this->respond(['status' => 'error', 'message' => 'Invalid payload'], ResponseInterface::HTTP_BAD_REQUEST);
+        }
+
+        // Filter allowed fields to prevent mass assignment
+        $allowed = [
+            'nama_paket', 'ketua_pokja', 'id_lokasi_provinsi', 'persentase_nilai_kontrak',
+            'harga_perkiraan_sendiri', 'pemenang', 'durasi_pemilihan', 'tanggal_tayang',
+            'tanggal_penetapan', 'id_master_jenis_pengadaan', 'tanggal_penetapan_awal',
+            'tanggal_penetapan_final', 'keterangan', 'id_unit_organisasi'
+        ];
+
+        $dataToUpdate = [];
+        foreach ($allowed as $f) {
+            if (array_key_exists($f, $payload)) {
+                $dataToUpdate[$f] = $payload[$f];
+            }
+        }
+
+        if (empty($dataToUpdate)) {
+            return $this->respond(['status' => 'error', 'message' => 'No updatable fields provided'], ResponseInterface::HTTP_BAD_REQUEST);
+        }
+
+        try {
+            // Use model update
+            if (!$this->model) {
+                $this->model = new PaketPengadaanModel();
+            }
+
+            $exists = $this->model->find($id);
+            if (!$exists) {
+                return $this->respond(['status' => 'error', 'message' => 'Paket not found'], ResponseInterface::HTTP_NOT_FOUND);
+            }
+
+            $this->model->update($id, $dataToUpdate);
+
+            return $this->respond(['status' => 'success', 'message' => 'Paket updated successfully', 'data' => $this->model->find($id)]);
+        } catch (\Throwable $e) {
+            return $this->respond(['status' => 'error', 'message' => 'Failed to update: ' . $e->getMessage()], ResponseInterface::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     /**
      * Add or update a model resource, from "posted" properties.
      *

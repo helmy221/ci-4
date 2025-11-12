@@ -117,7 +117,7 @@
                                 <td class="px-2 py-2 border-b dark:text-gray-400 border-gray-100" x-text="paketPengadaanData.pemenang"></td>
                                 <td class="px-2 py-2 border-b dark:text-gray-400 border-gray-100" x-text="paketPengadaanData.tanggal_penetapan"></td>
                                 <td class="px-4 py-2 border-b dark:text-gray-400 border-gray-100 whitespace-nowrap">
-                                    <button @click="openEditModal(user)"
+                                    <button @click="openDetailModal(paketPengadaanData)"
                                         class=" group/btn inline-flex items-center px-3 py-2 text-xs font-semibold text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 hover:text-blue-700 transition-all duration-200 transform hover:scale-105">
                                         <svg class="w-4 h-4 mr-1.5 group-hover/btn:rotate-20 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"></path>
@@ -125,7 +125,7 @@
                                         Detail
                                     </button>
                                     <!-- Edit -->
-                                    <button @click="openEditModal(user)"
+                                    <!--<button @click="openEditModal(user)"
                                         class="group/btn inline-flex items-center px-3 py-2 text-xs font-semibold rounded-lg transition-all duration-200 transform hover:scale-105
                                             text-yellow-600 bg-yellow-50 hover:bg-yellow-100 hover:text-yellow-700">
                                         <svg class="w-4 h-4 mr-1.5 group-hover/btn:rotate-12 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -140,7 +140,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"></path>
                                         </svg>
                                         Delete
-                                    </button>
+                                    </button> -->
                                 </td>
                             </tr>
                         </template>
@@ -281,82 +281,18 @@
                 </div>
             </div>
         </div>
-        <!-- Add add Modal -->
-        <!-- Add/Edit User Modal -->
-
-
-        <!--<div x-show="showAddModal"
-        x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="opacity-0 scale-90"
-        x-transition:enter-end="opacity-100 scale-100"
-        x-transition:leave="transition ease-in duration-200"
-        x-transition:leave-start="opacity-100 scale-100"
-        x-transition:leave-end="opacity-0 scale-90"
-        class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 overflow-y-auto">
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-xl w-96">
-            <h3 class="text-xl font-bold mb-4">Add Paket Pengadaan</h3>
-            <form @submit.prevent="submitAddUser">
-
-                <div class="mb-4">
-                    <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                        Nama Paket Pengadaan
-                    </label>
-                    <input type="text" class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" />
-                </div>
-                <div class="mb-4">
-                    <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                        Kode Unit Organisasi
-                    </label>
-                    <input type="text" class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" />
-                </div>
-                <div class="mb-4">
-                    <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                        Ketua Kelompok Kerja
-                    </label>
-                    <input type="text" class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" />
-                </div>
-                <div class="mb-4">
-                    <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                        Lokasi
-                    </label>
-                    <input type="text" class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" />
-                </div>
-                <div class="mb-4">
-                    <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                        % Nilai Kontrak
-                    </label>
-                    <input type="text" class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" />
-                </div>
-                <div>
-                    <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                        Keterangan
-                    </label>
-                    <textarea placeholder="Enter a description..." type="text" rows="3" class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"></textarea>
-                </div>
-
-                <br>
-                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Save</button>
-                <button type="button" @click="showAddModal=false" class="ml-2 px-4 py-2 border rounded">Cancel</button>
-            </form>
-        </div>
-    </div>-->
 
         <!-- Modal Background -->
         <div x-show="showAddModal"
             class="fixed inset-0 z-99999 flex justify-center bg-black/50 overflow-y-auto pt-20">
-            <!-- Modal Box -->
             <div class="relative bg-white dark:bg-gray-800 w-full max-w-2xl mx-auto my-10 rounded-2xl shadow-xl flex flex-col max-h-[90vh]">
-                <!-- Header -->
                 <div class="p-6 border-b border-gray-200 dark:border-gray-700">
                     <h3 class="text-xl font-bold text-gray-900 dark:text-white">
                         Tambah Paket Pengadaan
                     </h3>
                 </div>
-
-                <!-- Body -->
                 <div class="p-6 overflow-y-auto">
                     <form @submit.prevent="submitAddUser" class="space-y-5">
-                        <!-- ✏️ Masukkan semua input kamu di dalam sini -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
                                 Nama Paket Pengadaan
@@ -426,15 +362,6 @@
                                 placeholder="Masukkan nama pemenang"
                                 class="w-full h-11 rounded-lg border border-gray-300 bg-transparent px-4 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90" />
                         </div>
-                        <!--<div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
-                            Nomor Kontrak
-                        </label>
-                        <input
-                            type="text"
-                            placeholder="Contoh: 123/SPK/2025"
-                            class="w-full h-11 rounded-lg border border-gray-300 bg-transparent px-4 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90" />
-                    </div>-->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
                                 Jenis Pengadaan
@@ -446,15 +373,6 @@
                                 <option>PK - Pekerjaan Konstruksi</option>
                             </select>
                         </div>
-                        <!--<div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
-                            Tahun Anggaran
-                        </label>
-                        <input
-                            type="text"
-                            placeholder="Contoh: 2025"
-                            class="w-full h-11 rounded-lg border border-gray-300 bg-transparent px-4 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90" />
-                    </div>-->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
                                 Tanggal Penetapan Pemenang Awal
@@ -482,7 +400,6 @@
                         </div>
                     </form>
                 </div>
-
                 <!-- Footer -->
                 <div
                     class="p-6 border-t border-gray-200 dark:border-gray-700 flex justify-end space-x-3 bg-white dark:bg-gray-800 rounded-b-2xl">
@@ -500,6 +417,76 @@
                 </div>
             </div>
         </div>
+
+
+
+        <!-- Detail Paket Modal -->
+        <div x-show="showDetailModal" class="fixed inset-0 flex items-start justify-center overflow-y-auto modal z-99999 bg-black/50 pt-24">
+            <div class="bg-white dark:bg-gray-800 rounded-xl w-11/12 md:w-8/12 lg:w-6/12 max-h-[80vh] flex flex-col">
+                <div class="px-6 py-4 flex justify-between items-center border-b border-gray-200 dark:border-gray-700 sticky top-0 bg-white dark:bg-gray-800 z-10">
+                    <h3 class="text-xl font-bold">Detail Paket Pengadaan</h3>
+                    <button @click="closeDetailModal" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="p-6 overflow-y-auto flex-1">
+                    <form @submit.prevent="saveDetail">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Nama Paket</label>
+                                <input x-model="detailForm.nama_paket" type="text" class="mt-1 w-full text-sm text-gray-800 rounded-lg border border-gray-300 px-3 py-2" />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Ketua Pokja</label>
+                                <input x-model="detailForm.ketua_pokja" type="text" class="mt-1 w-full text-sm text-gray-800 rounded-lg border border-gray-300 px-3 py-2" />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Lokasi (Provinsi)</label>
+                                <input x-model="detailForm.provinsi" type="text" class="mt-1 w-full text-sm text-gray-800 rounded-lg border border-gray-300 px-3 py-2" />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">HPS (Harga Perkiraan Sendiri)</label>
+                                <input x-model.number="detailForm.harga_perkiraan_sendiri" type="number" class="mt-1 w-full text-sm text-gray-800 rounded-lg border border-gray-300 px-3 py-2" />
+                                <div class="text-xs text-gray-500 mt-1">Formatted: <span x-text="formatRupiah(detailForm.harga_perkiraan_sendiri)"></span></div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Persentase Nilai Kontrak (%)</label>
+                                <input x-model.number="detailForm.persentase_nilai_kontrak" type="number" min="0" max="100" step="0.01" class="mt-1 w-full text-sm text-gray-800 rounded-lg border border-gray-300 px-3 py-2" />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Nilai Kontrak (hasil)</label>
+                                <div class="mt-1 text-sm text-gray-800" x-text="formatRupiah(((Number(detailForm.persentase_nilai_kontrak)||0)/100) * (Number(detailForm.harga_perkiraan_sendiri)||0))"></div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Pemenang</label>
+                                <input x-model="detailForm.pemenang" type="text" class="mt-1 w-full text-sm text-gray-800 rounded-lg border border-gray-300 px-3 py-2" />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Tanggal Penetapan</label>
+                                <input x-model="detailForm.tanggal_penetapan" type="date" class="mt-1 w-full text-sm text-gray-800 rounded-lg border border-gray-300 px-3 py-2" />
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700">Keterangan</label>
+                                <textarea x-model="detailForm.keterangan" rows="3" class="mt-1 w-full text-sm text-gray-800 rounded-lg border border-gray-300 px-3 py-2"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="p-6 border-t border-gray-200 dark:border-gray-700 flex justify-end space-x-3">
+                    <button @click="closeDetailModal" class="px-4 py-2 rounded bg-gray-100 hover:bg-gray-200">Cancel</button>
+                    <button @click="saveDetail" class="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white">Save</button>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
     </div>
 </div>
 <?= $this->endSection() ?>

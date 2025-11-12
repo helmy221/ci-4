@@ -34,8 +34,11 @@
                                             <tr>
                                                 <th class="px-3 py-2 text-left">#</th>
                                                 <th class="px-3 py-2 text-left">Nama Paket</th>
-                                                <th class="px-3 py-2 text-left">Harga</th>
                                                 <th class="px-3 py-2 text-left">Tahun</th>
+                                                <th class="px-3 py-2 text-left">HPS</th>
+                                                <th class="px-3 py-2 text-left">Persentase Nilai Kontrak</th>
+                                                <th class="px-3 py-2 text-left">Nilai Kontrak</th>
+
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -43,8 +46,24 @@
                                                 <tr class="border-b">
                                                     <td class="px-3 py-2" x-text="idx + 1"></td>
                                                     <td class="px-3 py-2" x-text="p.nama_paket"></td>
-                                                    <td class="px-3 py-2" x-text="formatRupiah(p.harga_perkiraan_sendiri)"></td>
                                                     <td class="px-3 py-2" x-text="p.tahun"></td>
+                                                    <td class="px-3 py-2" x-text="formatRupiah(p.harga_perkiraan_sendiri)"></td>
+
+                                                    <!-- Persentase Nilai Kontrak (editable per paket) -->
+                                                    <td class="px-3 py-2">
+                                                        <div class="relative">
+                                                            <input type="number" inputmode="decimal" min="0" max="100" step="0.01"
+                                                                x-model.number="p.persentase_nilai_kontrak"
+                                                                class="w-full pl-2 pr-10 h-8 text-sm border rounded" />
+                                                            <span class="absolute right-2 top-1/2 -translate-y-1/2 text-sm text-gray-500">%</span>
+                                                        </div>
+                                                    </td>
+
+                                                    <!-- Nilai Kontrak = Persentase / 100 * HPS -->
+                                                    <td class="px-3 py-2">
+                                                        <span x-text="formatRupiah(((Number(p.persentase_nilai_kontrak)||0)/100) * (Number(p.harga_perkiraan_sendiri)||0))"></span>
+                                                    </td>
+
                                                 </tr>
                                             </template>
                                         </tbody>

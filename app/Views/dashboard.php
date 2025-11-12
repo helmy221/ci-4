@@ -47,6 +47,8 @@
         </div>
     </div>
 
+
+
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <!-- Total Users Card -->
         <div class="group relative bg-white dark:bg-gray-800 overflow-hidden shadow-lg rounded-2xl border border-gray-200 dark:border-gray-800  hover:shadow-2xl hover:border-blue-300 transition-all duration-300 transform hover:-translate-y-1 animate-slideInRight" style="animation-delay: 0.1s">
@@ -63,14 +65,14 @@
                                 </div>
                             </div>
                             <div class="flex-1">
-                                <p class="text-sm font-medium text-gray-600 mb-1 dark:text-gray-300">Total Paket</p>
-                                <p class="text-2xl font-bold text-gray-900 dark:text-gray-300">388</p>
+                                <p class="text-sm font-medium text-gray-600 mb-1 dark:text-gray-300">Jasa Konsultansi</p>
+                                <p class="text-2xl font-bold text-gray-900 dark:text-gray-300"><?= $jasa_konsultansi ?></p>
                             </div>
                         </div>
                         <div class="mt-4 flex items-center justify-between">
                             <div class="flex items-center space-x-2">
                                 <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                                <span class="text-sm text-green-600 font-semibold">13 active</span>
+                                <span class="text-sm text-green-600 font-semibold"><?= $jasa_konsultansi ?> closed</span>
                             </div>
                             <!-- <div class="flex items-center text-xs text-gray-500">
                             <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -99,14 +101,14 @@
                                 </div>
                             </div>
                             <div class="flex-1">
-                                <p class="text-sm font-medium text-gray-600 mb-1 dark:text-gray-300">Konsultansi Konstruksi</p>
-                                <p class="text-2xl font-bold text-gray-900 dark:text-gray-300">190</p>
+                                <p class="text-sm font-medium text-gray-600 mb-1 dark:text-gray-300">Pekerjaan Konstruksi</p>
+                                <p class="text-2xl font-bold text-gray-900 dark:text-gray-300"><?= $pekerjaan_konstruksi ?></p>
                             </div>
                         </div>
                         <div class="mt-4 flex items-center justify-between">
                             <div class="flex items-center space-x-2">
                                 <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                                <span class="text-sm text-green-600 font-semibold">185 Closed</span>
+                                <span class="text-sm text-green-600 font-semibold"><?= $pekerjaan_konstruksi ?> Closed</span>
                             </div>
                             <!-- <div class="flex items-center text-xs text-gray-500">
                             <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -135,14 +137,14 @@
                                 </div>
                             </div>
                             <div class="flex-1">
-                                <p class="text-sm font-medium text-gray-600 mb-1 dark:text-gray-300">Pekerjaan Konstruksi</p>
-                                <p class="text-2xl font-bold text-gray-900 dark:text-gray-300">198</p>
+                                <p class="text-sm font-medium text-gray-600 mb-1 dark:text-gray-300">Pengadaan Barang</p>
+                                <p class="text-2xl font-bold text-gray-900 dark:text-gray-300"><?= $pengadaan_barang ?> </p>
                             </div>
                         </div>
                         <div class="mt-4 flex items-center justify-between">
                             <div class="flex items-center space-x-2">
                                 <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                                <span class="text-sm text-green-600 font-semibold">190 Closed</span>
+                                <span class="text-sm text-green-600 font-semibold"><?= $pengadaan_barang ?> Closed</span>
                             </div>
                             <!-- <div class="flex items-center text-xs text-gray-500">
                             <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -171,14 +173,14 @@
                                 </div>
                             </div>
                             <div class="flex-1">
-                                <p class="text-sm font-medium text-gray-600 mb-1 dark:text-gray-300">Your Roles</p>
-                                <p class="text-2xl font-bold text-gray-900 dark:text-gray-300"> <?= auth()->user()->username() ?> </p>
+                                <p class="text-sm font-medium text-gray-600 mb-1 dark:text-gray-300">Jasa Lainnya</p>
+                                <p class="text-2xl font-bold text-gray-900 dark:text-gray-300"> <?= $jasa_lainnya ?> </p>
                             </div>
                         </div>
                         <div class="mt-4 flex items-center justify-between">
                             <div class="flex items-center space-x-2">
                                 <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                                <span class="text-sm text-green-600 font-semibold">Personel</span>
+                                <span class="text-sm text-green-600 font-semibold"><?= $jasa_lainnya ?> Closed</span>
                             </div>
                             <div class="flex items-center text-xs text-gray-500">
                                 <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -192,5 +194,78 @@
             </div>
         </div>
     </div>
+
+    <!-- Monthly bar chart for 2024 -->
+    <div class="mt-6 bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-800 p-6">
+        <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">Grafik Bulanan Pengadaan (Tahun 2024)</h3>
+        <div class="w-full">
+            <canvas id="monthlyChart" width="800" height="320"></canvas>
+        </div>
+    </div>
+
+
 </div>
+<?= $this->endSection() ?>
+
+<?php // Chart script block 
+?>
+<?= $this->section('scripts') ?> <!-- load script ini di layout-->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    (function() {
+        const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const dataJK = <?= json_encode($monthly_jk ?? array_fill(0, 12, 0)) ?>;
+        const dataPK = <?= json_encode($monthly_pk ?? array_fill(0, 12, 0)) ?>;
+        const dataPB = <?= json_encode($monthly_pb ?? array_fill(0, 12, 0)) ?>;
+        const dataJL = <?= json_encode($monthly_jl ?? array_fill(0, 12, 0)) ?>;
+
+        const ctx = document.getElementById('monthlyChart');
+        if (ctx) {
+            new Chart(ctx.getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                            label: 'Jasa Konsultansi',
+                            data: dataJK,
+                            backgroundColor: 'rgba(59,130,246,0.7)'
+                        },
+                        {
+                            label: 'Pekerjaan Konstruksi',
+                            data: dataPK,
+                            backgroundColor: 'rgba(16,185,129,0.7)'
+                        },
+                        {
+                            label: 'Pengadaan Barang',
+                            data: dataPB,
+                            backgroundColor: 'rgba(168,85,247,0.7)'
+                        },
+                        {
+                            label: 'Jasa Lainnya',
+                            data: dataJL,
+                            backgroundColor: 'rgba(234,179,8,0.7)'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            stacked: false
+                        },
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        }
+                    }
+                }
+            });
+        }
+    })();
+</script>
 <?= $this->endSection() ?>

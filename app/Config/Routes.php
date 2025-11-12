@@ -50,6 +50,8 @@ $routes->group('api', ['namespace' => 'App\Controllers\API'], function ($routes)
         $routes->get('', 'Transaksi\TransaksiAllDataAPIController::getAllPaketPemenang');
         $routes->post('uploadPengadaan', 'Transaksi\TransaksiAllDataAPIController::uploadPaketPengadaan');
         $routes->get('download/(:any)', 'Transaksi\TransaksiAllDataAPIController::downloaFormuploadPaketPengadaan/$1');
+        // Update paket (edit fields)
+        $routes->put('update/(:num)', 'Transaksi\TransaksiAllDataAPIController::update/$1');
     });
 });
 
